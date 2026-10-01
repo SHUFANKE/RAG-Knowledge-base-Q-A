@@ -13,7 +13,7 @@ class LocalRAGPipeline:
         self.llm_client = llm_client
         self.vector_store = InMemoryVectorStore()
 
-    def index_document(self, text: str, source: str, chunk_size: int = 15,overlap: int = 5) -> int:
+    async def index_document(self, text: str, source: str, chunk_size: int = 15,overlap: int = 5) -> int:
         """
         文档切片与入库构建索引流水线
         流程： 文本-> 封装为Document->切片(Chunks) ->批量向量化(Vectors)-> 写入向量库
@@ -26,7 +26,7 @@ class LocalRAGPipeline:
 
         #提取切片文本并批量转为向量
         chunk_texts = [c.text for c in chunks]
-        vectors = self.embedder.embed_batch(chunk_texts)
+        vectors = await self.embedder.embed_batch(chunk_texts)
 
         #写入向量存储
         for chunk, vector in zip(chunks,vectors):
@@ -34,24 +34,24 @@ class LocalRAGPipeline:
 
         return len(chunks)
 
-    def retrieve(self, question: str,top_k: int = 2) -> list[tuple[Chunk,float]]:
+    async def retrieve(self, question: str,top_k: int = 2) -> list[tuple[Chunk,float]]:
         """
         用户问答检索流水线
         流程： 用户提问 -> 向量化 ->相似度计算与Top—K检索
         """
         #1.把用户的问题转换为同一坐标小的向量
-        query_vector = self.embedder.embed_text(question)
+        query_vector = await self.embedder.embed_text(question)
 
         #2.去向量数据库进行相似度比对
         return self.vector_store.similarity_search(query_vector,top_k=top_k)
 
-    async def answer_question(self,question:str,top_k:int = 2) ->str:
+    async def answer_question(self,question:str,search_results: list[tuple[Chunk,float]]) ->str:
         """
         端到端RAG问答链路（Retrieval-Augmented Generation）
         流程：检索召回相关上下文 ->构建增强Prompt ->异步调用LLM生成回答
         """
         #1.召回与问题最相似的知识库切片
-        search_results = self.retrieve(question,top_k=top_k)
+        search_results = search_results
 
         #2.组装上下文背景文本(Context)
         context_texts = [f"-{chunk.text}(来自：{chunk.source})" for chunk,_ in search_results]

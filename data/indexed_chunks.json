@@ -1,0 +1,50 @@
+[
+  {
+    "chunk_id": "faiss_parameters_sec1",
+    "source": "faiss_parameters.md",
+    "title": "FAISS 核心索引类型与检索参数说明-1. 索引类型选型",
+    "text": "[FAISS 核心索引类型与检索参数说明-1. 索引类型选型]\n- `IndexFlatIP`: 平面内积索引，直接进行暴力扫描计算内积，准确率为 100%。当所有输入向量完成 L2 归一化后，内积等价于余弦相似度。该索引无需提前训练（train），适合百万级以下规模的高精度检索。\n- `IndexIVFFlat`: 倒排聚类索引，引入 K-means 聚类中心（Centroids）。通过剪枝大幅降低比对数量，入库前必须调用 `train()` 方法进行空间聚类训练。\n- `IndexIVFPQ`: 结合了倒排聚类与乘积量化（Product Quantization），通过码本将连续浮点向量压缩为紧凑离散编码，极大降低内存占用，专为千万至上亿级超大规模向量库设计。"
+  },
+  {
+    "chunk_id": "faiss_parameters_sec2",
+    "source": "faiss_parameters.md",
+    "title": "FAISS 核心索引类型与检索参数说明-2. 检索控制参数",
+    "text": "[FAISS 核心索引类型与检索参数说明-2. 检索控制参数]\n- `nlist`: IVF 索引的聚类簇总数。常用经验公式设置为 `4 * sqrt(N)` 或 `16 * sqrt(N)`，其中 N 为预估的向量总条数。\n- `nprobe`: 检索时探查的最近邻聚类簇数量。`nprobe` 越接近 `nlist`，检索召回率越逼近 Flat 暴力检索，但检索延迟也会线性上升。\n- `metric_type`: 距离度量方式，常见值为 `METRIC_INNER_PRODUCT`（内积）和 `METRIC_L2`（欧氏距离平方）。"
+  },
+  {
+    "chunk_id": "fastapi_config_sec1",
+    "source": "fastapi_config.md",
+    "title": "FastAPI 生产环境配置指南-1. 核心运行参数",
+    "text": "[FastAPI 生产环境配置指南-1. 核心运行参数]\nFastAPI 应用在生产环境中推荐通过 Uvicorn 或 Gunicorn 配合 UvicornWorker 启动。\n核心参数配置规范如下：\n- `workers`: 推荐设置为 `(2 * CPU核心数) + 1`，用于充分利用多核并发能力。\n- `timeout_keep_alive`: 生产环境建议设为 65 秒，需略高于前端反向代理（如 Nginx）的 keep-alive 超时时间，防止出现 502 错误。\n- `limit_concurrency`: 限制最大并发连接数，防止突发流量打垮单节点内存，默认不限制。"
+  },
+  {
+    "chunk_id": "fastapi_config_sec2",
+    "source": "fastapi_config.md",
+    "title": "FastAPI 生产环境配置指南-2. 中间件与跨域规范",
+    "text": "[FastAPI 生产环境配置指南-2. 中间件与跨域规范]\n在微服务架构下，跨域请求必须显式配置 `CORSMiddleware`。\n严禁在生产环境中将 `allow_origins` 设为 `[\"*\"]` 且同时开启 `allow_credentials=True`，这会导致浏览器跨域策略拦截并引发严重安全漏洞。\n正确的做法是指定精确的安全域名白名单，例如 `allow_origins=[\"https://api.example.com\"]`。"
+  },
+  {
+    "chunk_id": "fastapi_config_sec3",
+    "source": "fastapi_config.md",
+    "title": "FastAPI 生产环境配置指南-3. 异常处理与状态码",
+    "text": "[FastAPI 生产环境配置指南-3. 异常处理与状态码]\n全局异常捕获必须挂载 `HTTPException` 和自定义的 `AppException`。\n对于未捕获的内部错误，必须统一返回 HTTP 500 状态码，并在响应体中隐藏敏感的堆栈调用栈，防止内部代码结构泄露。"
+  },
+  {
+    "chunk_id": "python_asyncio_sec1",
+    "source": "python_asyncio.md",
+    "title": "Python 协程与 Asyncio 底层机制-1. 事件循环与协作式调度",
+    "text": "[Python 协程与 Asyncio 底层机制-1. 事件循环与协作式调度]\nPython 的 `asyncio` 基于单线程协作式多任务调度器，其核心是全局唯一的 Event Loop（事件循环）。\n协程函数使用 `async def` 声明，调用时返回一个协程对象，该对象必须通过 `await` 或调度进事件循环才能实际执行。\n协程切换的触发条件是当前任务主动让出控制权，例如遇到 `asyncio.sleep()` 或异步网络 IO 操作。"
+  },
+  {
+    "chunk_id": "python_asyncio_sec2",
+    "source": "python_asyncio.md",
+    "title": "Python 协程与 Asyncio 底层机制-2. 阻塞与防坑指南",
+    "text": "[Python 协程与 Asyncio 底层机制-2. 阻塞与防坑指南]\n在协程函数中严禁调用耗时的大计算量操作或同步阻塞调用（例如 `time.sleep()`、`requests.get()`、原生同步文件读写）。\n任何同步阻塞操作都会直接卡死当前的 Event Loop，导致该线程上的所有其他并发并发任务停滞。\n如必须运行阻塞调用，应使用 `asyncio.to_thread()` 将任务分发至独立的系统线程池执行。"
+  },
+  {
+    "chunk_id": "python_asyncio_sec3",
+    "source": "python_asyncio.md",
+    "title": "Python 协程与 Asyncio 底层机制-3. 常见并发原语",
+    "text": "[Python 协程与 Asyncio 底层机制-3. 常见并发原语]\n- `asyncio.gather(*tasks)`: 并发调度多个可等待对象，保留原有顺序返回聚合结果；如果其中一个任务报错，默认仍会等待其余任务执行完毕。\n- `asyncio.TaskGroup`: Python 3.11 引入的上下文管理器，提供结构化并发（Structured Concurrency）支持。一旦任意子任务抛出异常，其余任务会立即自动取消。\n- `asyncio.Semaphore`: 信号量，用于对下游有限资源（如高并发 LLM API 调用）进行全局限流。"
+  }
+]

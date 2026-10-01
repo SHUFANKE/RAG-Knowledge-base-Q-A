@@ -1,6 +1,11 @@
 import asyncio
 from abc import ABC,abstractmethod
 import httpx
+import os
+from dotenv import load_dotenv
+from openai import AsyncOpenAI
+
+load_dotenv()
 
 class BaseLLMClient(ABC):
     """LLM客户端抽象基类，定义大模型调用的标准契约"""
@@ -62,6 +67,53 @@ class MockLLMClient(BaseLLMClient):
         #模拟真实网络与模拟吐字耗时
         await asyncio.sleep(self.response_delay)
         return f"[Mock大模型回复]针对问题'{prompt}',基于检索到的知识库，系统运行正常！"
+
+class OpenAILikeLLMClient(BaseLLMClient):
+    """支持OpenAI兼容格式的真实云端大模型客户端(适配Qwen/deepseek)"""
+
+    def __init__(
+            self,
+            api_key:str | None = None,
+            base_url: str | None = None,
+            model: str | None = None,
+            timeout: float = 30.0,
+    ):
+        #优先使用传入参数，未传则从系统的环境变量获取
+        self.api_key = api_key or os.getenv("OPENAI_API_KEY")
+        self.base_url = base_url or os.getenv("OPENAI_BASE_URL","https://api.deepseek.com")
+        self.model = model or os.getenv("MODEL_NAME","deepseek-chat")
+        self.timeout = timeout
+        if not self.api_key:
+            raise ValueError("未检测到有效的API Key,请在.env文件中配置OPENAI_API_KEY")
+
+        #初始化官方异步客户端
+        self.client = AsyncOpenAI(
+            api_key=self.api_key,
+            base_url=self.base_url,
+            timeout=self.timeout,
+        )
+
+    # def chat (self,prompt: str,system_prompt: str | None = None) ->str:
+    #     """同步方法占位（现代web API 推荐全面拥抱异步）"""
+    #     raise NotImplementedError("生产环境请使用异步achat方法")
+
+    async def chat(self,prompt: str,system_prompt: str | None = None) -> str:
+        """异步调用云端大模型生成回答"""
+        messages = []
+        if system_prompt:
+            messages.append({"role": "system","content": system_prompt})
+        messages.append({"role": "user","content": prompt})
+
+        try:
+            response = await self.client.chat.completions.create(
+                model=self.model,
+                messages=messages,
+                temperature=0.3, #RAG场景通常调低采样温度以保证真实性
+            )
+            return response.choices[0].message.content or ""
+        except Exception as e:
+            #捕获网络抖动、超时或鉴权异常
+            raise RuntimeError(f"调用云端LLM失败： {str(e)}") from e
 
 async def main():
     print("===测试异步Mock LLM 客户端 ===")

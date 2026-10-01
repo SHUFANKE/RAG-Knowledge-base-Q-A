@@ -1,0 +1,152 @@
+[
+  {
+    "id": "q01",
+    "type": "keyword",
+    "query": "FastAPI 生产环境中 workers 参数推荐设置为多少？",
+    "expected_chunks": ["fastapi_config_sec1"]
+  },
+  {
+    "id": "q02",
+    "type": "keyword",
+    "query": "生产部署时 timeout_keep_alive 建议设置为多少秒？",
+    "expected_chunks": ["fastapi_config_sec1"]
+  },
+  {
+    "id": "q03",
+    "type": "keyword",
+    "query": "CORSMiddleware 中为什么不能同时开启 allow_origins=['*'] 和 allow_credentials=True？",
+    "expected_chunks": ["fastapi_config_sec2"]
+  },
+  {
+    "id": "q04",
+    "type": "keyword",
+    "query": "FastAPI 中未捕获的内部错误应该返回什么 HTTP 状态码？",
+    "expected_chunks": ["fastapi_config_sec3"]
+  },
+  {
+    "id": "q05",
+    "type": "keyword",
+    "query": "IndexFlatIP 索引在什么时候等价于余弦相似度？",
+    "expected_chunks": ["faiss_parameters_sec1"]
+  },
+  {
+    "id": "q06",
+    "type": "keyword",
+    "query": "IndexIVFFlat 在添加数据前必须调用什么方法？",
+    "expected_chunks": ["faiss_parameters_sec1"]
+  },
+  {
+    "id": "q07",
+    "type": "keyword",
+    "query": "专为千万至上亿级向量设计的结合聚类和量化的索引是哪个？",
+    "expected_chunks": ["faiss_parameters_sec1"]
+  },
+  {
+    "id": "q08",
+    "type": "keyword",
+    "query": "FAISS 中 nprobe 参数代表什么含义？它如何影响延迟？",
+    "expected_chunks": ["faiss_parameters_sec2"]
+  },
+  {
+    "id": "q09",
+    "type": "keyword",
+    "query": "IVF 索引中聚类簇总数 nlist 常用经验公式是什么？",
+    "expected_chunks": ["faiss_parameters_sec2"]
+  },
+  {
+    "id": "q10",
+    "type": "keyword",
+    "query": "asyncio.to_thread() 的主要使用场景是什么？",
+    "expected_chunks": ["python_asyncio_sec2"]
+  },
+  {
+    "id": "q11",
+    "type": "keyword",
+    "query": "Python 3.11 引入的提供结构化并发的上下文管理器叫什么？",
+    "expected_chunks": ["python_asyncio_sec3"]
+  },
+  {
+    "id": "q12",
+    "type": "keyword",
+    "query": "用于对下游有限资源（如 LLM API）做并发限流的 asyncio 原语是什么？",
+    "expected_chunks": ["python_asyncio_sec3"]
+  },
+  {
+    "id": "q13",
+    "type": "paraphrase",
+    "query": "怎么根据服务器 CPU 核心数调整后端接口的进程数？",
+    "expected_chunks": ["fastapi_config_sec1"]
+  },
+  {
+    "id": "q14",
+    "type": "paraphrase",
+    "query": "如何防止客户端看到我们后端接口报错时的底层代码堆栈？",
+    "expected_chunks": ["fastapi_config_sec3"]
+  },
+  {
+    "id": "q15",
+    "type": "paraphrase",
+    "query": "百万级别以下不需要训练直接追求完全精准比对的向量检索选哪种？",
+    "expected_chunks": ["faiss_parameters_sec1"]
+  },
+  {
+    "id": "q16",
+    "type": "paraphrase",
+    "query": "调大哪个参数可以让近似聚类检索的结果更逼近暴力扫描？",
+    "expected_chunks": ["faiss_parameters_sec2"]
+  },
+  {
+    "id": "q17",
+    "type": "paraphrase",
+    "query": "为什么在异步代码里写 sleep 或直接发 requests 会导致系统卡死？",
+    "expected_chunks": ["python_asyncio_sec2"]
+  },
+  {
+    "id": "q18",
+    "type": "paraphrase",
+    "query": "想并发跑多个网络请求并按顺序拿到结果应该用什么函数？",
+    "expected_chunks": ["python_asyncio_sec3"]
+  },
+  {
+    "id": "q19",
+    "type": "multi_hop",
+    "query": "构建生产级高并发 API 时，从进程并发数到异步限流有哪些最佳实践？",
+    "expected_chunks": ["fastapi_config_sec1", "python_asyncio_sec3"]
+  },
+  {
+    "id": "q20",
+    "type": "multi_hop",
+    "query": "如果既要在大规模向量下控制内存开销，又要权衡查询精度与探查簇数，需要了解哪些技术和参数？",
+    "expected_chunks": ["faiss_parameters_sec1", "faiss_parameters_sec2"]
+  },
+  {
+    "id": "q21",
+    "type": "unanswerable",
+    "query": "FastAPI 如何配置 PostgreSQL 的 SQLAlchemy 异步连接池？",
+    "expected_chunks": []
+  },
+  {
+    "id": "q22",
+    "type": "unanswerable",
+    "query": "FAISS 的 HNSW 图索引的 M 和 efSearch 参数如何配置？",
+    "expected_chunks": []
+  },
+  {
+    "id": "q23",
+    "type": "unanswerable",
+    "query": "Python asyncio 中如何手动实现一个优先级任务队列 PriorityQueue？",
+    "expected_chunks": []
+  },
+  {
+    "id": "q24",
+    "type": "unanswerable",
+    "query": "Docker 部署 FastAPI 时多阶段构建镜像如何编写 Dockerfile？",
+    "expected_chunks": []
+  },
+  {
+    "id": "q25",
+    "type": "unanswerable",
+    "query": "如何使用 Redis 实现分布式锁来防止协程并发冲突？",
+    "expected_chunks": []
+  }
+]
