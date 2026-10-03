@@ -115,7 +115,7 @@ async def chat_endpoint(req: ChatRequest):
     start_gen = time.perf_counter()
     answer = await generator.generate(query=active_query, context_docs=docs)
     gengeration_ms = (time.perf_counter()-start_gen) * 1000.0
-
+    
     total_ms = (time.perf_counter() - start_total) * 1000.0
 
     #4.组装结构化元数据
@@ -150,17 +150,24 @@ async def chat_endpoint(req: ChatRequest):
         ),
     )
 
-@app.post("/api/chat/stram", summary="打字机流式问答接口（SSE）")
+@app.post("/api/chat/stream", summary="打字机流式问答接口（SSE）")
 async def chat_stream_endpoint(req:ChatRequest):
     retriever : ProductionRAGRetriever = rag_components.get("retriever")
     generator: QwenGenerator = rag_components.get("generator")
+    rewriter: QueryRewriter = rag_components.get("rewriter")
 
-    if not retriever or not generator:
+    if not retriever or not generator or not rewriter:
         raise HTTPException(status_code=503,detail="RAG组件尚未就绪")
+
+    history_dicts = [m.model_dump() for m in req.history]
+    active_query = await rewriter.rewrite(
+        query= req.query,
+        history=history_dicts,
+    )
 
     #前置检索阶段
     docs = await retriever.retrieve(
-        query=req.query,
+        query=active_query,
         candidate_k=10,
         final_k=req.final_k,
         rerank_threshold=req.rerank_threshold,
@@ -173,7 +180,7 @@ async def chat_stream_endpoint(req:ChatRequest):
             "references":[
                 {
                     "chunk_id": d["chunk_id"],
-                    "score":round(d.get("rerank_score",0.0)),
+                    "score":round(d.get("rerank_score",0.0),4),
                 }
                 for d in docs
             ],
@@ -182,7 +189,7 @@ async def chat_stream_endpoint(req:ChatRequest):
 
         #逐字吐出LLM回复
         async for token in generator.stream_generate(
-            query=req.query,context_docs=docs
+            query=active_query,context_docs=docs
         ):
             token_payload = {"type":"token","content": token}
             yield f"data:{json.dumps(token_payload,ensure_ascii=False)}\n\n"

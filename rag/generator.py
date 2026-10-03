@@ -39,7 +39,7 @@ class QwenGenerator:
             score = doc.get("rerank_score", 0.0)
             text = doc.get("text", "").strip()
             context_blocks.append(
-                f"【参考资料[Doc{rank}]】(ID:{chunk_id} | 置信度：{score:.4f})\n{text}"
+                f"【参考资料[Doc{rank}]】(ID:{chunk_id} | 相关性分数：{score:.4f})\n{text}"
 
             )
 
@@ -71,7 +71,7 @@ class QwenGenerator:
             "temperature": 0.1, #生产级知识库设定低温度以保证严谨性
         }
         headers = {
-            "Authorization": f"Bearer{self.api_key}",
+            "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
         }
 
@@ -87,7 +87,7 @@ class QwenGenerator:
     ) -> AsyncGenerator[str,None]:
         """打字机流式文本生成（SSE流式输出Token）"""
         if not context_docs:
-            yield"抱歉，当前知识库资料中未包含相关信息，无法为您提供切确答案。"
+            yield"抱歉，当前知识库资料中未包含相关信息，无法为您提供确切答案。"
             return
         
         user_prompt = self.build_user_prompt(query, context_docs)
@@ -115,12 +115,16 @@ class QwenGenerator:
                     if not line:
                         continue
                     if line.startswith("data:"):
-                        data_str = line[6:].strip()
+                        data_str = line[5:].strip()
                         if data_str == "[DONE]":
                             break
                         try:
                             chunk_json = json.loads(data_str)
-                            delta = chunk_json["choices"][0].get("delta",{})
+                            choices = chunk_json.get("choices",[])
+                            if not choices:
+                                continue
+
+                            delta = choices[0].get("delta",{})
                             content = delta.get("content","")
                             if content:
                                 yield content#吐出一个文字/token

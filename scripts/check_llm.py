@@ -6,7 +6,7 @@ async def main ():
     try:
         client = OpenAILikeLLMClient()
         prompt = "你好！请用一句话解释什么是RAG技术。"
-        response = await client.achat(prompt=prompt)
+        response = await client.chat(prompt=prompt)
         print(response)
     except Exception as e:
         print(f"\n[Error]连接失败：{e}")

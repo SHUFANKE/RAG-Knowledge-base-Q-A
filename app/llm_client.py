@@ -36,7 +36,7 @@ class RomoteLLMClient(BaseLLMClient):
     async def chat(self,prompt:str,system_prompt:str = "You are a helpful assistant") -> str:
         url = f"{self.base_url}/chat/completions"
         headers = {
-            "Authorization": f"Bearer{self.api_key}",
+            "Authorization": f"Bearer {self.api_key}",
             "Content-Type":"application/json",
         }
         payload = {

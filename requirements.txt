@@ -1,1 +1,12 @@
+faiss-cpu==1.15.0
+fastapi==0.141.1
+httpx==0.28.1
+jieba==0.42.1
+numpy==2.2.6
+openai==3.13.0
+pydantic==2.13.5
 pytest==9.1.1
+pytest-asyncio==1.4.0
+python-dotenv==1.2.3
+rank-bm25==0.2.2
+uvicorn==0.52.4

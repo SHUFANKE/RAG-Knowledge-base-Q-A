@@ -30,8 +30,8 @@ async def test_non_streaming():
     print(f"  - 总耗时:   {data['metrics']['total_ms']} ms")
 
 async def test_streaming():
-    """测试打字机流式接口（/api/chat/stram）"""
-    url = "http://127.0.0.1:8000/api/chat/stram"
+    """测试打字机流式接口（/api/chat/stream）"""
+    url = "http://127.0.0.1:8000/api/chat/stream"
     payload ={
         "query":"FastAPI生产部署时，工作进程workers的推荐计算公式是什么？",
         "final_k":3,
@@ -39,7 +39,7 @@ async def test_streaming():
     }
 
     print("\n" + "=" * 60)
-    print(">>> [测试 2] 正在请求 SSE 流式打字机接口 (/api/chat/stram)...")
+    print(">>> [测试 2] 正在请求 SSE 流式打字机接口 (/api/chat/stream)...")
     print("=" * 60)
     print("【流式实时输出】: ", end="", flush=True)
 

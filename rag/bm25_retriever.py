@@ -19,7 +19,7 @@ class BM25Retriever:
             return
 
         self.doc_store.extend(documents)
-        self.corpus_tokens = [self._tokenize(doc["text"]) for doc in documents]
+        self.corpus_tokens = [self._tokenize(doc["text"]) for doc in self.doc_store]
         self.bm25 = BM25Okapi(self.corpus_tokens)
 
     def search(self,query:str,top_k: int=5) -> list[dict]:

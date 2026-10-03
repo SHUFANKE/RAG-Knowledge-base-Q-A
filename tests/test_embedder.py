@@ -23,17 +23,18 @@ def test_embedder_empty_vocab():
     with pytest.raises(ValueError):
         SimpleWordEmbedder(vocab=["   ",""])
 
-def test_embed_text_and_batch():
-    """测试单句与多句向量转换逻辑"""
+@pytest.mark.asyncio
+async def test_embed_text_and_batch():
+    """测试单句与批量文本的词频向量转换。"""
     embedder = SimpleWordEmbedder(vocab=["apple","banana"])
 
     #1.测试单句
-    vec = embedder.embed_text("Apple apple orange!")
+    vec = await embedder.embed_text("Apple apple orange!")
     #apple 出现2次，banana出现0次，orange忽略
     assert vec == [2.0,0.0]
 
     #2.测试批量
-    batch_vecs = embedder.embed_batch(["banana","peach"])
+    batch_vecs = await embedder.embed_batch(["banana","peach"])
     assert len(batch_vecs) == 2
     assert batch_vecs[0] == [0.0,1.0]
     assert batch_vecs[1] == [0.0,0.0]

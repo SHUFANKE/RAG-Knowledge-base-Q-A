@@ -13,7 +13,7 @@ class DashScopeReranker:
         if not self.api_key:
             raise ValueError("未检测到DASHSCOPE_API_KEY,请检查.env配置！")
 
-        self.endpoint = "https://dashscope.aliyuncs.com/api/v1/services/rerank/text-rerank/text-rerank"
+        self.endpoint = "https://ws-0s5aja5tlrr6aud3.cn-beijing.maas.aliyuncs.com/compatible-api/v1/reranks"
         self.model = model
 
     async def reranker(
@@ -34,14 +34,9 @@ class DashScopeReranker:
         #构造重排请求
         payload = {
             "model":self.model,
-            "input":{
-                "query":query,
-                "documents": doc_texts,
-            },
-            "parameters":{
-                "top_n":min(top_k,len(documents)),
-                "return_documnets": False,
-            },
+            "query":query,
+            "documents": doc_texts,
+            "top_n":min(top_k,len(documents)),
         }
 
         headers = {
@@ -60,11 +55,11 @@ class DashScopeReranker:
 
         #根据重排返回的下标和分数重构结果
         results = []
-        for item in data.get("output",{}).get("results",[]):
+        for item in data.get("results",[]):
             idx = item.get("index")
-            if idx is not None and idx < len(documents):
+            if isinstance(idx, int) and 0<= idx < len(documents):
                 original_doc = documents[idx].copy()
-                original_doc["rerank_score"] = float(item.get("relevance_score",0.0))
+                original_doc["rerank_score"] = float(item["relevance_score"])
                 results.append(original_doc)
 
         return results
