@@ -1,0 +1,17 @@
+[
+  {
+    "text": "FAISS (Facebook AI Similarity Search) 是专为高效密集向量相似度检索和聚类设计的开源库。",
+    "source": "faiss_intro.md",
+    "chunk_id": 1
+  },
+  {
+    "text": "BM25 是一种基于词频和逆文档频率的经典稀疏检索算法，在精确关键词匹配场景下表现优异。",
+    "source": "bm25_intro.md",
+    "chunk_id": 2
+  },
+  {
+    "text": "混合检索 (Hybrid Retrieval) 通常结合 BM25 和 Dense 向量检索，兼顾关键词精准度和语义泛化能力。",
+    "source": "hybrid_search.md",
+    "chunk_id": 3
+  }
+]

@@ -1,0 +1,942 @@
+{
+  "created_at": "2026-10-03T17:20:24.019663+08:00",
+  "config": {
+    "method": "Dense",
+    "embedding_model": "text-embedding-v3",
+    "dimension": 1024,
+    "index_type": "IndexFlatIP",
+    "l2_normalized": true,
+    "top_k": 3,
+    "chunk_count": 8,
+    "chunks_path": "data\\indexed_chunks.json",
+    "dataset_path": "evaluation\\ground_truth.json",
+    "index_build_ms": 1685.1783999882173,
+    "latency_scope": "查询向量化与 FAISS 检索，不含索引构建与回答生成"
+  },
+  "summary": {
+    "total_questions": 25,
+    "answerable_questions": 20,
+    "unanswerable_questions": 5,
+    "hit_at_k": 1.0,
+    "recall_at_k": 1.0,
+    "complete_evidence_rate": 1.0,
+    "mrr_at_k": 0.9666666666666668,
+    "retrieval_refusal_rate": 0.0,
+    "avg_retrieval_ms": 161.89032399794087
+  },
+  "by_type": {
+    "keyword": {
+      "total_questions": 12,
+      "answerable_questions": 12,
+      "unanswerable_questions": 0,
+      "hit_at_k": 1.0,
+      "recall_at_k": 1.0,
+      "complete_evidence_rate": 1.0,
+      "mrr_at_k": 0.9444444444444445,
+      "retrieval_refusal_rate": null,
+      "avg_retrieval_ms": 173.70021666647517
+    },
+    "multi_hop": {
+      "total_questions": 2,
+      "answerable_questions": 2,
+      "unanswerable_questions": 0,
+      "hit_at_k": 1.0,
+      "recall_at_k": 1.0,
+      "complete_evidence_rate": 1.0,
+      "mrr_at_k": 1.0,
+      "retrieval_refusal_rate": null,
+      "avg_retrieval_ms": 141.61809999495745
+    },
+    "paraphrase": {
+      "total_questions": 6,
+      "answerable_questions": 6,
+      "unanswerable_questions": 0,
+      "hit_at_k": 1.0,
+      "recall_at_k": 1.0,
+      "complete_evidence_rate": 1.0,
+      "mrr_at_k": 1.0,
+      "retrieval_refusal_rate": null,
+      "avg_retrieval_ms": 155.06423332893368
+    },
+    "unanswerable": {
+      "total_questions": 5,
+      "answerable_questions": 0,
+      "unanswerable_questions": 5,
+      "hit_at_k": null,
+      "recall_at_k": null,
+      "complete_evidence_rate": null,
+      "mrr_at_k": null,
+      "retrieval_refusal_rate": 0.0,
+      "avg_retrieval_ms": 149.84677999746054
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "keyword",
+      "query": "FastAPI 生产环境中 workers 参数推荐设置为多少？",
+      "expected_chunks": [
+        "fastapi_config_sec1"
+      ],
+      "retrieved_chunks": [
+        "fastapi_config_sec1",
+        "fastapi_config_sec2",
+        "fastapi_config_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 0.7709457278251648
+        },
+        {
+          "chunk_id": "fastapi_config_sec2",
+          "score": 0.6038028001785278
+        },
+        {
+          "chunk_id": "fastapi_config_sec3",
+          "score": 0.5564533472061157
+        }
+      ],
+      "retrieval_ms": 196.23969998792745,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q02",
+      "type": "keyword",
+      "query": "生产部署时 timeout_keep_alive 建议设置为多少秒？",
+      "expected_chunks": [
+        "fastapi_config_sec1"
+      ],
+      "retrieved_chunks": [
+        "fastapi_config_sec1",
+        "fastapi_config_sec2",
+        "fastapi_config_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 0.6179140210151672
+        },
+        {
+          "chunk_id": "fastapi_config_sec2",
+          "score": 0.5089159607887268
+        },
+        {
+          "chunk_id": "fastapi_config_sec3",
+          "score": 0.47982168197631836
+        }
+      ],
+      "retrieval_ms": 203.34290000027977,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q03",
+      "type": "keyword",
+      "query": "CORSMiddleware 中为什么不能同时开启 allow_origins=['*'] 和 allow_credentials=True？",
+      "expected_chunks": [
+        "fastapi_config_sec2"
+      ],
+      "retrieved_chunks": [
+        "fastapi_config_sec2",
+        "python_asyncio_sec2",
+        "fastapi_config_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_config_sec2",
+          "score": 0.7573480606079102
+        },
+        {
+          "chunk_id": "python_asyncio_sec2",
+          "score": 0.4733072519302368
+        },
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 0.46667230129241943
+        }
+      ],
+      "retrieval_ms": 131.11260000732727,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q04",
+      "type": "keyword",
+      "query": "FastAPI 中未捕获的内部错误应该返回什么 HTTP 状态码？",
+      "expected_chunks": [
+        "fastapi_config_sec3"
+      ],
+      "retrieved_chunks": [
+        "fastapi_config_sec3",
+        "fastapi_config_sec1",
+        "fastapi_config_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_config_sec3",
+          "score": 0.808499276638031
+        },
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 0.5612705945968628
+        },
+        {
+          "chunk_id": "fastapi_config_sec2",
+          "score": 0.5560078024864197
+        }
+      ],
+      "retrieval_ms": 123.32729999616276,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q05",
+      "type": "keyword",
+      "query": "IndexFlatIP 索引在什么时候等价于余弦相似度？",
+      "expected_chunks": [
+        "faiss_parameters_sec1"
+      ],
+      "retrieved_chunks": [
+        "faiss_parameters_sec1",
+        "faiss_parameters_sec2",
+        "fastapi_config_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "score": 0.6988698244094849
+        },
+        {
+          "chunk_id": "faiss_parameters_sec2",
+          "score": 0.5950823426246643
+        },
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 0.4307841360569
+        }
+      ],
+      "retrieval_ms": 179.16680000780616,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q06",
+      "type": "keyword",
+      "query": "IndexIVFFlat 在添加数据前必须调用什么方法？",
+      "expected_chunks": [
+        "faiss_parameters_sec1"
+      ],
+      "retrieved_chunks": [
+        "faiss_parameters_sec1",
+        "faiss_parameters_sec2",
+        "fastapi_config_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "score": 0.5868054032325745
+        },
+        {
+          "chunk_id": "faiss_parameters_sec2",
+          "score": 0.5679596662521362
+        },
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 0.4786723852157593
+        }
+      ],
+      "retrieval_ms": 169.08479999983683,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q07",
+      "type": "keyword",
+      "query": "专为千万至上亿级向量设计的结合聚类和量化的索引是哪个？",
+      "expected_chunks": [
+        "faiss_parameters_sec1"
+      ],
+      "retrieved_chunks": [
+        "faiss_parameters_sec1",
+        "faiss_parameters_sec2",
+        "python_asyncio_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "score": 0.7061002254486084
+        },
+        {
+          "chunk_id": "faiss_parameters_sec2",
+          "score": 0.6113789081573486
+        },
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "score": 0.44527342915534973
+        }
+      ],
+      "retrieval_ms": 194.68760000017937,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q08",
+      "type": "keyword",
+      "query": "FAISS 中 nprobe 参数代表什么含义？它如何影响延迟？",
+      "expected_chunks": [
+        "faiss_parameters_sec2"
+      ],
+      "retrieved_chunks": [
+        "faiss_parameters_sec2",
+        "faiss_parameters_sec1",
+        "python_asyncio_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_parameters_sec2",
+          "score": 0.5771045684814453
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "score": 0.48855432868003845
+        },
+        {
+          "chunk_id": "python_asyncio_sec2",
+          "score": 0.45862025022506714
+        }
+      ],
+      "retrieval_ms": 230.28509999858215,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q09",
+      "type": "keyword",
+      "query": "IVF 索引中聚类簇总数 nlist 常用经验公式是什么？",
+      "expected_chunks": [
+        "faiss_parameters_sec2"
+      ],
+      "retrieved_chunks": [
+        "faiss_parameters_sec2",
+        "faiss_parameters_sec1",
+        "python_asyncio_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_parameters_sec2",
+          "score": 0.7933655977249146
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "score": 0.5945819616317749
+        },
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "score": 0.43712568283081055
+        }
+      ],
+      "retrieval_ms": 176.1114999972051,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q10",
+      "type": "keyword",
+      "query": "asyncio.to_thread() 的主要使用场景是什么？",
+      "expected_chunks": [
+        "python_asyncio_sec2"
+      ],
+      "retrieved_chunks": [
+        "python_asyncio_sec1",
+        "python_asyncio_sec3",
+        "python_asyncio_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "python_asyncio_sec1",
+          "score": 0.6420600414276123
+        },
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "score": 0.6137489080429077
+        },
+        {
+          "chunk_id": "python_asyncio_sec2",
+          "score": 0.5870198011398315
+        }
+      ],
+      "retrieval_ms": 185.69349999597762,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 0.3333333333333333,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q11",
+      "type": "keyword",
+      "query": "Python 3.11 引入的提供结构化并发的上下文管理器叫什么？",
+      "expected_chunks": [
+        "python_asyncio_sec3"
+      ],
+      "retrieved_chunks": [
+        "python_asyncio_sec3",
+        "python_asyncio_sec1",
+        "python_asyncio_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "score": 0.6487936973571777
+        },
+        {
+          "chunk_id": "python_asyncio_sec1",
+          "score": 0.5521107912063599
+        },
+        {
+          "chunk_id": "python_asyncio_sec2",
+          "score": 0.47793614864349365
+        }
+      ],
+      "retrieval_ms": 163.61820000747684,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q12",
+      "type": "keyword",
+      "query": "用于对下游有限资源（如 LLM API）做并发限流的 asyncio 原语是什么？",
+      "expected_chunks": [
+        "python_asyncio_sec3"
+      ],
+      "retrieved_chunks": [
+        "python_asyncio_sec3",
+        "python_asyncio_sec1",
+        "python_asyncio_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "score": 0.7397820949554443
+        },
+        {
+          "chunk_id": "python_asyncio_sec1",
+          "score": 0.6882012486457825
+        },
+        {
+          "chunk_id": "python_asyncio_sec2",
+          "score": 0.635944128036499
+        }
+      ],
+      "retrieval_ms": 131.7325999989407,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q13",
+      "type": "paraphrase",
+      "query": "怎么根据服务器 CPU 核心数调整后端接口的进程数？",
+      "expected_chunks": [
+        "fastapi_config_sec1"
+      ],
+      "retrieved_chunks": [
+        "fastapi_config_sec1",
+        "fastapi_config_sec2",
+        "python_asyncio_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 0.6259189248085022
+        },
+        {
+          "chunk_id": "fastapi_config_sec2",
+          "score": 0.5294396877288818
+        },
+        {
+          "chunk_id": "python_asyncio_sec2",
+          "score": 0.5281170606613159
+        }
+      ],
+      "retrieval_ms": 194.5463000010932,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q14",
+      "type": "paraphrase",
+      "query": "如何防止客户端看到我们后端接口报错时的底层代码堆栈？",
+      "expected_chunks": [
+        "fastapi_config_sec3"
+      ],
+      "retrieved_chunks": [
+        "fastapi_config_sec3",
+        "fastapi_config_sec2",
+        "python_asyncio_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_config_sec3",
+          "score": 0.6454352736473083
+        },
+        {
+          "chunk_id": "fastapi_config_sec2",
+          "score": 0.5552419424057007
+        },
+        {
+          "chunk_id": "python_asyncio_sec2",
+          "score": 0.5463422536849976
+        }
+      ],
+      "retrieval_ms": 114.34430000372231,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q15",
+      "type": "paraphrase",
+      "query": "百万级别以下不需要训练直接追求完全精准比对的向量检索选哪种？",
+      "expected_chunks": [
+        "faiss_parameters_sec1"
+      ],
+      "retrieved_chunks": [
+        "faiss_parameters_sec1",
+        "faiss_parameters_sec2",
+        "fastapi_config_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "score": 0.6579289436340332
+        },
+        {
+          "chunk_id": "faiss_parameters_sec2",
+          "score": 0.5478533506393433
+        },
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 0.4155087471008301
+        }
+      ],
+      "retrieval_ms": 114.40159998892341,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q16",
+      "type": "paraphrase",
+      "query": "调大哪个参数可以让近似聚类检索的结果更逼近暴力扫描？",
+      "expected_chunks": [
+        "faiss_parameters_sec2"
+      ],
+      "retrieved_chunks": [
+        "faiss_parameters_sec2",
+        "faiss_parameters_sec1",
+        "python_asyncio_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_parameters_sec2",
+          "score": 0.606906533241272
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "score": 0.5929591655731201
+        },
+        {
+          "chunk_id": "python_asyncio_sec2",
+          "score": 0.4563979506492615
+        }
+      ],
+      "retrieval_ms": 169.79519999586046,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q17",
+      "type": "paraphrase",
+      "query": "为什么在异步代码里写 sleep 或直接发 requests 会导致系统卡死？",
+      "expected_chunks": [
+        "python_asyncio_sec2"
+      ],
+      "retrieved_chunks": [
+        "python_asyncio_sec2",
+        "fastapi_config_sec3",
+        "fastapi_config_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "python_asyncio_sec2",
+          "score": 0.6467276215553284
+        },
+        {
+          "chunk_id": "fastapi_config_sec3",
+          "score": 0.6058102250099182
+        },
+        {
+          "chunk_id": "fastapi_config_sec2",
+          "score": 0.5521144866943359
+        }
+      ],
+      "retrieval_ms": 166.05039998830762,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q18",
+      "type": "paraphrase",
+      "query": "想并发跑多个网络请求并按顺序拿到结果应该用什么函数？",
+      "expected_chunks": [
+        "python_asyncio_sec3"
+      ],
+      "retrieved_chunks": [
+        "python_asyncio_sec3",
+        "python_asyncio_sec1",
+        "python_asyncio_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "score": 0.5735911130905151
+        },
+        {
+          "chunk_id": "python_asyncio_sec1",
+          "score": 0.5506905317306519
+        },
+        {
+          "chunk_id": "python_asyncio_sec2",
+          "score": 0.5405396223068237
+        }
+      ],
+      "retrieval_ms": 171.24759999569505,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q19",
+      "type": "multi_hop",
+      "query": "构建生产级高并发 API 时，从进程并发数到异步限流有哪些最佳实践？",
+      "expected_chunks": [
+        "fastapi_config_sec1",
+        "python_asyncio_sec3"
+      ],
+      "retrieved_chunks": [
+        "fastapi_config_sec1",
+        "python_asyncio_sec2",
+        "python_asyncio_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 0.6450841426849365
+        },
+        {
+          "chunk_id": "python_asyncio_sec2",
+          "score": 0.5893192291259766
+        },
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "score": 0.5819424390792847
+        }
+      ],
+      "retrieval_ms": 113.17729999427684,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q20",
+      "type": "multi_hop",
+      "query": "如果既要在大规模向量下控制内存开销，又要权衡查询精度与探查簇数，需要了解哪些技术和参数？",
+      "expected_chunks": [
+        "faiss_parameters_sec1",
+        "faiss_parameters_sec2"
+      ],
+      "retrieved_chunks": [
+        "faiss_parameters_sec2",
+        "faiss_parameters_sec1",
+        "fastapi_config_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_parameters_sec2",
+          "score": 0.6124804019927979
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "score": 0.5979182720184326
+        },
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 0.5258368849754333
+        }
+      ],
+      "retrieval_ms": 170.05889999563806,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null
+      }
+    },
+    {
+      "id": "q21",
+      "type": "unanswerable",
+      "query": "FastAPI 如何配置 PostgreSQL 的 SQLAlchemy 异步连接池？",
+      "expected_chunks": [],
+      "retrieved_chunks": [
+        "fastapi_config_sec1",
+        "fastapi_config_sec2",
+        "fastapi_config_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 0.5823692679405212
+        },
+        {
+          "chunk_id": "fastapi_config_sec2",
+          "score": 0.5460349321365356
+        },
+        {
+          "chunk_id": "fastapi_config_sec3",
+          "score": 0.5061467885971069
+        }
+      ],
+      "retrieval_ms": 128.37900000158697,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0
+      }
+    },
+    {
+      "id": "q22",
+      "type": "unanswerable",
+      "query": "FAISS 的 HNSW 图索引的 M 和 efSearch 参数如何配置？",
+      "expected_chunks": [],
+      "retrieved_chunks": [
+        "faiss_parameters_sec2",
+        "faiss_parameters_sec1",
+        "fastapi_config_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_parameters_sec2",
+          "score": 0.6641040444374084
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "score": 0.6077575087547302
+        },
+        {
+          "chunk_id": "fastapi_config_sec2",
+          "score": 0.458191454410553
+        }
+      ],
+      "retrieval_ms": 151.94109998992644,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0
+      }
+    },
+    {
+      "id": "q23",
+      "type": "unanswerable",
+      "query": "Python asyncio 中如何手动实现一个优先级任务队列 PriorityQueue？",
+      "expected_chunks": [],
+      "retrieved_chunks": [
+        "python_asyncio_sec1",
+        "python_asyncio_sec3",
+        "python_asyncio_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "python_asyncio_sec1",
+          "score": 0.5946861505508423
+        },
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "score": 0.5804860591888428
+        },
+        {
+          "chunk_id": "python_asyncio_sec2",
+          "score": 0.5443052649497986
+        }
+      ],
+      "retrieval_ms": 148.08909999555908,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0
+      }
+    },
+    {
+      "id": "q24",
+      "type": "unanswerable",
+      "query": "Docker 部署 FastAPI 时多阶段构建镜像如何编写 Dockerfile？",
+      "expected_chunks": [],
+      "retrieved_chunks": [
+        "fastapi_config_sec1",
+        "fastapi_config_sec2",
+        "fastapi_config_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 0.5979878306388855
+        },
+        {
+          "chunk_id": "fastapi_config_sec2",
+          "score": 0.5217861533164978
+        },
+        {
+          "chunk_id": "fastapi_config_sec3",
+          "score": 0.5043884515762329
+        }
+      ],
+      "retrieval_ms": 181.57349999819417,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0
+      }
+    },
+    {
+      "id": "q25",
+      "type": "unanswerable",
+      "query": "如何使用 Redis 实现分布式锁来防止协程并发冲突？",
+      "expected_chunks": [],
+      "retrieved_chunks": [
+        "python_asyncio_sec2",
+        "python_asyncio_sec1",
+        "python_asyncio_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "python_asyncio_sec2",
+          "score": 0.5911746621131897
+        },
+        {
+          "chunk_id": "python_asyncio_sec1",
+          "score": 0.5552446842193604
+        },
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "score": 0.5197356343269348
+        }
+      ],
+      "retrieval_ms": 139.25120000203606,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0
+      }
+    }
+  ]
+}
