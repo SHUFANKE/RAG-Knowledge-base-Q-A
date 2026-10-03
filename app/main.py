@@ -10,12 +10,15 @@ from fastapi.responses import StreamingResponse
 
 from app.embedder import QwenCloudEmbedder
 from app.schemas import ChatRequest, ChatResponse, LatencyMetrics, ReferenceDoc
+from app.logger import logger
 from rag.bm25_retriever import BM25Retriever
 from rag.dense_retriever import FAISSRetriever
 from rag.generator import QwenGenerator
 from rag.hybrid_retriever import HybridRetriever
 from rag.pipeline import ProductionRAGRetriever
 from rag.reranker import DashScopeReranker
+from rag.rewriter import QueryRewriter
+
 
 load_dotenv()
 
@@ -51,9 +54,13 @@ async def lifespan(app: FastAPI):
     #3.组装LLM生成器
     generator = QwenGenerator(model="qwen-turbo")
 
+    #4.组装查询改写器
+    rewriter = QueryRewriter(model="qwen-turbo")
+
     #缓存到全局生命周期字典中供接口复用
     rag_components["retriever"] = retriever
     rag_components["generator"] = generator
+    rag_components["rewriter"] = rewriter #注册改写器
 
     print(
         f">>> [System Ready] 知识库切片转载完成({len(chunks)}条)，RAG Web 服务已就绪！"
@@ -79,30 +86,39 @@ app = FastAPI(
 async def chat_endpoint(req: ChatRequest):
     retriever: ProductionRAGRetriever = rag_components.get("retriever")
     generator: QwenGenerator = rag_components.get("generator")
+    rewriter: QueryRewriter = rag_components.get("rewriter")
 
-    if not retriever or not generator:
+    if not retriever or not generator or not rewriter:
         raise HTTPException(status_code=503, detail="RAG组件尚未完全就绪")
 
     start_total = time.perf_counter()
 
-    #1.检索与重排阶段
+    #1.多轮上下文改写阶段
+    start_rewriter = time.perf_counter()
+    history_dicts = [m.model_dump() for m in req.history]
+    active_query = await rewriter.rewrite(
+        query=req.query,history=history_dicts
+    )
+    rewrite_ms = (time.perf_counter() - start_rewriter) * 1000.0
+
+    #2.二阶段检索与精排（使用改写后的active_query）
     start_retrieval = time.perf_counter()
     docs = await retriever.retrieve(
-        query=req.quer,
+        query=active_query,#这里用改写后的active——query
         candidate_k=10,
         final_k=req.final_k,
         rerank_threshold=req.rerank_threshold,
     )
     retrieval_ms = (time.perf_counter() - start_retrieval) * 1000.0
 
-    #2.大模型生成阶段
+    #3.大模型生成回答
     start_gen = time.perf_counter()
-    answer = await generator.generate(query=req.query, context_docs=docs)
+    answer = await generator.generate(query=active_query, context_docs=docs)
     gengeration_ms = (time.perf_counter()-start_gen) * 1000.0
 
     total_ms = (time.perf_counter() - start_total) * 1000.0
 
-    #3.组装结构化元数据
+    #4.组装结构化元数据
     ref_docs = [
         ReferenceDoc(
             chunk_id=doc.get("chunk_id", ""),
@@ -112,10 +128,22 @@ async def chat_endpoint(req: ChatRequest):
         for doc in docs
     ]
 
+    logger.info(
+        f"Query='{req.query}' | "
+        f"Rewritten='{active_query if active_query != req.query else 'None'}' | "
+        f"Hits={len(docs)} | "
+        f"TopScore={round(docs[0]['rerank_score'],4) if docs else 0.0} | "
+        f"Latency(Rewrite={round(rewrite_ms, 1)}ms, Retr={round(retrieval_ms, 1)}ms, Gen={round(gengeration_ms, 1)}ms, Total={round(total_ms, 1)}ms)"    
+    )
+
     return ChatResponse(
         answer=answer,
+        rewritten_query=(
+            active_query if active_query != req.query else None
+        ),#若发生改写则回传改写结果
         references=ref_docs,
         metrics=LatencyMetrics(
+            rewrite_ms=round(rewrite_ms,2),
             retrieval_ms=round(retrieval_ms,2),
             generation_ms=round(gengeration_ms,2),
             total_ms=round(total_ms,2),
