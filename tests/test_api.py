@@ -76,6 +76,12 @@ def test_chat_response_and_rewritten_query(api_client):
     assert data["answer"] == "测试回答 [Doc 1]"
     assert data["rewritten_query"] == "独立测试问题"
     assert data["references"][0]["chunk_id"] == "test_doc_1"
+    assert data["citation_check"] == {
+        "status": "valid",
+        "reference_count": 1,
+        "cited_numbers": [1],
+        "invalid_numbers": [],
+    }
 
     for field in (
         "rewrite_ms", "retrieval_ms", "generation_ms", "total_ms"
@@ -120,7 +126,14 @@ def test_stream_events(api_client):
 
     assert payloads[-1] == "[DONE]"
     events = [json.loads(value) for value in payloads[:-1]]
-
+    
+    assert events[-1]["type"] == "citation_check"
+    assert events[-1]["citation_check"] == {
+        "status": "valid",
+        "reference_count": 1,
+        "cited_numbers": [1],
+        "invalid_numbers": [],
+    }
     assert events[0]["type"] == "references"
     assert events[0]["references"][0]["chunk_id"] == "test_doc_1"
     assert events[0]["references"][0]["score"] == 0.8764

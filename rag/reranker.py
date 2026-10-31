@@ -13,7 +13,9 @@ class DashScopeReranker:
         if not self.api_key:
             raise ValueError("未检测到DASHSCOPE_API_KEY,请检查.env配置！")
 
-        self.endpoint = "https://ws-0s5aja5tlrr6aud3.cn-beijing.maas.aliyuncs.com/compatible-api/v1/reranks"
+        self.endpoint = os.getenv("RERANK_ENDPOINT")
+        if not self.endpoint:
+            raise ValueError("未配置 RERANK_ENDPOINT，请填写完整的重排请求地址")
         self.model = model
 
     async def reranker(

@@ -17,7 +17,7 @@ class QueryRewriter:
     def __init__(
             self,
             api_key: str | None = None,
-            model: str = "qwen_turbo",
+            model: str = "qwen-plus",
     ):
         self.api_key =(
             api_key

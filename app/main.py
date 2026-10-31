@@ -66,9 +66,9 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Production Enterprise RAG API",
+    title="技术文档 RAG 问答系统",
     version="1.0.0",
-    description="基于混合检索，Cross-Encoder重排与防幻觉置信度截断的企业级知识库问答后端",
+    description="基于混合检索、重排相关性过滤与引用编号检查的技术文档问答后端",
     lifespan=lifespan
 
 )#实例化FastAPI成一个对象（app）

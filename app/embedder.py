@@ -112,23 +112,3 @@ class QwenCloudEmbedder(BaseEmbedder):
 
 
     
-if __name__ == "__main__":
-    #建立一个微型领域知识词表
-    domain_vocab = ["python","rag","retrieval","vector","llm","database"]
-    embedder = SimpleWordEmbedder(vocab=domain_vocab)
-
-    print(f"词表维度：{embedder.dim}")
-    print(F"词表映射：{embedder.word_to_idx}\n")
-
-    #测试两个句子的向量化
-    s1 = "Python and RAG are great for LLM retrieval"
-    s2 = "Vector database store data"
-
-    v1 = embedder.embed_text(s1)
-    V2 = embedder.embed_text(s2)
-
-    print(f"句子1: '{s1}'")
-    print(f"向量1: {v1}\n")
-
-    print(f"句子: '{s2}'")
-    print(f"向量2: {V2}\n")

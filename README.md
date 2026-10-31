@@ -174,6 +174,7 @@ No broken requirements found.
 DASHSCOPE_API_KEY=填写你自己的百炼APIKey
 DASHSCOPE_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
 EMBEDDING_MODEL=text-embedding-v3
+RERANK_ENDPOINT=https://your-workspace-host/compatible-api/v1/reranks
 ```
 
 以上 Embedding 地址对应当前实现的默认配置；
@@ -182,7 +183,9 @@ EMBEDDING_MODEL=text-embedding-v3
 注意：
 
 - 密钥、业务空间、地域和模型调用权限必须匹配。
-- 重排器的业务空间端点目前配置在 `rag/reranker.py` 中。
+- 重排完整请求地址通过RERANK_ENDPOINT配置，需要填写自己账号可调用、
+  且与当前重排请求协议匹配的URL，包括路径。
+  该配置独立于Embedding使用的DASHSCOPE_BASE_URL。
 - 生成器与改写器的模型和接口地址目前也在代码中配置。
 - `DASHSCOPE_BASE_URL` 只用于当前云端向量器，不会统一覆盖所有组件地址。
 - 已存在的终端环境变量可能优先于 `.env` 中的同名变量。
@@ -222,7 +225,9 @@ EMBEDDING_MODEL=text-embedding-v3
 
 启动：
 
+```powershell
 & .\.venv\Scripts\python.exe -X utf8 -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
 
 服务启动时加载已保存的FAISS索引，并在本地建立BM25。
 修改代码或配置后，需要重启服务加载修改。

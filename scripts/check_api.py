@@ -21,6 +21,8 @@ async def test_non_streaming():
         data = resp.json()
 
     print(f"【回答内容】:\n{data['answer']}\n")
+    print("【引用编号检查】:")
+    print(json.dumps(data["citation_check"], ensure_ascii=False, indent=2))
     print("【引用切片】:")
     for ref in data["references"]:
         print(f"  - 切片ID: {ref['chunk_id']} | 重排得分: {ref['rerank_score']:.4f}")
@@ -62,6 +64,13 @@ async def test_streaming():
                 if event_type == "token":
                     #模拟打字机逐字输出
                     print(event_data["content"], end = "",flush=True)
+                elif event_type == "citation_check":
+                    print("\n\n【引用编号检查】:")
+                    print(json.dumps(
+                        event_data["citation_check"],
+                        ensure_ascii=False,
+                        indent=2,
+                    ))
 
 async def main():
     failed = False

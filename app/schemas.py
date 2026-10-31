@@ -25,7 +25,7 @@ class ChatRequest(BaseModel):
         default=3, ge=1, le=10, description="精排最终保留切片数量"
     )
     rerank_threshold: float = Field(
-        default=0.45, ge=0.0, le=1.0, description="防幻觉置信度截断及格线"
+        default=0.45, ge=0.0, le=1.0, description="重排相关性阈值",
     )
 
 
