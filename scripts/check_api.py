@@ -6,7 +6,7 @@ async def test_non_streaming():
     """测试标准全量接口（/api/chat）"""
     url = "http://127.0.0.1:8000/api/chat"
     payload = {
-        "query" : "FastAPI生产部署时，工作进程workers的推荐计算公式是什么？",
+        "query" : "HTTPX 的 read timeout 设置为30秒，是否要求整个响应30秒内接收完成？",
         "final_k": 3,
         "rerank_threshold": 0.45,
     }
@@ -33,7 +33,7 @@ async def test_streaming():
     """测试打字机流式接口（/api/chat/stream）"""
     url = "http://127.0.0.1:8000/api/chat/stream"
     payload ={
-        "query":"FastAPI生产部署时，工作进程workers的推荐计算公式是什么？",
+        "query":"HTTPX 的 read timeout 设置为30秒，是否要求整个响应30秒内接收完成？",
         "final_k":3,
         "rerank_threshold": 0.45,
     }

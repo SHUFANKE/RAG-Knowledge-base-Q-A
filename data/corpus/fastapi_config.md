@@ -1,17 +1,34 @@
 # FastAPI 生产环境配置指南
 
+资料类型：根据一手资料编写的中文学习摘要，非官方原文全文。
+核验日期：2026-10-29。范围：FastAPI 与 Uvicorn 官方文档，不作为所有部署环境的固定配置模板。
+
 ## 1. 核心运行参数
-FastAPI 应用在生产环境中推荐通过 Uvicorn 或 Gunicorn 配合 UvicornWorker 启动。
-核心参数配置规范如下：
-- `workers`: 推荐设置为 `(2 * CPU核心数) + 1`，用于充分利用多核并发能力。
-- `timeout_keep_alive`: 生产环境建议设为 65 秒，需略高于前端反向代理（如 Nginx）的 keep-alive 超时时间，防止出现 502 错误。
-- `limit_concurrency`: 限制最大并发连接数，防止突发流量打垮单节点内存，默认不限制。
+
+FastAPI 应用可以通过 Uvicorn 运行。`--workers` 指定工作进程数量，与 `--reload` 不能同时使用。不能把 `(2 * CPU核心数) + 1` 当成所有 FastAPI 应用的通用推荐值。
+
+`--timeout-keep-alive` 控制 Keep-Alive 连接在没有收到新数据时的等待秒数，Uvicorn 文档中的默认值为5秒。它不是生成模型请求的总耗时上限，也没有适用于所有部署环境的固定65秒要求。
+
+`--limit-concurrency` 限制允许的并发连接或任务数量，超出限制时返回 HTTP 503。它与工作进程数量、Keep-Alive 超时控制的对象不同。
+
+来源：https://www.uvicorn.org/
 
 ## 2. 中间件与跨域规范
-在微服务架构下，跨域请求必须显式配置 `CORSMiddleware`。
-严禁在生产环境中将 `allow_origins` 设为 `["*"]` 且同时开启 `allow_credentials=True`，这会导致浏览器跨域策略拦截并引发严重安全漏洞。
-正确的做法是指定精确的安全域名白名单，例如 `allow_origins=["https://api.example.com"]`。
+
+浏览器中的前端与后端使用不同协议、域名或端口时，属于不同来源。需要允许浏览器跨源访问时，可以使用 `CORSMiddleware` 配置允许的来源、方法、请求头和凭据。
+
+来源应包含协议、域名以及需要时的端口，例如 `https://app.example.com`。不能仅因为系统采用微服务架构，就认定所有服务之间的 HTTP 调用都必须配置 CORS。
+
+`allow_credentials=True` 用于允许携带凭据的跨源请求。按 FastAPI 官方文档，此时 `allow_origins`、`allow_methods` 和 `allow_headers` 应显式配置，不能使用 `["*"]` 通配符。
+
+来源：https://fastapi.tiangolo.com/tutorial/cors/
 
 ## 3. 异常处理与状态码
-全局异常捕获必须挂载 `HTTPException` 和自定义的 `AppException`。
-对于未捕获的内部错误，必须统一返回 HTTP 500 状态码，并在响应体中隐藏敏感的堆栈调用栈，防止内部代码结构泄露。
+
+可通过 `raise HTTPException(status_code=..., detail=...)` 返回明确的 HTTP 错误，例如资源不存在时使用404。`HTTPException` 应抛出而不是作为普通返回值返回；辅助函数中抛出它也会终止当前请求的后续处理。
+
+FastAPI 已提供 `HTTPException` 和请求验证错误的默认处理器。需要自定义错误响应时，可以使用 `@app.exception_handler(...)` 注册处理器，不要求每个项目都创建名为 `AppException` 的异常类。
+
+错误响应与服务端诊断日志用途不同。对外返回的信息应避免包含敏感内部细节；不能将包含内部位置等信息的异常直接转换成字符串返回给客户端。
+
+来源：https://fastapi.tiangolo.com/tutorial/handling-errors/

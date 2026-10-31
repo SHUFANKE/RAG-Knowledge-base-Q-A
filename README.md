@@ -3,9 +3,9 @@
 基于 Python、FastAPI、FAISS、BM25 和阿里云百炼实现的 RAG
 知识库问答后端。
 
-项目从基础 Python 工程练习逐步发展而来，主要用于学习大模型应用开发，
-理解文档切片、向量检索、混合检索、重排、查询改写和流式接口，
-并通过自动测试与检索评测检查实现效果。
+面向技术文档的知识库问答系统，支持文档切片、索引持久化、
+混合检索、重排过滤、多轮追问和流式回答。
+通过分组检索评测与人工生成审阅，记录系统效果及能力边界。
 
 ## 1. 功能概览
 
@@ -58,8 +58,12 @@ Top-K 截断与分数阈值过滤
 历史消息为空时，改写器直接返回原问题，不调用改写模型。
 检索过滤后没有参考资料时，生成器直接返回预设拒答，不调用生成模型。
 
-当前服务启动时读取切片文件并构建检索索引，
-不会自动加载历史保存的 FAISS 索引。
+正常启动时，服务读取当前切片并核对构建指纹，
+加载已经保存的FAISS索引，在本地重新建立BM25。
+本过程不重新调用文档Embedding；用户问题仍需在线向量化。
+
+索引不存在、切片内容或Embedding配置发生变化时，
+服务会提示显式重建，不会自动重新向量化全部文档。
 
 ## 3. 主要技术
 
@@ -73,7 +77,7 @@ Top-K 截断与分数阈值过滤
 | jieba / BM25 | 中文分词与关键词检索 |
 | RRF | 融合两路检索排名 |
 | qwen3-rerank | 候选切片重排 |
-| qwen-turbo | 查询改写与回答生成 |
+| qwen-plus | 查询改写与回答生成 |
 | SSE | 流式返回引用与回答文本 |
 | pytest / pytest-asyncio | 自动测试 |
 
@@ -85,10 +89,10 @@ dev-env-practice/
 │   ├── main.py                 # FastAPI 服务与组件初始化
 │   ├── schemas.py              # 请求、响应与历史消息模型
 │   ├── embedder.py             # 云端及本地向量器
-│   ├── logger.py               # 控制台日志
-│   ├── llm_client.py           # 独立 LLM 客户端及 Mock
-│   └── ...                     # 基础与早期学习实现
+│   └── logger.py               # 控制台日志
 ├── rag/
+│   ├── index_loader.py         # 显式构建、指纹校验与启动加载
+│   ├── citation.py             # 回答引用编号检查
 │   ├── dense_retriever.py      # FAISS 检索与持久化
 │   ├── bm25_retriever.py       # BM25 检索
 │   ├── hybrid_retriever.py     # RRF 融合
@@ -99,15 +103,15 @@ dev-env-practice/
 ├── scripts/
 │   ├── check_api.py            # 普通与流式接口验证
 │   ├── check_multi_turn.py     # 多轮查询改写验证
-│   ├── check_rag_e2e.py        # 直接 RAG 链路验证
 │   ├── check_rerank.py         # 重排连通验证
-│   ├── check_faiss_persistence.py # 本地持久化验证
-│   └── check_llm.py            # 早期独立 LLM 连通脚本
+│   └── check_faiss_persistence.py # 本地持久化验证
 ├── tests/                     # pytest 自动测试
 ├── evaluation/
 │   ├── metrics.py             # 公共指标计算与汇总
-│   ├── ground_truth.json      # 评测问题及标准切片标注
 │   ├── ingest_corpus.py        # Markdown 语料切片
+│   ├── eval_dev.json           # 54道调参题
+│   ├── eval_test.json          # 36道测试题
+│   ├── eval_manifest.json      # 当前题集与切片版本记录
 │   ├── eval_bm25_baseline.py
 │   ├── eval_dense_baseline.py
 │   ├── eval_hybrid_baseline.py
@@ -115,8 +119,7 @@ dev-env-practice/
 ├── data/
 │   ├── corpus/                # Markdown 知识库
 │   ├── indexed_chunks.json    # 切片文件
-│   ├── faiss_index/            # 历史持久化示例文件
-│   └── ...                    # 基础练习数据
+│   └── faiss_index/           # 当前持久化索引、切片快照与构建指纹
 ├── output/
 │   └── evaluation/            # 按时间命名的评测报告
 ├── README.md
@@ -126,7 +129,6 @@ dev-env-practice/
 └── .gitignore
 ```
 
-`app/` 中保留了词频向量、内存向量库、本地 Pipeline 等早期学习实现。
 当前 Web 服务入口为 `app/main.py`，当前检索与生成主线位于 `rag/`。
 
 目录职责：
@@ -187,46 +189,43 @@ EMBEDDING_MODEL=text-embedding-v3
 - 真实 `.env` 与 API Key 不应提交到 GitHub。
 - 云端 Embedding、改写、重排和生成调用可能产生费用。
 
-`scripts/check_llm.py` 属于早期独立客户端验证，
-读取 `OPENAI_API_KEY`、`OPENAI_BASE_URL` 和 `MODEL_NAME`，
-与当前 RAG 主链路配置不同。
 
 ## 7. 准备知识库
 
-当前示例语料位于 `data/corpus/`，主题包括：
+语料位于data/corpus/，当前共26篇Markdown文档、82个切片，
+覆盖FAISS、FastAPI、HTTPX、asyncio及检索评测等主题。
 
-- FastAPI 配置；
-- FAISS 索引与参数；
-- Python asyncio。
+切分器主要按二级标题组织切片，并保留来源、标题、
+来源URL和核验日期；对长正文补充切分，尽量保持代码块完整。
 
-切片按照 Markdown 二级标题组织。
-当前共有 3 篇文档、8 个切片。
-
-修改语料后，可重新生成切片：
+新增或修改语料后，从项目根目录依次执行：
 
 ```powershell
-python -m evaluation.ingest_corpus
+& .\.venv\Scripts\python.exe -X utf8 -m evaluation.ingest_corpus
+& .\.venv\Scripts\python.exe -X utf8 -m rag.index_loader --rebuild
 ```
 
-此命令会覆盖：
+第一条命令生成data/indexed_chunks.json。
+第二条调用文档Embedding，重建并保存：
 
-```text
-data/indexed_chunks.json
-```
+- data/faiss_index/index.faiss：文档向量索引。
+- data/faiss_index/metadata.json：与向量位置对应的切片记录。
+- data/faiss_index/manifest.json：切片内容、模型和维度的构建指纹。
 
-当前仓库已有切片文件，普通启动和接口验证无需重复生成。
-语料变化后应重启服务，重新构建索引。
+重建后重启服务，加载新索引。
+已有匹配的索引时，普通启动无需重复执行上述命令。
+
+评测入口还会核对题集与切片版本。
+修改语料后应同时检查标注是否仍然有效，不能只更新指纹来绕过检查。
 
 ## 8. 启动与接口
 
 启动：
 
-```powershell
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
-```
+& .\.venv\Scripts\python.exe -X utf8 -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 
-服务启动时会调用云端 Embedding，为知识库切片构建索引。
-修改代码或密钥配置后，需要重启服务加载修改。
+服务启动时加载已保存的FAISS索引，并在本地建立BM25。
+修改代码或配置后，需要重启服务加载修改。
 
 接口文档：
 
@@ -255,6 +254,8 @@ POST /api/chat
 - `rewritten_query`：发生改写时返回改写结果，否则为 null；
 - `references`：引用切片的 ID、文本及重排分数；
 - `metrics`：改写、检索、生成及总耗时，单位为毫秒。
+- `citation_check`：引用编号检查结果，包含状态、资料数量、
+  已引用编号及越界编号；不判断资料是否支持对应事实。
 
 ### 流式问答
 
@@ -265,9 +266,12 @@ POST /api/chat/stream
 请求结构与普通接口一致，返回 `text/event-stream`。
 事件顺序为：
 
-1. `references`：引用切片元数据；
-2. `token`：回答文本片段；
-3. `[DONE]`：流式结束信号。
+1. `references`：引用切片元数据。
+2. `token`：连续返回的回答文本片段。
+3. `citation_check`：全文拼接后的引用编号检查结果。
+4. `[DONE]`：流式结束信号。
+
+引用检查发生在全文发送结束后，属于事后检查。
 
 客户端需要按 SSE 事件读取，不能直接把整段响应作为普通 JSON 解析。
 
@@ -296,217 +300,193 @@ POST /api/chat/stream
 改写器使用最近最多 4 条历史消息。
 服务端目前不保存会话历史，由客户端负责维护。
 
-## 9. 自动测试
+## 9. 离线测试
 
-运行：
+从项目根目录执行，测试进程跳过.env加载：
 
 ```powershell
-python -m pytest -q
+@'
+import os
+os.environ['PYTHON_DOTENV_DISABLED'] = '1'
+
+import pytest
+raise SystemExit(pytest.main(['-q']))
+'@ | & .\.venv\Scripts\python.exe -X utf8 -
 ```
 
-默认只收集 `tests/` 下的测试。
-API 测试使用替身组件并跳过真实云端初始化。
+当前保留tests/test_api.py和tests/test_embedder.py，覆盖：
 
-当前已有测试覆盖：
+- 普通接口响应及改写后的查询传递。
+- SSE资料、文本和结束事件。
+- 非法请求及组件未就绪处理。
+- 本地向量器初始化、单条及批量向量化。
 
-- 基础工具与文件处理；
-- 文档切片；
-- 本地词频向量器；
-- 内存向量相似度检索；
-- Mock LLM 客户端；
-- 普通接口的响应与查询传递；
-- SSE 引用、文本和结束事件；
-- 非法请求校验；
-- 组件未就绪时的响应。
-
-本地运行记录：
+2026-10-31本地验证结果：
 
 ```text
-24 passed, 1 warning
+11 passed, 1 warning
 ```
 
-警告来自 Starlette 与 AnyIO 的弃用接口提示。
-已有测试通过不代表全部检索效果或回答质量已经验证。
+接口测试使用替身组件，不调用云端模型。
+警告来自Starlette/AnyIO的弃用提示。
+离线测试通过不代表检索或生成质量全部正确，效果见第11节。
 
 ## 10. 手动验证
 
-### 本地 FAISS 持久化验证
-
-不需要 Web 服务、API Key 或云端调用：
+### 本地索引持久化
 
 ```powershell
-python -m scripts.check_faiss_persistence
+& .\.venv\Scripts\python.exe -X utf8 -m scripts.check_faiss_persistence
 ```
 
-使用本地词频向量器和临时目录，验证：
+使用本地向量器和临时目录，验证索引与元数据保存、
+新对象加载，以及加载前后排名和分数一致。
+不调用云端，不覆盖data/faiss_index/。
 
-- 索引与元数据保存；
-- 新对象加载索引和元数据；
-- 保存前后检索排名一致；
-- 保存前后检索分数一致。
-
-临时目录退出后自动清理，不覆盖已有 `data/faiss_index/`。
-
-### 云端重排与直接 RAG 验证
-
-不需要先启动 Web 服务，需要云端配置：
+### 云端重排连通性
 
 ```powershell
-python -m scripts.check_rerank
-python -m scripts.check_rag_e2e
+& .\.venv\Scripts\python.exe -X utf8 -m scripts.check_rerank
 ```
 
-直接 RAG 脚本验证知识库内问题及一个无答案问题的处理。
+检查重排接口是否返回候选及相关性分数。
 
-### Web 接口与多轮验证
+### 普通、流式及多轮接口
 
-先启动服务，在另一个终端运行：
+先启动服务，再在另一个终端按需运行：
 
 ```powershell
-python -m scripts.check_api
-python -m scripts.check_multi_turn
+& .\.venv\Scripts\python.exe -X utf8 -m scripts.check_api
+& .\.venv\Scripts\python.exe -X utf8 -m scripts.check_multi_turn
 ```
 
-已完成样例验证：
+Web接口验证会调用当前配置的云端模型。
+具体检索指标、生成审阅结果和失败样例见第11节。
 
-- 普通与流式问答正常返回；
-- 无资料时返回预设拒答；
-- 根据历史将模糊追问改写为独立问题；
-- 提示词调整后，原失败样例不再补充资料未提供的启动命令。
+## 11. 检索评测与生成抽查
 
-这些是具体样例的运行证据，不代表所有问题均正确。
+记录日期：2026-10-30。
 
-## 11. 检索评测
+当前语料为26篇Markdown文档、82个切片。
+单轮评测集共90题，划分为dev 54题、test 36题，
+按group_id分组，两个集合无group_id重叠。
 
-评测集共 25 道题：
+dev用于配置比较；test使用固定配置评测。
+以下表格报告test结果：30道有答案题、6道无答案题。
 
-| 题型 | 数量 |
-|---|---:|
-| 关键词问题 | 12 |
-| 语义改写问题 | 6 |
-| 多证据问题 | 2 |
-| 无答案问题 | 5 |
+### 运行方式
 
-运行四种方案：
+从项目根目录执行：
 
 ```powershell
-python -m evaluation.eval_bm25_baseline
-python -m evaluation.eval_dense_baseline
-python -m evaluation.eval_hybrid_baseline
-python -m evaluation.eval_production_pipeline
+& .\.venv\Scripts\python.exe -X utf8 -m evaluation.eval_bm25_baseline --dataset evaluation/eval_test.json --top-k 3
+& .\.venv\Scripts\python.exe -X utf8 -m evaluation.eval_dense_baseline --dataset evaluation/eval_test.json --top-k 3
+& .\.venv\Scripts\python.exe -X utf8 -m evaluation.eval_hybrid_baseline --dataset evaluation/eval_test.json --top-k 3
+& .\.venv\Scripts\python.exe -X utf8 -m evaluation.eval_production_pipeline --dataset evaluation/eval_test.json --top-k 3 --threshold 0.45
 ```
 
-BM25 在本地执行。
-Dense 和 Hybrid 调用云端 Embedding。
-最后一种方案还调用云端重排模型。
-评测不调用回答生成模型，也不包含多轮查询改写。
+四组使用相同题集、切片和最终Top-3。
+Hybrid每路召回20条，RRF排名常数为60。
+重排方案保留融合后的20条候选，再重排返回前三条，
+按主阈值0.45、次阈值0.225过滤。
 
-### 指标定义
+### 测试集结果
 
-正向指标仅对 20 道有答案题计算：
-
-| 指标 | 定义 |
-|---|---|
-| Hit@K | 命中至少一个正确切片的问题比例 |
-| Recall@K | 每题召回正确切片的比例，再对问题取平均 |
-| 完整证据召回率 | 找全全部标准切片的问题比例 |
-| MRR@K | 第一个正确切片的倒数排名均值 |
-
-其他指标：
-
-- 无答案题检索拒答率：5 道无答案题中，最终结果为空的比例。
-- 有答案题空结果率：有答案题中，最终结果为空的比例。
-- 平均检索耗时：包含该方案在线检索阶段，不含索引构建或回答生成。
-
-检索拒答率不是生成回答的正确率。
-
-### 当前结果
-
-记录日期：2026-10-03。
-
-四种方案使用相同语料、评测题和最终 Top-3。
-重排方案使用融合候选上限 10、最终 Top-3、阈值 0.45。
-
-| 指标 | BM25 | Dense | Hybrid | Hybrid＋重排＋过滤 |
+| 指标 | BM25 | Dense | Hybrid-RRF | Hybrid＋重排＋过滤 |
 |---|---:|---:|---:|---:|
-| Hit@3 | 1.0000 | 1.0000 | 1.0000 | 1.0000 |
-| Recall@3 | 1.0000 | 1.0000 | 1.0000 | 0.9750 |
-| 完整证据召回率 | 1.0000 | 1.0000 | 1.0000 | 0.9500 |
-| MRR@3 | 1.0000 | 0.9667 | 0.9750 | 1.0000 |
-| 无答案题检索拒答率 | 0.0000 | 0.0000 | 0.0000 | 1.0000 |
-| 平均检索耗时 / ms | 0.406 | 161.89 | 156.65 | 461.98 |
+| Hit@3 | 0.9667 | 0.9667 | 1.0000 | 1.0000 |
+| Recall@3 | 0.9167 | 0.8778 | 0.9444 | 0.9556 |
+| 完整证据率 | 26/30 | 24/30 | 27/30 | 27/30 |
+| MRR@3 | 0.9056 | 0.8722 | 0.9056 | 0.9667 |
+| 无答案题检索拒答率 | 0/6 | 0/6 | 0/6 | 4/6 |
+| 有答案题误拒答率 | 0/30 | 0/30 | 0/30 | 0/30 |
+| 平均检索耗时/ms | 0.70 | 193.17 | 194.33 | 519.81 |
 
-重排与过滤方案的有答案题空结果率为 0。
+正向指标只对有答案题计算。
+expected_chunk_sets中的每个内部列表表示一套完整、可接受的证据：
+找全任意一套即为完整；
+Recall取各套证据覆盖率的最大值，再对题目平均；
+MRR按首个属于任一可接受证据集合的片段排名计算。
 
-结果解读：
+无答案题检索拒答率表示最终返回空列表的比例，越高越好；
+有答案题误拒答率表示有答案题返回空列表的比例，越低越好。
+两者均不是生成回答准确率。
 
-- 在当前小型示例集上，BM25 的正向检索指标已达到满分。
-- Hybrid 的 MRR 略高于 Dense，但未超过 BM25。
-- 重排与过滤组合过滤了全部 5 道无答案题。
-- 该组合在 q19 中只保留了两个所需切片中的一个，
-  因而降低了 Recall 和完整证据召回率。
-- 当前最终结果报告不足以确定 q19 的缺失切片
-  是在候选融合、重排截断还是阈值过滤阶段丢失。
-- 这些结果没有单独分离重排与阈值过滤的贡献。
+### 结果解释与耗时范围
 
-耗时来自各方案的一次运行。
-Dense、Hybrid 与重排方案包含云端请求和网络等待；
-不能直接将耗时差解释为本地检索算法的速度差，
-也不能据单次结果认定 Hybrid 比 Dense 更快。
+Hybrid相对BM25多找全1道有答案题，相对Dense多找全3道。
 
-### 结果文件
+重排过滤提高了MRR，并拒绝4/6道无答案题；
+但完整证据题数仍为27/30。
+它补回了Hybrid的q414，同时丢失了q427，
+因此不能声称重排在所有问题上都更好。
 
-每次评测生成新的时间戳 JSON，不覆盖已有报告：
+重排后的q402、q393、q427所需证据已进入融合候选，
+但未同时进入重排Top-3，且过滤前后结果相同。
+这三题的缺失不能归因于阈值误删。
 
-```text
-output/evaluation/
-```
+BM25耗时为本地查询分词、评分和排序。
+Dense、Hybrid包含查询Embedding网络请求，
+重排方案还包含云端重排。
+全部均不含回答生成，不应将平均检索耗时当作端到端问答耗时或P95。
 
-报告包括：
+报告保存在output/evaluation/，包含配置、题集与切片SHA256、
+分题型指标及逐题结果。原始失败样例保留。
 
-- 运行配置；
-- 总体指标；
-- 分题型指标；
-- 逐题问题与标准切片；
-- 实际返回切片及分数；
-- 逐题检索耗时。
+### 人工生成抽查
 
-## 12. 项目复盘
+另行审阅20个场景：
+12个dev单轮问题、4个部分回答场景、4个真实两轮场景，
+共24条当前版本响应。多轮场景单独报告，不混入单轮检索指标。
 
-### 多轮追问
+4个部分回答场景均未编造线上配置、超时次数、
+本机文件大小或浏览器连接数。
+4组多轮的指代补全、上下文补全及话题切换符合预期。
 
-验证问题：
+同时发现并保留以下问题：
 
-```text
-第一轮：FastAPI 生产部署时，workers 的推荐计算公式是什么？
-第二轮：那如何通过启动命令设置这个参数呢？
-```
+- 回答在缺失信息说明中加入资料之外的API或知识。
+- 使用非约定引用格式，或引用片段未支持对应陈述。
+- 将特定条件下的结论扩大为一般规则。
+- 主问题已经回答后，仍追加冗余的缺失信息。
 
-第二轮能够结合历史改写为包含 FastAPI、workers 和启动命令的独立问题，
-并召回相关切片。
+citation_check只检查[Doc N]的格式及编号范围，
+不判断片段是否支持对应事实。
+SSE在全文输出结束后返回检查事件，属于事后检查。
 
-### 资料外回答
+上述场景属于定向人工诊断，部分用于提示词调整，
+不据此宣称整体生成准确率或完全避免幻觉。
 
-原回答在资料没有具体启动命令时，自行补出了命令示例。
-通过加强提示词中的资料依据约束，
-原样例复测后明确说明资料未提供具体命令。
 
-这说明命中相关资料不等于回答中的每项内容都有依据。
-引用标注也不能自动保证回答忠实于资料。
+## 12. 关键取舍
 
-### 多证据覆盖与过滤
+### 多轮检索
 
-重排及阈值过滤提高了当前无答案题的检索拒答率，
-同时出现一道多证据题资料不完整的情况。
+客户端提供上一轮真实问答，改写器将依赖上下文的追问补全为独立查询。
+例如先询问SSE的event字段，再追问“如果省略它，默认事件类型是什么”，
+实际改写为“SSE中省略event字段时的默认事件类型是什么”。
 
-项目保留该结果，用于分析过滤与证据覆盖之间的取舍，
-不将复杂检索方案预设为一定优于简单方案。
+### 排序质量与证据完整性
+
+测试集中，重排补回了Hybrid未找全的q414，同时丢失了q427，
+完整证据题数仍为27/30，但MRR与无答案题拒答得到改善。
+系统保留逐题结果，用于分析排序、候选截断和过滤的不同影响。
+
+### 引用编号与事实依据
+
+引用编号存在，不代表对应片段支持回答中的每项事实。
+人工审阅发现，回答可能在缺失说明中列出资料外API，
+或者将限定条件扩大为一般结论。
+项目保留这些失败样例，引用检查仅声明编号检查能力。
 
 ## 13. 当前状态与局限
 
-当前 V1 已完成约定的代码收尾、自动测试、
-手动样例验证和四种检索方案评测，
-可用于项目学习、演示与复盘。
+当前版本已接通语料切片、索引持久化加载、混合检索、
+重排过滤、普通/SSE问答、多轮查询改写和引用编号检查。
+
+已完成90题dev/test四组检索对比，以及20个场景的人工生成审阅。
+项目具备演示与复盘所需的运行证据，同时保留生成依据方面的已知问题。
+当前离线测试和本地索引验证说明见第9、10节。
 
 当前局限：
 
@@ -517,6 +497,9 @@ output/evaluation/
 - 固定重排阈值不保证适用于不同语料、问题和模型。
 - 服务端不保存会话，历史由客户端提供。
 - 云端地址和部分模型配置仍在代码中维护。
-- 主服务启动时重新构建索引，持久化能力尚未接入启动流程。
+- 语料变化后需要显式重建索引，当前没有自动增量更新。
 - 服务未经过并发负载或长期稳定性验证，
   当前定位为学习与展示用后端原型。
+- 引用编号合法不代表引用片段支持回答中的事实。
+- 生成回答仍可能在缺失说明中补充资料外API，
+  或把限定条件下的结论过度泛化；原始失败样例已保留。

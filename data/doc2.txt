@@ -1,1 +1,0 @@
-RAG stands for Retrieval_Augmented Generation

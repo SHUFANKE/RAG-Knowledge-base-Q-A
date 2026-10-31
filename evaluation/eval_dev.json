@@ -1,0 +1,2120 @@
+[
+  {
+    "id": "v2_q421",
+    "type": "scenario",
+    "query": "语义向量检索在两阶段搜索中怎样产生候选，后续又怎样处理？",
+    "expected_chunks": [
+      "reranking_sec2"
+    ],
+    "reference_answer": "查询与语料映射到同一向量空间获取相近候选；再对候选重排并选取较少结果。",
+    "answer_points": [
+      "语义检索将语料条目与查询嵌入同一向量空间，再寻找语义相近的语料向量。它关注含义，能够处理同义表达、缩写或拼写变化；这类能力不意味着任何问题都能在知识库中找到答案。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/semantic-search/README.html",
+      "两阶段搜索先用高效检索器从大规模文档集合产生候选，再用更昂贵的重排器重新排序。初始召回可使用词法检索或 Bi-Encoder 向量检索。检索器追求高效，仍可能返回不相关候选，重排阶段处理这个候选集合。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "reranking_sec1",
+        "source": "reranking.md",
+        "quote": "[检索候选与 Cross-Encoder 重排-1. 为什么分为检索与重排]\n两阶段检索先使用高效检索器，从文档集合中选出一批可能相关的候选，再使用重排模型评估这些候选。\n\n第一阶段可以采用词项检索，也可以采用向量检索。第二阶段进一步区分候选与问题的相关程度，调整顺序。\n\n这种设计把计算较贵的重排限制在较小的候选集合上，而不是对整个大型文档库逐篇评分。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html\n核验日期：2026-10-29；范围：Retrieve & Re-Rank基本流程。"
+      },
+      {
+        "chunk_id": "reranking_sec2",
+        "source": "reranking.md",
+        "quote": "[检索候选与 Cross-Encoder 重排-2. Bi-Encoder 与 Cross-Encoder]\nBi-Encoder分别编码问题和文档，生成各自的向量，再通过向量比较进行检索。文档向量可以提前计算。\n\nCross-Encoder把问题与一篇候选文档共同输入模型，让二者在模型内部交互，并输出相关性分数。\n\n因此，Cross-Encoder重排不等于重新比较两条已经缓存好的独立向量。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html\n核验日期：2026-10-29；范围：两种编码方式的区别。"
+      },
+      {
+        "chunk_id": "retrieval_rerank_sec1",
+        "source": "retrieval_rerank.md",
+        "quote": "两阶段搜索先用高效检索器从大规模文档集合产生候选，再用更昂贵的重排器重新排序。初始召回可使用词法检索或 Bi-Encoder 向量检索。检索器追求高效，仍可能返回不相关候选，重排阶段处理这个候选集合。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html"
+      },
+      {
+        "chunk_id": "semantic_search_sec1",
+        "source": "semantic_search.md",
+        "quote": "语义检索将语料条目与查询嵌入同一向量空间，再寻找语义相近的语料向量。它关注含义，能够处理同义表达、缩写或拼写变化；这类能力不意味着任何问题都能在知识库中找到答案。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/semantic-search/README.html"
+      }
+    ],
+    "answerable": true,
+    "group_id": "composite_retrieval_rerank_sec1__semantic_search_sec1",
+    "source_urls": [
+      "https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html",
+      "https://sbert.net/examples/sentence_transformer/applications/semantic-search/README.html"
+    ],
+    "difficulty": "hard",
+    "tags": [],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "reranking_sec2"
+      ],
+      [
+        "reranking_sec1",
+        "semantic_search_sec1"
+      ],
+      [
+        "retrieval_rerank_sec1",
+        "semantic_search_sec1"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev",
+    "legacy_type": "multi_hop"
+  },
+  {
+    "id": "v2_q455",
+    "type": "unanswerable",
+    "query": "请实现一个带优先级的 asyncio.PriorityQueue 消费者。",
+    "expected_chunks": [],
+    "reference_answer": "现有知识库不足以回答。语料没有 PriorityQueue 或消费者实现。",
+    "answer_points": [],
+    "evidence": [],
+    "answerable": false,
+    "group_id": "negative_15",
+    "source_urls": [],
+    "difficulty": "hard",
+    "tags": [
+      "near_domain"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "unanswerable_reason": "语料没有 PriorityQueue 或消费者实现。",
+    "related_chunks": [
+      "python_asyncio_sec3"
+    ],
+    "expected_behavior": "refuse_unsupported_request",
+    "expected_chunk_sets": [],
+    "split": "dev",
+    "legacy_split": "test"
+  },
+  {
+    "id": "v2_q418",
+    "type": "scenario",
+    "query": "RRF 与 Cross-Encoder 分别依靠什么信息给候选排序？",
+    "expected_chunks": [
+      "rrf_fusion_sec4"
+    ],
+    "reference_answer": "RRF 根据多个列表中的名次贡献融合；Cross-Encoder 联合读取查询与候选文档进行相关性打分。",
+    "answer_points": [
+      "Reciprocal Rank Fusion 对文档在各结果列表的排名计算贡献：score(d) = sum 1 / (k + rank_i(d))。rank 从 1 开始，文档不在某列表中则该列表不贡献。RRF 使用名次融合，适合组合不同相关性指标的检索结果，无需先把原始得分统一为同一尺度。\n\n来源：https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion",
+      "Cross-Encoder 同时接收查询与一个候选文档，通过二者之间的注意力进行相关性打分。相比独立编码，它对查询和文档有联合建模能力，但逐对评估海量文档较慢，所以通常只用于候选重排。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "hybrid_rrf_sec1",
+        "source": "hybrid_rrf.md",
+        "quote": "Reciprocal Rank Fusion 对文档在各结果列表的排名计算贡献：score(d) = sum 1 / (k + rank_i(d))。rank 从 1 开始，文档不在某列表中则该列表不贡献。RRF 使用名次融合，适合组合不同相关性指标的检索结果，无需先把原始得分统一为同一尺度。\n\n来源：https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion"
+      },
+      {
+        "chunk_id": "reranking_sec2",
+        "source": "reranking.md",
+        "quote": "[检索候选与 Cross-Encoder 重排-2. Bi-Encoder 与 Cross-Encoder]\nBi-Encoder分别编码问题和文档，生成各自的向量，再通过向量比较进行检索。文档向量可以提前计算。\n\nCross-Encoder把问题与一篇候选文档共同输入模型，让二者在模型内部交互，并输出相关性分数。\n\n因此，Cross-Encoder重排不等于重新比较两条已经缓存好的独立向量。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html\n核验日期：2026-10-29；范围：两种编码方式的区别。"
+      },
+      {
+        "chunk_id": "retrieval_rerank_sec2",
+        "source": "retrieval_rerank.md",
+        "quote": "Cross-Encoder 同时接收查询与一个候选文档，通过二者之间的注意力进行相关性打分。相比独立编码，它对查询和文档有联合建模能力，但逐对评估海量文档较慢，所以通常只用于候选重排。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html"
+      },
+      {
+        "chunk_id": "rrf_fusion_sec2",
+        "source": "rrf_fusion.md",
+        "quote": "[RRF 多路检索排名融合-2. RRF 计算公式]\n对于候选文档d，等权RRF分数为：\n\nscore(d) = Σ 1 / (c + rank_i(d))\n\nrank_i(d) 表示文档d在第i个结果列表中的名次，从1开始；c是排名常数。文档没有出现在某个列表中时，该列表不为它贡献分数。\n\n示例：文档在两路中分别排名第1和第4，c=60，则融合分数为1/61 + 1/64。这里使用的是名次，不是两路检索器的原始分数。\n\n来源：https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion\n核验日期：2026-10-29；范围：公式依据官方说明，示例为公式代入。"
+      },
+      {
+        "chunk_id": "rrf_fusion_sec4",
+        "source": "rrf_fusion.md",
+        "quote": "[RRF 多路检索排名融合-4. RRF 与语义重排的区别]\nRRF读取的是多个结果列表及其名次，不需要读取文档正文来重新判断问题与文档的语义关系。\n\nCross-Encoder重排则把问题与候选正文一起交给模型，重新计算相关性。两者可以前后组合：先融合候选列表，再对融合结果进行重排。\n\nRRF分数由排名公式计算，不能解释为答案正确概率；融合后排名靠前，也不能替代对证据内容的检查。\n\n来源：\nhttps://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion\nhttps://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html\n核验日期：2026-10-29；范围：两类方法的输入和作用对比；概率边界由计算方式推得。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "composite_hybrid_rrf_sec1__retrieval_rerank_sec2",
+    "source_urls": [
+      "https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html",
+      "https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion"
+    ],
+    "difficulty": "hard",
+    "tags": [],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "rrf_fusion_sec4"
+      ],
+      [
+        "hybrid_rrf_sec1",
+        "reranking_sec2"
+      ],
+      [
+        "hybrid_rrf_sec1",
+        "retrieval_rerank_sec2"
+      ],
+      [
+        "reranking_sec2",
+        "rrf_fusion_sec2"
+      ],
+      [
+        "retrieval_rerank_sec2",
+        "rrf_fusion_sec2"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev",
+    "legacy_type": "multi_hop"
+  },
+  {
+    "id": "v2_q401",
+    "type": "multi_hop",
+    "query": "证据在切片边界丢失或初始召回候选中不存在，分别应检查什么？",
+    "expected_chunks": [
+      "reranking_sec3",
+      "text_chunking_sec2"
+    ],
+    "reference_answer": "切片边界可通过目标重叠减轻信息损失；候选缺失应回查初始召回，重排无法补回。",
+    "answer_points": [
+      "chunk_overlap 是相邻片段的目标重叠，用于减轻上下文在切片边界被割裂造成的信息损失。中文等没有明显词间空格的语言可增加句号、逗号、顿号等分隔符，避免只依赖空格切分。目标重叠不等于所有实际片段必定重叠完全相同的长度。\n\n来源：https://docs.langchain.com/oss/python/integrations/splitters/recursive_text_splitter",
+      "在先检索再重排的流程中，重排器只给已经召回的候选打分。若需要的段落不在候选集合中，单纯调整候选内部排序无法把它补回；必须回查初始召回。最终输出再从重排候选中选取较少的高排名段落。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "reranking_sec3",
+        "source": "reranking.md",
+        "quote": "[检索候选与 Cross-Encoder 重排-3. 候选数量与最终返回数量]\n候选数量决定本次交给重排器评分的文档范围；最终返回数量决定从重排结果中取出多少篇。\n\n工程推论：如果必要证据没有进入候选集合，重排器不能通过重新排序找回它。遇到漏证据，应先检查候选召回，再检查重排顺序。\n\n对更多问题与文档组合进行评分会增加计算工作量，因此候选集合大小需要结合召回效果和耗时选择。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html\n核验日期：2026-10-29；范围：候选重排机制；漏召回边界由两阶段流程推得。"
+      },
+      {
+        "chunk_id": "retrieval_rerank_sec3",
+        "source": "retrieval_rerank.md",
+        "quote": "在先检索再重排的流程中，重排器只给已经召回的候选打分。若需要的段落不在候选集合中，单纯调整候选内部排序无法把它补回；必须回查初始召回。最终输出再从重排候选中选取较少的高排名段落。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html"
+      },
+      {
+        "chunk_id": "text_chunking_sec2",
+        "source": "text_chunking.md",
+        "quote": "chunk_overlap 是相邻片段的目标重叠，用于减轻上下文在切片边界被割裂造成的信息损失。中文等没有明显词间空格的语言可增加句号、逗号、顿号等分隔符，避免只依赖空格切分。目标重叠不等于所有实际片段必定重叠完全相同的长度。\n\n来源：https://docs.langchain.com/oss/python/integrations/splitters/recursive_text_splitter"
+      }
+    ],
+    "answerable": true,
+    "group_id": "composite_retrieval_rerank_sec3__text_chunking_sec2",
+    "source_urls": [
+      "https://docs.langchain.com/oss/python/integrations/splitters/recursive_text_splitter",
+      "https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "all_evidence_required",
+      "cross_document"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "reranking_sec3",
+        "text_chunking_sec2"
+      ],
+      [
+        "retrieval_rerank_sec3",
+        "text_chunking_sec2"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "test"
+  },
+  {
+    "id": "v2_q192",
+    "type": "boundary",
+    "query": "async def 路由只能注入 async def 依赖，对吗？",
+    "expected_chunks": [
+      "fastapi_dependencies_sec3"
+    ],
+    "reference_answer": "依赖函数既可写成普通 def，也可写成 async def。FastAPI 允许同步路径操作使用异步依赖，也允许异步路径操作使用同步依赖，由框架按相应调用方式处理；不要求路径操作与依赖的声明形式相同。",
+    "answer_points": [
+      "依赖函数既可写成普通 def，也可写成 async def。FastAPI 允许同步路径操作使用异步依赖，也允许异步路径操作使用同步依赖，由框架按相应调用方式处理；不要求路径操作与依赖的声明形式相同。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "fastapi_dependencies_sec3",
+        "source": "fastapi_dependencies.md",
+        "quote": "依赖函数既可写成普通 def，也可写成 async def。FastAPI 允许同步路径操作使用异步依赖，也允许异步路径操作使用同步依赖，由框架按相应调用方式处理；不要求路径操作与依赖的声明形式相同。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "fastapi_dependencies_sec3",
+    "source_urls": [
+      "https://fastapi.tiangolo.com/tutorial/dependencies/"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "fastapi_dependencies",
+      "同步和异步依赖"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "fastapi_dependencies_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "test"
+  },
+  {
+    "id": "v2_q149",
+    "type": "keyword",
+    "query": "SSE 命名事件和默认事件分别如何识别，冒号开头的行是什么？",
+    "expected_chunks": [
+      "sse_streaming_sec2"
+    ],
+    "reference_answer": "SSE 的 event 字段指定事件类型，未指定时默认类型为 message。客户端可用 addEventListener 监听命名事件。以冒号开始的行是注释，不作为消息数据；服务端可定期发送注释作为保活内容。",
+    "answer_points": [
+      "SSE 的 event 字段指定事件类型，未指定时默认类型为 message。客户端可用 addEventListener 监听命名事件。以冒号开始的行是注释，不作为消息数据；服务端可定期发送注释作为保活内容。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "sse_streaming_sec2",
+        "source": "sse_streaming.md",
+        "quote": "SSE 的 event 字段指定事件类型，未指定时默认类型为 message。客户端可用 addEventListener 监听命名事件。以冒号开始的行是注释，不作为消息数据；服务端可定期发送注释作为保活内容。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "sse_streaming_sec2",
+    "source_urls": [
+      "https://html.spec.whatwg.org/multipage/server-sent-events.html"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "sse_streaming",
+      "命名事件与注释"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "sse_streaming_sec2"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q131",
+    "type": "scenario",
+    "query": "中文字符被 token 切分拆成乱码时，文档建议哪类编码器切分方式？",
+    "expected_chunks": [
+      "text_chunking_sec3"
+    ],
+    "reference_answer": "模型有 token 上限，估算切片长度应使用与目标模型相同的 tokenizer，字符数不能直接替代 token 数。直接 TokenTextSplitter 可能把中文字符的多 token 编码拆到不同片段，造成无效 Unicode；文档建议使用相应字符切分器的 from_tiktoken_encoder 方式保持字符串有效。",
+    "answer_points": [
+      "模型有 token 上限，估算切片长度应使用与目标模型相同的 tokenizer，字符数不能直接替代 token 数。直接 TokenTextSplitter 可能把中文字符的多 token 编码拆到不同片段，造成无效 Unicode；文档建议使用相应字符切分器的 from_tiktoken_encoder 方式保持字符串有效。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "text_chunking_sec3",
+        "source": "text_chunking.md",
+        "quote": "模型有 token 上限，估算切片长度应使用与目标模型相同的 tokenizer，字符数不能直接替代 token 数。直接 TokenTextSplitter 可能把中文字符的多 token 编码拆到不同片段，造成无效 Unicode；文档建议使用相应字符切分器的 from_tiktoken_encoder 方式保持字符串有效。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "text_chunking_sec3",
+    "source_urls": [
+      "https://docs.langchain.com/oss/python/integrations/splitters/split_by_token"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "text_chunking",
+      "token 预算与 Unicode"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "text_chunking_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q315",
+    "type": "scenario",
+    "query": "想把高效向量检索和较慢的精细模型组合，应按什么次序执行？",
+    "expected_chunks": [
+      "reranking_sec1"
+    ],
+    "reference_answer": "两阶段搜索先用高效检索器从大规模文档集合产生候选，再用更昂贵的重排器重新排序。初始召回可使用词法检索或 Bi-Encoder 向量检索。检索器追求高效，仍可能返回不相关候选，重排阶段处理这个候选集合。",
+    "answer_points": [
+      "两阶段搜索先用高效检索器从大规模文档集合产生候选，再用更昂贵的重排器重新排序。初始召回可使用词法检索或 Bi-Encoder 向量检索。检索器追求高效，仍可能返回不相关候选，重排阶段处理这个候选集合。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "reranking_sec1",
+        "source": "reranking.md",
+        "quote": "[检索候选与 Cross-Encoder 重排-1. 为什么分为检索与重排]\n两阶段检索先使用高效检索器，从文档集合中选出一批可能相关的候选，再使用重排模型评估这些候选。\n\n第一阶段可以采用词项检索，也可以采用向量检索。第二阶段进一步区分候选与问题的相关程度，调整顺序。\n\n这种设计把计算较贵的重排限制在较小的候选集合上，而不是对整个大型文档库逐篇评分。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html\n核验日期：2026-10-29；范围：Retrieve & Re-Rank基本流程。"
+      },
+      {
+        "chunk_id": "retrieval_rerank_sec1",
+        "source": "retrieval_rerank.md",
+        "quote": "两阶段搜索先用高效检索器从大规模文档集合产生候选，再用更昂贵的重排器重新排序。初始召回可使用词法检索或 Bi-Encoder 向量检索。检索器追求高效，仍可能返回不相关候选，重排阶段处理这个候选集合。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "retrieval_rerank_sec1",
+    "source_urls": [
+      "https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "retrieval_rerank",
+      "召回阶段"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "reranking_sec1"
+      ],
+      [
+        "retrieval_rerank_sec1"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q416",
+    "type": "multi_hop",
+    "query": "GPU 索引怎样转换后持久化，恢复使用什么函数？",
+    "expected_chunks": [
+      "faiss_persistence_sec1",
+      "faiss_persistence_sec2"
+    ],
+    "reference_answer": "先用 index_gpu_to_cpu 转为 CPU，write_index 写盘，再用 read_index 读取。",
+    "answer_points": [
+      "FAISS 使用 write_index 将索引写入文件，read_index 从文件读取索引。这些读写操作产生深拷贝。向量索引保存与项目自己的外部文本元数据保存不是同一个接口保证，应分别管理需要恢复的数据。\n\n来源：https://github.com/facebookresearch/faiss/wiki/Index-IO,-cloning-and-hyper-parameter-tuning",
+      "FAISS 不支持直接把 GPU 索引写入文件，应先转为 CPU 索引。index_gpu_to_cpu 用于从 GPU 复制到 CPU，随后可以使用 write_index。CPU 与 GPU 复制属于索引转换，不能将 GPU 对象直接写盘当作受支持流程。\n\n来源：https://github.com/facebookresearch/faiss/wiki/Index-IO,-cloning-and-hyper-parameter-tuning"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "faiss_persistence_sec1",
+        "source": "faiss_persistence.md",
+        "quote": "FAISS 使用 write_index 将索引写入文件，read_index 从文件读取索引。这些读写操作产生深拷贝。向量索引保存与项目自己的外部文本元数据保存不是同一个接口保证，应分别管理需要恢复的数据。\n\n来源：https://github.com/facebookresearch/faiss/wiki/Index-IO,-cloning-and-hyper-parameter-tuning"
+      },
+      {
+        "chunk_id": "faiss_persistence_sec2",
+        "source": "faiss_persistence.md",
+        "quote": "FAISS 不支持直接把 GPU 索引写入文件，应先转为 CPU 索引。index_gpu_to_cpu 用于从 GPU 复制到 CPU，随后可以使用 write_index。CPU 与 GPU 复制属于索引转换，不能将 GPU 对象直接写盘当作受支持流程。\n\n来源：https://github.com/facebookresearch/faiss/wiki/Index-IO,-cloning-and-hyper-parameter-tuning"
+      }
+    ],
+    "answerable": true,
+    "group_id": "composite_faiss_persistence_sec1__faiss_persistence_sec2",
+    "source_urls": [
+      "https://github.com/facebookresearch/faiss/wiki/Index-IO,-cloning-and-hyper-parameter-tuning"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "all_evidence_required",
+      "cross_section"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "faiss_persistence_sec1",
+        "faiss_persistence_sec2"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q471",
+    "type": "unanswerable",
+    "query": "如何用 CSS Grid 编写响应式页面布局？",
+    "expected_chunks": [],
+    "reference_answer": "现有知识库不足以回答。语料没有 CSS 或页面布局。",
+    "answer_points": [],
+    "evidence": [],
+    "answerable": false,
+    "group_id": "negative_31",
+    "source_urls": [],
+    "difficulty": "easy",
+    "tags": [
+      "out_of_domain"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "unanswerable_reason": "语料没有 CSS 或页面布局。",
+    "related_chunks": [],
+    "expected_behavior": "refuse_unsupported_request",
+    "expected_chunk_sets": [],
+    "split": "dev",
+    "legacy_split": "test"
+  },
+  {
+    "id": "v2_q340",
+    "type": "boundary",
+    "query": "原始 RAG 只依赖语言模型参数，没有外部非参数记忆，对吗？",
+    "expected_chunks": [
+      "rag_foundations_sec1"
+    ],
+    "reference_answer": "Lewis 等人的 RAG 原始论文将预训练参数记忆与显式非参数记忆结合，用于语言生成。论文具体模型的参数记忆是预训练 seq2seq 模型，非参数记忆是 Wikipedia 的密集向量索引，由预训练神经检索器访问。",
+    "answer_points": [
+      "Lewis 等人的 RAG 原始论文将预训练参数记忆与显式非参数记忆结合，用于语言生成。论文具体模型的参数记忆是预训练 seq2seq 模型，非参数记忆是 Wikipedia 的密集向量索引，由预训练神经检索器访问。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "rag_foundations_sec1",
+        "source": "rag_foundations.md",
+        "quote": "Lewis 等人的 RAG 原始论文将预训练参数记忆与显式非参数记忆结合，用于语言生成。论文具体模型的参数记忆是预训练 seq2seq 模型，非参数记忆是 Wikipedia 的密集向量索引，由预训练神经检索器访问。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "rag_foundations_sec1",
+    "source_urls": [
+      "https://arxiv.org/abs/2005.11401v4"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "rag_foundations",
+      "参数与非参数记忆"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "rag_foundations_sec1"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "test"
+  },
+  {
+    "id": "v2_q138",
+    "type": "paraphrase",
+    "query": "长文档和短文档的长度对词频评分的影响，用哪个参数控制？",
+    "expected_chunks": [
+      "bm25_retrieval_sec2"
+    ],
+    "reference_answer": "Elasticsearch BM25 的 b 控制文档长度对词频归一化的影响程度，官方默认值为 0.75。它与 k1 的词频饱和作用不同，也不是向量 L2 归一化参数；文档长度和向量长度属于不同度量对象。",
+    "answer_points": [
+      "Elasticsearch BM25 的 b 控制文档长度对词频归一化的影响程度，官方默认值为 0.75。它与 k1 的词频饱和作用不同，也不是向量 L2 归一化参数；文档长度和向量长度属于不同度量对象。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "bm25_retrieval_sec2",
+        "source": "bm25_retrieval.md",
+        "quote": "[BM25 关键词检索与分词-2. k1 与 b 的作用]\nBM25 中，k1 控制词频贡献的饱和程度。同一个词在文档中反复出现，其评分贡献不是无限线性增加。\n\nb 控制文档长度归一化的程度，用于调整文档长度对词频评分的影响。\n\n不同实现的默认参数不一定相同。例如Elasticsearch文档给出的k1默认值为1.2、b为0.75，不能直接把这些默认值当成所有Python库的配置。\n\n来源：https://www.elastic.co/docs/reference/elasticsearch/index-settings/similarity\n核验日期：2026-10-29；范围：参数含义通用，所列默认值仅对应Elasticsearch文档。"
+      },
+      {
+        "chunk_id": "bm25_similarity_sec2",
+        "source": "bm25_similarity.md",
+        "quote": "Elasticsearch BM25 的 b 控制文档长度对词频归一化的影响程度，官方默认值为 0.75。它与 k1 的词频饱和作用不同，也不是向量 L2 归一化参数；文档长度和向量长度属于不同度量对象。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "bm25_similarity_sec2",
+    "source_urls": [
+      "https://www.elastic.co/docs/reference/elasticsearch/index-settings/similarity"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "bm25_similarity",
+      "长度归一化"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "bm25_retrieval_sec2"
+      ],
+      [
+        "bm25_similarity_sec2"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q162",
+    "type": "paraphrase",
+    "query": "想分别统计前三和前十结果的召回，需要关注哪项评测配置？",
+    "expected_chunks": [
+      "retrieval_evaluators_sec2"
+    ],
+    "reference_answer": "InformationRetrievalEvaluator 报告 MRR、Recall@k、NDCG 等检索指标。mrr_at_k、ndcg_at_k 和 precision_recall_at_k 可分别配置这些指标使用的截断 k 列表。同一指标比较应明确使用哪个 k；这些 k 不代表服务器线程数或训练轮数。",
+    "answer_points": [
+      "InformationRetrievalEvaluator 报告 MRR、Recall@k、NDCG 等检索指标。mrr_at_k、ndcg_at_k 和 precision_recall_at_k 可分别配置这些指标使用的截断 k 列表。同一指标比较应明确使用哪个 k；这些 k 不代表服务器线程数或训练轮数。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "retrieval_evaluators_sec2",
+        "source": "retrieval_evaluators.md",
+        "quote": "InformationRetrievalEvaluator 报告 MRR、Recall@k、NDCG 等检索指标。mrr_at_k、ndcg_at_k 和 precision_recall_at_k 可分别配置这些指标使用的截断 k 列表。同一指标比较应明确使用哪个 k；这些 k 不代表服务器线程数或训练轮数。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "retrieval_evaluators_sec2",
+    "source_urls": [
+      "https://sbert.net/docs/package_reference/sentence_transformer/evaluation.html"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "retrieval_evaluators",
+      "排名指标截断"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "retrieval_evaluators_sec2"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q347",
+    "type": "scenario",
+    "query": "引入 RAG 能否依据论文动机直接保证所有回答准确无误？",
+    "expected_chunks": [
+      "rag_foundations_sec3"
+    ],
+    "reference_answer": "原始论文指出，大规模预训练模型虽然把事实存入参数，但精确访问、操纵知识仍有限；为决策提供来源以及更新世界知识也是研究问题。RAG 的检索记忆旨在改善知识密集任务的生成能力，不能由此保证任意部署都不会产生错误。",
+    "answer_points": [
+      "原始论文指出，大规模预训练模型虽然把事实存入参数，但精确访问、操纵知识仍有限；为决策提供来源以及更新世界知识也是研究问题。RAG 的检索记忆旨在改善知识密集任务的生成能力，不能由此保证任意部署都不会产生错误。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "rag_foundations_sec3",
+        "source": "rag_foundations.md",
+        "quote": "原始论文指出，大规模预训练模型虽然把事实存入参数，但精确访问、操纵知识仍有限；为决策提供来源以及更新世界知识也是研究问题。RAG 的检索记忆旨在改善知识密集任务的生成能力，不能由此保证任意部署都不会产生错误。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "rag_foundations_sec3",
+    "source_urls": [
+      "https://arxiv.org/abs/2005.11401v4"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "rag_foundations",
+      "研究动机"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "rag_foundations_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "test"
+  },
+  {
+    "id": "v2_q249",
+    "type": "keyword",
+    "query": "HTTPX 异步流式响应怎样增量读取，手动流模式怎样关闭？",
+    "expected_chunks": [
+      "httpx_clients_sec3"
+    ],
+    "reference_answer": "AsyncClient.stream 返回异步上下文块，可以用 aiter_bytes、aiter_text 或 aiter_lines 增量读取响应。退出 stream 上下文会关闭响应；若手动 send(..., stream=True)，开发者必须最终调用 Response.aclose()，否则可能泄露连接资源。",
+    "answer_points": [
+      "AsyncClient.stream 返回异步上下文块，可以用 aiter_bytes、aiter_text 或 aiter_lines 增量读取响应。退出 stream 上下文会关闭响应；若手动 send(..., stream=True)，开发者必须最终调用 Response.aclose()，否则可能泄露连接资源。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "httpx_clients_sec3",
+        "source": "httpx_clients.md",
+        "quote": "AsyncClient.stream 返回异步上下文块，可以用 aiter_bytes、aiter_text 或 aiter_lines 增量读取响应。退出 stream 上下文会关闭响应；若手动 send(..., stream=True)，开发者必须最终调用 Response.aclose()，否则可能泄露连接资源。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "httpx_clients_sec3",
+    "source_urls": [
+      "https://www.python-httpx.org/async/"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "httpx_clients",
+      "流式响应清理"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "httpx_clients_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q225",
+    "type": "keyword",
+    "query": "wait_for 超时会如何处理被等待对象，实际耗时一定小于 timeout 吗？",
+    "expected_chunks": [
+      "asyncio_tasks_sec3"
+    ],
+    "reference_answer": "asyncio.wait_for(aw, timeout) 带超时等待可等待对象。发生超时时取消 aw 并抛出内置 TimeoutError。函数会等待取消实际完成，因此总等待时间可能超过 timeout；用 shield 包装可阻止 aw 因此次超时被取消。",
+    "answer_points": [
+      "asyncio.wait_for(aw, timeout) 带超时等待可等待对象。发生超时时取消 aw 并抛出内置 TimeoutError。函数会等待取消实际完成，因此总等待时间可能超过 timeout；用 shield 包装可阻止 aw 因此次超时被取消。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "asyncio_tasks_sec3",
+        "source": "asyncio_tasks.md",
+        "quote": "asyncio.wait_for(aw, timeout) 带超时等待可等待对象。发生超时时取消 aw 并抛出内置 TimeoutError。函数会等待取消实际完成，因此总等待时间可能超过 timeout；用 shield 包装可阻止 aw 因此次超时被取消。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "asyncio_tasks_sec3",
+    "source_urls": [
+      "https://docs.python.org/3.13/library/asyncio-task.html"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "asyncio_tasks",
+      "wait_for 超时"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "asyncio_tasks_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "test"
+  },
+  {
+    "id": "v2_q343",
+    "type": "scenario",
+    "query": "论文允许不同 token 依赖不同段落，这是否说明我们项目自动具有逐 token 检索？",
+    "expected_chunks": [
+      "rag_foundations_sec2"
+    ],
+    "reference_answer": "原始 RAG 论文比较两种生成条件形式：一种在整个生成序列中使用相同的检索段落；另一种允许不同 token 使用不同检索段落。该描述属于论文模型的两种形式，不能据此断言任何工程 RAG 都实现了逐 token 检索。",
+    "answer_points": [
+      "原始 RAG 论文比较两种生成条件形式：一种在整个生成序列中使用相同的检索段落；另一种允许不同 token 使用不同检索段落。该描述属于论文模型的两种形式，不能据此断言任何工程 RAG 都实现了逐 token 检索。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "rag_foundations_sec2",
+        "source": "rag_foundations.md",
+        "quote": "原始 RAG 论文比较两种生成条件形式：一种在整个生成序列中使用相同的检索段落；另一种允许不同 token 使用不同检索段落。该描述属于论文模型的两种形式，不能据此断言任何工程 RAG 都实现了逐 token 检索。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "rag_foundations_sec2",
+    "source_urls": [
+      "https://arxiv.org/abs/2005.11401v4"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "rag_foundations",
+      "生成条件的两种形式"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "rag_foundations_sec2"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q415",
+    "type": "scenario",
+    "query": "库向量和查询向量怎样处理，才能用 2-2*内积解释平方 L2 距离？",
+    "expected_chunks": [
+      "faiss_metrics_sec3"
+    ],
+    "reference_answer": "二者都归一化到单位长度，此时平方 L2 等于 2 - 2 * 内积。",
+    "answer_points": [
+      "用内积索引做余弦检索时，数据库向量在入库前、查询向量在搜索前都应归一化，可使用 faiss.normalize_L2。仅选择 METRIC_INNER_PRODUCT 并不自动得到余弦相似度；向量必须归一化到单位长度。\n\n来源：https://github.com/facebookresearch/faiss/wiki/MetricType-and-distances",
+      "当两个向量都归一化到单位长度时，平方 L2 距离等于 2 - 2 * 内积。内积越大，平方 L2 越小，因此在相同归一化条件下，最大内积搜索与最小 L2 距离搜索可对应相同的排序。\n\n来源：https://github.com/facebookresearch/faiss/wiki/MetricType-and-distances"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "faiss_metrics_sec3",
+        "source": "faiss_metrics.md",
+        "quote": "当两个向量都归一化到单位长度时，平方 L2 距离等于 2 - 2 * 内积。内积越大，平方 L2 越小，因此在相同归一化条件下，最大内积搜索与最小 L2 距离搜索可对应相同的排序。\n\n来源：https://github.com/facebookresearch/faiss/wiki/MetricType-and-distances"
+      }
+    ],
+    "answerable": true,
+    "group_id": "composite_faiss_metrics_sec2__faiss_metrics_sec3",
+    "source_urls": [
+      "https://github.com/facebookresearch/faiss/wiki/MetricType-and-distances"
+    ],
+    "difficulty": "hard",
+    "tags": [],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "faiss_metrics_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev",
+    "legacy_type": "multi_hop"
+  },
+  {
+    "id": "v2_q395",
+    "type": "multi_hop",
+    "query": "HTTPX 接收流怎样读取并正确区分 SSE 消息边界？",
+    "expected_chunks": [
+      "httpx_clients_sec3",
+      "sse_streaming_sec1"
+    ],
+    "reference_answer": "可用异步字节或行迭代读取；SSE 根据空行识别事件并拼接 data 行，HTTP 数据块不一定是完整事件。",
+    "answer_points": [
+      "SSE 响应采用 text/event-stream 类型，事件流按 UTF-8 解码。消息由空行分隔，data 字段承载文本；连续多个 data 行用换行拼接。单个 HTTP 接收数据块不必等于完整 SSE 事件，应按事件格式识别消息边界。\n\n来源：https://html.spec.whatwg.org/multipage/server-sent-events.html",
+      "AsyncClient.stream 返回异步上下文块，可以用 aiter_bytes、aiter_text 或 aiter_lines 增量读取响应。退出 stream 上下文会关闭响应；若手动 send(..., stream=True)，开发者必须最终调用 Response.aclose()，否则可能泄露连接资源。\n\n来源：https://www.python-httpx.org/async/"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "httpx_clients_sec3",
+        "source": "httpx_clients.md",
+        "quote": "AsyncClient.stream 返回异步上下文块，可以用 aiter_bytes、aiter_text 或 aiter_lines 增量读取响应。退出 stream 上下文会关闭响应；若手动 send(..., stream=True)，开发者必须最终调用 Response.aclose()，否则可能泄露连接资源。\n\n来源：https://www.python-httpx.org/async/"
+      },
+      {
+        "chunk_id": "sse_streaming_sec1",
+        "source": "sse_streaming.md",
+        "quote": "SSE 响应采用 text/event-stream 类型，事件流按 UTF-8 解码。消息由空行分隔，data 字段承载文本；连续多个 data 行用换行拼接。单个 HTTP 接收数据块不必等于完整 SSE 事件，应按事件格式识别消息边界。\n\n来源：https://html.spec.whatwg.org/multipage/server-sent-events.html"
+      }
+    ],
+    "answerable": true,
+    "group_id": "composite_httpx_clients_sec3__sse_streaming_sec1",
+    "source_urls": [
+      "https://html.spec.whatwg.org/multipage/server-sent-events.html",
+      "https://www.python-httpx.org/async/"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "all_evidence_required",
+      "cross_document"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "httpx_clients_sec3",
+        "sse_streaming_sec1"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q329",
+    "type": "keyword",
+    "query": "LLM Context Recall 以什么文本拆分声明，分子分母分别是什么？",
+    "expected_chunks": [
+      "rag_evaluation_sec2"
+    ],
+    "reference_answer": "LLM 方式的 Context Recall 以参考答案为比较依据，将参考答案拆为声明，检查哪些声明能由检索上下文支持。支持的参考声明数除以参考声明总数得到比例。它关注是否漏掉必要证据，区别于对生成回答声明计算的 Faithfulness。",
+    "answer_points": [
+      "LLM 方式的 Context Recall 以参考答案为比较依据，将参考答案拆为声明，检查哪些声明能由检索上下文支持。支持的参考声明数除以参考声明总数得到比例。它关注是否漏掉必要证据，区别于对生成回答声明计算的 Faithfulness。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "rag_evaluation_sec2",
+        "source": "rag_evaluation.md",
+        "quote": "LLM 方式的 Context Recall 以参考答案为比较依据，将参考答案拆为声明，检查哪些声明能由检索上下文支持。支持的参考声明数除以参考声明总数得到比例。它关注是否漏掉必要证据，区别于对生成回答声明计算的 Faithfulness。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "rag_evaluation_sec2",
+    "source_urls": [
+      "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/context_recall/"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "rag_evaluation",
+      "上下文召回"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "rag_evaluation_sec2"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q417",
+    "type": "multi_hop",
+    "query": "索引可读取和 JWT 有签名，分别不能据此推断哪些安全属性？",
+    "expected_chunks": [
+      "faiss_persistence_sec3",
+      "fastapi_security_sec3"
+    ],
+    "reference_answer": "read_index 不证明文件可信，需确认未篡改；JWT 签名不证明内容已加密。",
+    "answer_points": [
+      "FAISS 索引读取接口不检查文件内容是否正确。错误或恶意文件可能造成内存耗尽，精心构造时甚至可能导致代码执行。读取前由使用者确认 write_index 生成的文件未被篡改，不能把可读取当成可信来源的证明。\n\n来源：https://github.com/facebookresearch/faiss/wiki/Index-IO,-cloning-and-hyper-parameter-tuning",
+      "JWT 可以将 JSON 对象编码为紧凑令牌。官方教程强调示例 JWT 经过签名，但没有加密，持有人可以恢复其内容。签名用于验证令牌来源，不能把敏感数据放进去并期待签名使内容保密。\n\n来源：https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "faiss_persistence_sec3",
+        "source": "faiss_persistence.md",
+        "quote": "FAISS 索引读取接口不检查文件内容是否正确。错误或恶意文件可能造成内存耗尽，精心构造时甚至可能导致代码执行。读取前由使用者确认 write_index 生成的文件未被篡改，不能把可读取当成可信来源的证明。\n\n来源：https://github.com/facebookresearch/faiss/wiki/Index-IO,-cloning-and-hyper-parameter-tuning"
+      },
+      {
+        "chunk_id": "fastapi_security_sec3",
+        "source": "fastapi_security.md",
+        "quote": "JWT 可以将 JSON 对象编码为紧凑令牌。官方教程强调示例 JWT 经过签名，但没有加密，持有人可以恢复其内容。签名用于验证令牌来源，不能把敏感数据放进去并期待签名使内容保密。\n\n来源：https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/"
+      }
+    ],
+    "answerable": true,
+    "group_id": "composite_faiss_persistence_sec3__fastapi_security_sec3",
+    "source_urls": [
+      "https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/",
+      "https://github.com/facebookresearch/faiss/wiki/Index-IO,-cloning-and-hyper-parameter-tuning"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "all_evidence_required",
+      "cross_document"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "faiss_persistence_sec3",
+        "fastapi_security_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q273",
+    "type": "keyword",
+    "query": "HTTPX 网络错误和本地、远端协议错误如何分类？",
+    "expected_chunks": [
+      "httpx_exceptions_sec3"
+    ],
+    "reference_answer": "NetworkError 的子类包括 ConnectError、ReadError、WriteError 和 CloseError。ProtocolError 分为 LocalProtocolError 与 RemoteProtocolError，分别表示客户端或服务端违反协议。网络错误与协议错误都在传输错误体系中，不是 HTTP 状态码异常。",
+    "answer_points": [
+      "NetworkError 的子类包括 ConnectError、ReadError、WriteError 和 CloseError。ProtocolError 分为 LocalProtocolError 与 RemoteProtocolError，分别表示客户端或服务端违反协议。网络错误与协议错误都在传输错误体系中，不是 HTTP 状态码异常。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "httpx_exceptions_sec3",
+        "source": "httpx_exceptions.md",
+        "quote": "NetworkError 的子类包括 ConnectError、ReadError、WriteError 和 CloseError。ProtocolError 分为 LocalProtocolError 与 RemoteProtocolError，分别表示客户端或服务端违反协议。网络错误与协议错误都在传输错误体系中，不是 HTTP 状态码异常。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "httpx_exceptions_sec3",
+    "source_urls": [
+      "https://www.python-httpx.org/exceptions/"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "httpx_exceptions",
+      "协议与网络错误"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "httpx_exceptions_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q183",
+    "type": "scenario",
+    "query": "我想让路由自动获得公共查询参数处理函数的结果，应该怎样使用 Depends？",
+    "expected_chunks": [
+      "fastapi_dependencies_sec1"
+    ],
+    "reference_answer": "用 Depends 声明路径操作所需的依赖。FastAPI 在调用路径操作时执行依赖函数，把请求数据提供给依赖，并把依赖返回值注入路径操作参数。依赖函数本身无需先被手动调用再传给 Depends。",
+    "answer_points": [
+      "用 Depends 声明路径操作所需的依赖。FastAPI 在调用路径操作时执行依赖函数，把请求数据提供给依赖，并把依赖返回值注入路径操作参数。依赖函数本身无需先被手动调用再传给 Depends。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "fastapi_dependencies_sec1",
+        "source": "fastapi_dependencies.md",
+        "quote": "用 Depends 声明路径操作所需的依赖。FastAPI 在调用路径操作时执行依赖函数，把请求数据提供给依赖，并把依赖返回值注入路径操作参数。依赖函数本身无需先被手动调用再传给 Depends。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "fastapi_dependencies_sec1",
+    "source_urls": [
+      "https://fastapi.tiangolo.com/tutorial/dependencies/"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "fastapi_dependencies",
+      "声明依赖"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "fastapi_dependencies_sec1"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q185",
+    "type": "keyword",
+    "query": "如何用 Annotated 和类型别名复用 FastAPI 依赖声明？",
+    "expected_chunks": [
+      "fastapi_dependencies_sec2"
+    ],
+    "reference_answer": "多个路径操作可以复用同一个依赖。可使用 Annotated 配合 Depends 声明依赖参数，再将该 Annotated 类型表达式保存为类型别名；这种普通 Python 别名减少重复声明，并保留类型信息和编辑器支持。",
+    "answer_points": [
+      "多个路径操作可以复用同一个依赖。可使用 Annotated 配合 Depends 声明依赖参数，再将该 Annotated 类型表达式保存为类型别名；这种普通 Python 别名减少重复声明，并保留类型信息和编辑器支持。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "fastapi_dependencies_sec2",
+        "source": "fastapi_dependencies.md",
+        "quote": "多个路径操作可以复用同一个依赖。可使用 Annotated 配合 Depends 声明依赖参数，再将该 Annotated 类型表达式保存为类型别名；这种普通 Python 别名减少重复声明，并保留类型信息和编辑器支持。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "fastapi_dependencies_sec2",
+    "source_urls": [
+      "https://fastapi.tiangolo.com/tutorial/dependencies/"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "fastapi_dependencies",
+      "共享依赖与类型别名"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "fastapi_dependencies_sec2"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q288",
+    "type": "boundary",
+    "query": "对单位向量，内积越大平方 L2 距离也越大，对吗？",
+    "expected_chunks": [
+      "faiss_metrics_sec3"
+    ],
+    "reference_answer": "当两个向量都归一化到单位长度时，平方 L2 距离等于 2 - 2 * 内积。内积越大，平方 L2 越小，因此在相同归一化条件下，最大内积搜索与最小 L2 距离搜索可对应相同的排序。",
+    "answer_points": [
+      "当两个向量都归一化到单位长度时，平方 L2 距离等于 2 - 2 * 内积。内积越大，平方 L2 越小，因此在相同归一化条件下，最大内积搜索与最小 L2 距离搜索可对应相同的排序。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "faiss_metrics_sec3",
+        "source": "faiss_metrics.md",
+        "quote": "当两个向量都归一化到单位长度时，平方 L2 距离等于 2 - 2 * 内积。内积越大，平方 L2 越小，因此在相同归一化条件下，最大内积搜索与最小 L2 距离搜索可对应相同的排序。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "faiss_metrics_sec3",
+    "source_urls": [
+      "https://github.com/facebookresearch/faiss/wiki/MetricType-and-distances"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "faiss_metrics",
+      "归一化后的度量关系"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "faiss_metrics_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q204",
+    "type": "boundary",
+    "query": "可以靠同时注册 lifespan 和 startup 来让两套初始化都执行吗？",
+    "expected_chunks": [
+      "fastapi_lifespan_sec3"
+    ],
+    "reference_answer": "官方推荐用 lifespan 管理启动和关闭。提供 lifespan 参数后，旧 startup 和 shutdown 事件处理器不再被调用。应选择完整的 lifespan 机制或旧事件机制，不能期待两套机制同时执行。",
+    "answer_points": [
+      "官方推荐用 lifespan 管理启动和关闭。提供 lifespan 参数后，旧 startup 和 shutdown 事件处理器不再被调用。应选择完整的 lifespan 机制或旧事件机制，不能期待两套机制同时执行。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "fastapi_lifespan_sec3",
+        "source": "fastapi_lifespan.md",
+        "quote": "官方推荐用 lifespan 管理启动和关闭。提供 lifespan 参数后，旧 startup 和 shutdown 事件处理器不再被调用。应选择完整的 lifespan 机制或旧事件机制，不能期待两套机制同时执行。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "fastapi_lifespan_sec3",
+    "source_urls": [
+      "https://fastapi.tiangolo.com/advanced/events/"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "fastapi_lifespan",
+      "与旧事件机制的关系"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "fastapi_lifespan_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q405",
+    "type": "multi_hop",
+    "query": "想在启动时建立共享异步 HTTP 客户端，该在哪初始化、怎样使用和关闭？",
+    "expected_chunks": [
+      "fastapi_lifespan_sec1",
+      "httpx_clients_sec2"
+    ],
+    "reference_answer": "在 lifespan 的 yield 前初始化；复用 AsyncClient，请求需 await，关闭可 await client.aclose()。",
+    "answer_points": [
+      "FastAPI 的 lifespan 参数接收异步上下文管理器，可由 asynccontextmanager 装饰的异步函数提供。yield 之前的代码在应用开始接收请求前运行，适合加载共享模型或建立长期使用的资源。\n\n来源：https://fastapi.tiangolo.com/advanced/events/",
+      "异步 HTTP 请求使用 AsyncClient，请求方法需要 await。可通过 async with 管理客户端，或显式 await client.aclose()。为了发挥连接池作用，应复用合适作用域的客户端，避免在高频循环内不断创建新实例。\n\n来源：https://www.python-httpx.org/async/"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "fastapi_lifespan_sec1",
+        "source": "fastapi_lifespan.md",
+        "quote": "FastAPI 的 lifespan 参数接收异步上下文管理器，可由 asynccontextmanager 装饰的异步函数提供。yield 之前的代码在应用开始接收请求前运行，适合加载共享模型或建立长期使用的资源。\n\n来源：https://fastapi.tiangolo.com/advanced/events/"
+      },
+      {
+        "chunk_id": "httpx_clients_sec2",
+        "source": "httpx_clients.md",
+        "quote": "异步 HTTP 请求使用 AsyncClient，请求方法需要 await。可通过 async with 管理客户端，或显式 await client.aclose()。为了发挥连接池作用，应复用合适作用域的客户端，避免在高频循环内不断创建新实例。\n\n来源：https://www.python-httpx.org/async/"
+      }
+    ],
+    "answerable": true,
+    "group_id": "composite_fastapi_lifespan_sec1__httpx_clients_sec2",
+    "source_urls": [
+      "https://fastapi.tiangolo.com/advanced/events/",
+      "https://www.python-httpx.org/async/"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "all_evidence_required",
+      "cross_document"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "fastapi_lifespan_sec1",
+        "httpx_clients_sec2"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q209",
+    "type": "keyword",
+    "query": "OAuth2PasswordBearer 默认遇到缺少 Bearer 令牌时返回什么状态码？",
+    "expected_chunks": [
+      "fastapi_security_sec2"
+    ],
+    "reference_answer": "在官方默认用法中，缺少 Authorization 请求头或请求头不是 Bearer 令牌形式时，OAuth2PasswordBearer 直接返回 HTTP 401 未授权错误。该行为描述默认配置，不覆盖显式改变自动错误处理的情况。",
+    "answer_points": [
+      "在官方默认用法中，缺少 Authorization 请求头或请求头不是 Bearer 令牌形式时，OAuth2PasswordBearer 直接返回 HTTP 401 未授权错误。该行为描述默认配置，不覆盖显式改变自动错误处理的情况。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "fastapi_security_sec2",
+        "source": "fastapi_security.md",
+        "quote": "在官方默认用法中，缺少 Authorization 请求头或请求头不是 Bearer 令牌形式时，OAuth2PasswordBearer 直接返回 HTTP 401 未授权错误。该行为描述默认配置，不覆盖显式改变自动错误处理的情况。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "fastapi_security_sec2",
+    "source_urls": [
+      "https://fastapi.tiangolo.com/tutorial/security/first-steps/"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "fastapi_security",
+      "缺少令牌"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "fastapi_security_sec2"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q451",
+    "type": "unanswerable",
+    "query": "怎么把 FAISS 索引移到 GPU 并启用 float16？",
+    "expected_chunks": [],
+    "reference_answer": "现有知识库不足以回答。语料没有 GPU 迁移或 float16 配置。",
+    "answer_points": [],
+    "evidence": [],
+    "answerable": false,
+    "group_id": "negative_11",
+    "source_urls": [],
+    "difficulty": "hard",
+    "tags": [
+      "near_domain"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "unanswerable_reason": "语料没有 GPU 迁移或 float16 配置。",
+    "related_chunks": [
+      "faiss_parameters_sec1"
+    ],
+    "expected_behavior": "refuse_unsupported_request",
+    "expected_chunk_sets": [],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q214",
+    "type": "paraphrase",
+    "query": "一个签过名的 JSON 令牌，别人还能读取里面的数据吗？",
+    "expected_chunks": [
+      "fastapi_security_sec3"
+    ],
+    "reference_answer": "JWT 可以将 JSON 对象编码为紧凑令牌。官方教程强调示例 JWT 经过签名，但没有加密，持有人可以恢复其内容。签名用于验证令牌来源，不能把敏感数据放进去并期待签名使内容保密。",
+    "answer_points": [
+      "JWT 可以将 JSON 对象编码为紧凑令牌。官方教程强调示例 JWT 经过签名，但没有加密，持有人可以恢复其内容。签名用于验证令牌来源，不能把敏感数据放进去并期待签名使内容保密。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "fastapi_security_sec3",
+        "source": "fastapi_security.md",
+        "quote": "JWT 可以将 JSON 对象编码为紧凑令牌。官方教程强调示例 JWT 经过签名，但没有加密，持有人可以恢复其内容。签名用于验证令牌来源，不能把敏感数据放进去并期待签名使内容保密。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "fastapi_security_sec3",
+    "source_urls": [
+      "https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "fastapi_security",
+      "JWT 签名与加密"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "fastapi_security_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q392",
+    "type": "multi_hop",
+    "query": "chunk_overlap 与 discount_overlaps 中的重叠分别指什么？",
+    "expected_chunks": [
+      "bm25_similarity_sec3",
+      "text_chunking_sec2"
+    ],
+    "reference_answer": "前者是切片之间的目标重叠；后者涉及分析器位置增量为零的 token 是否计入 norm。",
+    "answer_points": [
+      "chunk_overlap 是相邻片段的目标重叠，用于减轻上下文在切片边界被割裂造成的信息损失。中文等没有明显词间空格的语言可增加句号、逗号、顿号等分隔符，避免只依赖空格切分。目标重叠不等于所有实际片段必定重叠完全相同的长度。\n\n来源：https://docs.langchain.com/oss/python/integrations/splitters/recursive_text_splitter",
+      "Elasticsearch BM25 的 discount_overlaps 决定计算 norm 时是否忽略位置增量为零的重叠 token。默认值为 true，即此类 token 不计入该 norm 的长度。这里的重叠是分析器 token 位置概念，不是文档切片的 chunk_overlap。\n\n来源：https://www.elastic.co/docs/reference/elasticsearch/index-settings/similarity"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "bm25_similarity_sec3",
+        "source": "bm25_similarity.md",
+        "quote": "Elasticsearch BM25 的 discount_overlaps 决定计算 norm 时是否忽略位置增量为零的重叠 token。默认值为 true，即此类 token 不计入该 norm 的长度。这里的重叠是分析器 token 位置概念，不是文档切片的 chunk_overlap。\n\n来源：https://www.elastic.co/docs/reference/elasticsearch/index-settings/similarity"
+      },
+      {
+        "chunk_id": "text_chunking_sec2",
+        "source": "text_chunking.md",
+        "quote": "chunk_overlap 是相邻片段的目标重叠，用于减轻上下文在切片边界被割裂造成的信息损失。中文等没有明显词间空格的语言可增加句号、逗号、顿号等分隔符，避免只依赖空格切分。目标重叠不等于所有实际片段必定重叠完全相同的长度。\n\n来源：https://docs.langchain.com/oss/python/integrations/splitters/recursive_text_splitter"
+      }
+    ],
+    "answerable": true,
+    "group_id": "composite_bm25_similarity_sec3__text_chunking_sec2",
+    "source_urls": [
+      "https://docs.langchain.com/oss/python/integrations/splitters/recursive_text_splitter",
+      "https://www.elastic.co/docs/reference/elasticsearch/index-settings/similarity"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "all_evidence_required",
+      "cross_document"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "bm25_similarity_sec3",
+        "text_chunking_sec2"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q474",
+    "type": "unanswerable",
+    "query": "请介绍 MySQL 主从复制的配置步骤。",
+    "expected_chunks": [],
+    "reference_answer": "现有知识库不足以回答。语料没有 MySQL 主从复制。",
+    "answer_points": [],
+    "evidence": [],
+    "answerable": false,
+    "group_id": "negative_34",
+    "source_urls": [],
+    "difficulty": "easy",
+    "tags": [
+      "out_of_domain"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "unanswerable_reason": "语料没有 MySQL 主从复制。",
+    "related_chunks": [],
+    "expected_behavior": "refuse_unsupported_request",
+    "expected_chunk_sets": [],
+    "split": "dev",
+    "legacy_split": "test"
+  },
+  {
+    "id": "v2_q155",
+    "type": "scenario",
+    "query": "SSE 想携带最后事件标识进行重连，id 与 Last-Event-ID 怎样配合？",
+    "expected_chunks": [
+      "sse_streaming_sec3"
+    ],
+    "reference_answer": "EventSource 在连接结束后通常尝试重连，retry 字段以整数毫秒指定重连等待；非整数值会被忽略。调用 EventSource.close() 可终止连接，HTTP 204 响应可告知客户端停止重连。id 字段用于记录最后事件 ID，重连时可通过 Last-Event-ID 传给服务端。",
+    "answer_points": [
+      "EventSource 在连接结束后通常尝试重连，retry 字段以整数毫秒指定重连等待；非整数值会被忽略。调用 EventSource.close() 可终止连接，HTTP 204 响应可告知客户端停止重连。id 字段用于记录最后事件 ID，重连时可通过 Last-Event-ID 传给服务端。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "sse_streaming_sec3",
+        "source": "sse_streaming.md",
+        "quote": "EventSource 在连接结束后通常尝试重连，retry 字段以整数毫秒指定重连等待；非整数值会被忽略。调用 EventSource.close() 可终止连接，HTTP 204 响应可告知客户端停止重连。id 字段用于记录最后事件 ID，重连时可通过 Last-Event-ID 传给服务端。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "sse_streaming_sec3",
+    "source_urls": [
+      "https://html.spec.whatwg.org/multipage/server-sent-events.html"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "sse_streaming",
+      "重连和终止"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "sse_streaming_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q406",
+    "type": "multi_hop",
+    "query": "应用资源清理和手动流式 HTTP 响应清理，分别发生在什么阶段、调用什么方法？",
+    "expected_chunks": [
+      "fastapi_lifespan_sec2",
+      "httpx_clients_sec3"
+    ],
+    "reference_answer": "应用共享资源在 lifespan 的 yield 后清理；手动流响应最终必须调用 Response.aclose()。",
+    "answer_points": [
+      "lifespan 中 yield 之后的代码在应用结束处理请求、关闭时运行。该阶段用于释放启动时持有的模型、内存或其他共享资源，与 yield 之前的初始化形成资源生命周期。\n\n来源：https://fastapi.tiangolo.com/advanced/events/",
+      "AsyncClient.stream 返回异步上下文块，可以用 aiter_bytes、aiter_text 或 aiter_lines 增量读取响应。退出 stream 上下文会关闭响应；若手动 send(..., stream=True)，开发者必须最终调用 Response.aclose()，否则可能泄露连接资源。\n\n来源：https://www.python-httpx.org/async/"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "fastapi_lifespan_sec2",
+        "source": "fastapi_lifespan.md",
+        "quote": "lifespan 中 yield 之后的代码在应用结束处理请求、关闭时运行。该阶段用于释放启动时持有的模型、内存或其他共享资源，与 yield 之前的初始化形成资源生命周期。\n\n来源：https://fastapi.tiangolo.com/advanced/events/"
+      },
+      {
+        "chunk_id": "httpx_clients_sec3",
+        "source": "httpx_clients.md",
+        "quote": "AsyncClient.stream 返回异步上下文块，可以用 aiter_bytes、aiter_text 或 aiter_lines 增量读取响应。退出 stream 上下文会关闭响应；若手动 send(..., stream=True)，开发者必须最终调用 Response.aclose()，否则可能泄露连接资源。\n\n来源：https://www.python-httpx.org/async/"
+      }
+    ],
+    "answerable": true,
+    "group_id": "composite_fastapi_lifespan_sec2__httpx_clients_sec3",
+    "source_urls": [
+      "https://fastapi.tiangolo.com/advanced/events/",
+      "https://www.python-httpx.org/async/"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "all_evidence_required",
+      "cross_document"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "fastapi_lifespan_sec2",
+        "httpx_clients_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q425",
+    "type": "multi_hop",
+    "query": "原始RAG引入检索的研究动机是什么？Faithfulness又如何检查回答是否受证据支持？",
+    "expected_chunks": [
+      "rag_evaluation_sec1",
+      "rag_foundations_sec3"
+    ],
+    "reference_answer": "检索用于改善知识访问和知识密集任务生成，但不保证部署无错误；Faithfulness检查回答声明能否由检索上下文支持。",
+    "answer_points": [
+      "引入检索记忆改善知识访问与生成，不保证所有部署无错误",
+      "Faithfulness检查回答声明是否得到检索上下文支持"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "rag_evaluation_sec1",
+        "source": "rag_evaluation.md",
+        "quote": "Faithfulness 检查生成回答的声明能否由检索上下文支持。将回答拆为声明，逐条判断是否可从上下文推得，再以被支持声明数除以回答声明总数。该指标范围为 0 到 1；它评估回答与给定证据的一致性，不是简单比较字符串。\n\n来源：https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness/"
+      },
+      {
+        "chunk_id": "rag_foundations_sec3",
+        "source": "rag_foundations.md",
+        "quote": "原始论文指出，大规模预训练模型虽然把事实存入参数，但精确访问、操纵知识仍有限；为决策提供来源以及更新世界知识也是研究问题。RAG 的检索记忆旨在改善知识密集任务的生成能力，不能由此保证任意部署都不会产生错误。\n\n来源：https://arxiv.org/abs/2005.11401v4"
+      }
+    ],
+    "answerable": true,
+    "group_id": "composite_rag_evaluation_sec1__rag_foundations_sec3",
+    "source_urls": [
+      "https://arxiv.org/abs/2005.11401v4",
+      "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness/"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "all_evidence_required",
+      "cross_document"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "rag_evaluation_sec1",
+        "rag_foundations_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q430",
+    "type": "multi_hop",
+    "query": "请分别说明请求输入验证、外部 HTTP 错误分类与生成回答证据一致性检查的工具。",
+    "expected_chunks": [
+      "fastapi_models_sec1",
+      "httpx_exceptions_sec1",
+      "rag_evaluation_sec1"
+    ],
+    "reference_answer": "请求模型 BaseModel；客户端 RequestError/HTTPStatusError；回答用 Faithfulness 检查声明支持。",
+    "answer_points": [
+      "请求体可用继承 Pydantic BaseModel 的类声明，并把该模型作为路径操作函数的参数类型。FastAPI 读取 JSON，按类型转换并验证数据，错误时指出数据问题的位置；同时生成 JSON Schema 并纳入 OpenAPI。\n\n来源：https://fastapi.tiangolo.com/tutorial/body/",
+      "RequestError 是发送请求过程中出现的错误基类；HTTPStatusError 对应调用 response.raise_for_status() 后报告的错误 HTTP 状态。二者都继承 HTTPError。应区分请求执行问题与已获得响应后的状态检查问题。\n\n来源：https://www.python-httpx.org/exceptions/",
+      "Faithfulness 检查生成回答的声明能否由检索上下文支持。将回答拆为声明，逐条判断是否可从上下文推得，再以被支持声明数除以回答声明总数。该指标范围为 0 到 1；它评估回答与给定证据的一致性，不是简单比较字符串。\n\n来源：https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness/"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "fastapi_models_sec1",
+        "source": "fastapi_models.md",
+        "quote": "请求体可用继承 Pydantic BaseModel 的类声明，并把该模型作为路径操作函数的参数类型。FastAPI 读取 JSON，按类型转换并验证数据，错误时指出数据问题的位置；同时生成 JSON Schema 并纳入 OpenAPI。\n\n来源：https://fastapi.tiangolo.com/tutorial/body/"
+      },
+      {
+        "chunk_id": "httpx_exceptions_sec1",
+        "source": "httpx_exceptions.md",
+        "quote": "RequestError 是发送请求过程中出现的错误基类；HTTPStatusError 对应调用 response.raise_for_status() 后报告的错误 HTTP 状态。二者都继承 HTTPError。应区分请求执行问题与已获得响应后的状态检查问题。\n\n来源：https://www.python-httpx.org/exceptions/"
+      },
+      {
+        "chunk_id": "rag_evaluation_sec1",
+        "source": "rag_evaluation.md",
+        "quote": "Faithfulness 检查生成回答的声明能否由检索上下文支持。将回答拆为声明，逐条判断是否可从上下文推得，再以被支持声明数除以回答声明总数。该指标范围为 0 到 1；它评估回答与给定证据的一致性，不是简单比较字符串。\n\n来源：https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness/"
+      }
+    ],
+    "answerable": true,
+    "group_id": "composite_fastapi_models_sec1__httpx_exceptions_sec1__rag_evaluation_sec1",
+    "source_urls": [
+      "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness/",
+      "https://fastapi.tiangolo.com/tutorial/body/",
+      "https://www.python-httpx.org/exceptions/"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "all_evidence_required",
+      "cross_document"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "fastapi_models_sec1",
+        "httpx_exceptions_sec1",
+        "rag_evaluation_sec1"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q218",
+    "type": "paraphrase",
+    "query": "并发聚合里一个任务失败，是马上报告还是等全部完成才报告？",
+    "expected_chunks": [
+      "asyncio_tasks_sec1"
+    ],
+    "reference_answer": "asyncio.gather 默认 return_exceptions=False：第一个异常立即传播给等待 gather 的调用者，其他可等待对象不会因此自动取消，仍可继续执行。return_exceptions=True 则把异常当作结果收集进列表。不能将默认行为理解为等待全部任务结束后才报告首个异常。",
+    "answer_points": [
+      "asyncio.gather 默认 return_exceptions=False：第一个异常立即传播给等待 gather 的调用者，其他可等待对象不会因此自动取消，仍可继续执行。return_exceptions=True 则把异常当作结果收集进列表。不能将默认行为理解为等待全部任务结束后才报告首个异常。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "asyncio_tasks_sec1",
+        "source": "asyncio_tasks.md",
+        "quote": "asyncio.gather 默认 return_exceptions=False：第一个异常立即传播给等待 gather 的调用者，其他可等待对象不会因此自动取消，仍可继续执行。return_exceptions=True 则把异常当作结果收集进列表。不能将默认行为理解为等待全部任务结束后才报告首个异常。"
+      },
+      {
+        "chunk_id": "python_asyncio_sec3",
+        "source": "python_asyncio.md",
+        "quote": "[Python asyncio 调度、阻塞与并发原语-3. gather、TaskGroup 与 Semaphore]\nasyncio.gather() 并发运行传入的可等待对象。全部成功时，结果顺序对应输入顺序，而不是完成顺序。\n\n默认 return_exceptions=False：首个异常会立即传播给等待 gather() 的调用者，其他任务不会仅因这个异常被自动取消。设置 return_exceptions=True 时，异常会作为结果项收集。\n\nTaskGroup 从Python 3.11开始提供，Python 3.10不能直接使用。组内任务出现非 CancelledError 异常时，TaskGroup 会取消其余任务，并等待它们结束。\n\nasyncio.Semaphore 控制共享同一个信号量的任务同时进入指定区域的数量。它不是跨进程的全局限流器，也不直接保证每分钟请求数不超过某个值。\n\n来源：\nhttps://docs.python.org/3.10/library/asyncio-task.html#running-tasks-concurrently\nhttps://docs.python.org/3.11/library/asyncio-task.html#task-groups\nhttps://docs.python.org/3.10/library/asyncio-sync.html#semaphore\n核验日期：2026-10-29；版本范围：gather与Semaphore按Python 3.10，TaskGroup按Python 3.11。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "asyncio_tasks_sec1",
+    "source_urls": [
+      "https://docs.python.org/3.10/library/asyncio-sync.html#semaphore",
+      "https://docs.python.org/3.10/library/asyncio-task.html#running-tasks-concurrently",
+      "https://docs.python.org/3.11/library/asyncio-task.html#task-groups",
+      "https://docs.python.org/3.13/library/asyncio-task.html"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "asyncio_tasks",
+      "gather 异常语义"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "asyncio_tasks_sec1"
+      ],
+      [
+        "python_asyncio_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q449",
+    "type": "unanswerable",
+    "query": "FAISS HNSW 索引的 M 和 efSearch 最优值是多少？",
+    "expected_chunks": [],
+    "reference_answer": "现有知识库不足以回答。语料未介绍 HNSW 及其参数。",
+    "answer_points": [],
+    "evidence": [],
+    "answerable": false,
+    "group_id": "negative_09",
+    "source_urls": [],
+    "difficulty": "hard",
+    "tags": [
+      "near_domain"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "unanswerable_reason": "语料未介绍 HNSW 及其参数。",
+    "related_chunks": [
+      "faiss_parameters_sec1"
+    ],
+    "expected_behavior": "refuse_unsupported_request",
+    "expected_chunk_sets": [],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q242",
+    "type": "paraphrase",
+    "query": "反复请求同一个服务，怎样减少每次重新建立网络连接的开销？",
+    "expected_chunks": [
+      "httpx_clients_sec1"
+    ],
+    "reference_answer": "HTTPX 顶层请求 API 每次建立新连接。Client 使用连接池，对同一主机可复用底层 TCP 连接，降低重复握手开销。多个请求还可共享配置与 Cookie；同步 Client 可用 with 管理，并在退出时清理连接。",
+    "answer_points": [
+      "HTTPX 顶层请求 API 每次建立新连接。Client 使用连接池，对同一主机可复用底层 TCP 连接，降低重复握手开销。多个请求还可共享配置与 Cookie；同步 Client 可用 with 管理，并在退出时清理连接。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "httpx_clients_sec1",
+        "source": "httpx_clients.md",
+        "quote": "HTTPX 顶层请求 API 每次建立新连接。Client 使用连接池，对同一主机可复用底层 TCP 连接，降低重复握手开销。多个请求还可共享配置与 Cookie；同步 Client 可用 with 管理，并在退出时清理连接。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "httpx_clients_sec1",
+    "source_urls": [
+      "https://www.python-httpx.org/advanced/clients/"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "httpx_clients",
+      "连接池复用"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "httpx_clients_sec1"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q424",
+    "type": "multi_hop",
+    "query": "原始 RAG 的外部记忆是什么，语义检索一般怎样访问向量空间中的资料？",
+    "expected_chunks": [
+      "rag_foundations_sec1",
+      "semantic_search_sec1"
+    ],
+    "reference_answer": "原始模型用 Wikipedia 密集向量索引作为非参数记忆；语义检索编码查询并找语义相近的语料向量。",
+    "answer_points": [
+      "Lewis 等人的 RAG 原始论文将预训练参数记忆与显式非参数记忆结合，用于语言生成。论文具体模型的参数记忆是预训练 seq2seq 模型，非参数记忆是 Wikipedia 的密集向量索引，由预训练神经检索器访问。\n\n来源：https://arxiv.org/abs/2005.11401v4",
+      "语义检索将语料条目与查询嵌入同一向量空间，再寻找语义相近的语料向量。它关注含义，能够处理同义表达、缩写或拼写变化；这类能力不意味着任何问题都能在知识库中找到答案。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/semantic-search/README.html"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "rag_foundations_sec1",
+        "source": "rag_foundations.md",
+        "quote": "Lewis 等人的 RAG 原始论文将预训练参数记忆与显式非参数记忆结合，用于语言生成。论文具体模型的参数记忆是预训练 seq2seq 模型，非参数记忆是 Wikipedia 的密集向量索引，由预训练神经检索器访问。\n\n来源：https://arxiv.org/abs/2005.11401v4"
+      },
+      {
+        "chunk_id": "semantic_search_sec1",
+        "source": "semantic_search.md",
+        "quote": "语义检索将语料条目与查询嵌入同一向量空间，再寻找语义相近的语料向量。它关注含义，能够处理同义表达、缩写或拼写变化；这类能力不意味着任何问题都能在知识库中找到答案。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/semantic-search/README.html"
+      }
+    ],
+    "answerable": true,
+    "group_id": "composite_rag_foundations_sec1__semantic_search_sec1",
+    "source_urls": [
+      "https://arxiv.org/abs/2005.11401v4",
+      "https://sbert.net/examples/sentence_transformer/applications/semantic-search/README.html"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "all_evidence_required",
+      "cross_document"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "rag_foundations_sec1",
+        "semantic_search_sec1"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q298",
+    "type": "paraphrase",
+    "query": "别人提供的索引文件能够读取，就说明可信且无风险吗？",
+    "expected_chunks": [
+      "faiss_persistence_sec3"
+    ],
+    "reference_answer": "FAISS 索引读取接口不检查文件内容是否正确。错误或恶意文件可能造成内存耗尽，精心构造时甚至可能导致代码执行。读取前由使用者确认 write_index 生成的文件未被篡改，不能把可读取当成可信来源的证明。",
+    "answer_points": [
+      "FAISS 索引读取接口不检查文件内容是否正确。错误或恶意文件可能造成内存耗尽，精心构造时甚至可能导致代码执行。读取前由使用者确认 write_index 生成的文件未被篡改，不能把可读取当成可信来源的证明。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "faiss_persistence_sec3",
+        "source": "faiss_persistence.md",
+        "quote": "FAISS 索引读取接口不检查文件内容是否正确。错误或恶意文件可能造成内存耗尽，精心构造时甚至可能导致代码执行。读取前由使用者确认 write_index 生成的文件未被篡改，不能把可读取当成可信来源的证明。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "faiss_persistence_sec3",
+    "source_urls": [
+      "https://github.com/facebookresearch/faiss/wiki/Index-IO,-cloning-and-hyper-parameter-tuning"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "faiss_persistence",
+      "加载安全边界"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "faiss_persistence_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q278",
+    "type": "paraphrase",
+    "query": "向量索引里的 L2 数值为什么和手算欧氏距离不一样？",
+    "expected_chunks": [
+      "faiss_metrics_sec1"
+    ],
+    "reference_answer": "FAISS 的 METRIC_L2 返回平方欧氏距离，以避免开平方；它与欧氏距离的排序关系一致。若需要欧氏距离的实际数值，应对返回值开平方。该度量对正交旋转保持不变。",
+    "answer_points": [
+      "FAISS 的 METRIC_L2 返回平方欧氏距离，以避免开平方；它与欧氏距离的排序关系一致。若需要欧氏距离的实际数值，应对返回值开平方。该度量对正交旋转保持不变。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "faiss_metrics_sec1",
+        "source": "faiss_metrics.md",
+        "quote": "FAISS 的 METRIC_L2 返回平方欧氏距离，以避免开平方；它与欧氏距离的排序关系一致。若需要欧氏距离的实际数值，应对返回值开平方。该度量对正交旋转保持不变。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "faiss_metrics_sec1",
+    "source_urls": [
+      "https://github.com/facebookresearch/faiss/wiki/MetricType-and-distances"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "faiss_metrics",
+      "平方欧氏距离"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "faiss_metrics_sec1"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q034",
+    "type": "boundary",
+    "query": "资料是否把 workers = 2 × CPU核心数 + 1 推荐为所有 FastAPI 应用的通用配置？",
+    "expected_chunks": [
+      "fastapi_config_sec1"
+    ],
+    "reference_answer": "否。资料明确说明，不能把这个公式当成所有 FastAPI 应用的通用推荐值。",
+    "answer_points": [
+      "不能将该公式作为所有 FastAPI 应用的通用推荐值"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "fastapi_config_sec1",
+        "source": "fastapi_config.md",
+        "quote": "不能把 `(2 * CPU核心数) + 1` 当成所有 FastAPI 应用的通用推荐值。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "fastapi_config_sec1",
+    "source_urls": [
+      "https://www.uvicorn.org/"
+    ],
+    "difficulty": "easy",
+    "tags": [
+      "workers",
+      "fastapi_config"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "fastapi_config_sec1"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q467",
+    "type": "unanswerable",
+    "query": "我们的 LLM API 并发额度合同上限是多少？",
+    "expected_chunks": [],
+    "reference_answer": "现有知识库不足以回答。语料只有限流用途，没有服务合同额度。",
+    "answer_points": [],
+    "evidence": [],
+    "answerable": false,
+    "group_id": "negative_27",
+    "source_urls": [],
+    "difficulty": "hard",
+    "tags": [
+      "missing_fact"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "unanswerable_reason": "语料只有限流用途，没有服务合同额度。",
+    "related_chunks": [
+      "python_asyncio_sec3"
+    ],
+    "expected_behavior": "refuse_unsupported_request",
+    "expected_chunk_sets": [],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q356",
+    "type": "boundary",
+    "query": "非对称检索里交换查询和长文档的角色通常仍完全等价吗？",
+    "expected_chunks": [
+      "semantic_search_sec2"
+    ],
+    "reference_answer": "对称语义检索中，查询与候选通常长度和信息量相近，例如相似问题匹配。非对称检索中，查询通常较短而候选段落较长，例如用问题寻找回答段落；两者的角色不能简单互换，应选择适合任务的模型。",
+    "answer_points": [
+      "对称语义检索中，查询与候选通常长度和信息量相近，例如相似问题匹配。非对称检索中，查询通常较短而候选段落较长，例如用问题寻找回答段落；两者的角色不能简单互换，应选择适合任务的模型。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "semantic_search_sec2",
+        "source": "semantic_search.md",
+        "quote": "对称语义检索中，查询与候选通常长度和信息量相近，例如相似问题匹配。非对称检索中，查询通常较短而候选段落较长，例如用问题寻找回答段落；两者的角色不能简单互换，应选择适合任务的模型。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "semantic_search_sec2",
+    "source_urls": [
+      "https://sbert.net/examples/sentence_transformer/applications/semantic-search/README.html"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "semantic_search",
+      "对称与非对称检索"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "semantic_search_sec2"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q351",
+    "type": "scenario",
+    "query": "用户使用缩写或同义词，没有直接字面重合，语义检索依靠什么机制？",
+    "expected_chunks": [
+      "semantic_search_sec1"
+    ],
+    "reference_answer": "语义检索将语料条目与查询嵌入同一向量空间，再寻找语义相近的语料向量。它关注含义，能够处理同义表达、缩写或拼写变化；这类能力不意味着任何问题都能在知识库中找到答案。",
+    "answer_points": [
+      "语义检索将语料条目与查询嵌入同一向量空间，再寻找语义相近的语料向量。它关注含义，能够处理同义表达、缩写或拼写变化；这类能力不意味着任何问题都能在知识库中找到答案。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "semantic_search_sec1",
+        "source": "semantic_search.md",
+        "quote": "语义检索将语料条目与查询嵌入同一向量空间，再寻找语义相近的语料向量。它关注含义，能够处理同义表达、缩写或拼写变化；这类能力不意味着任何问题都能在知识库中找到答案。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "semantic_search_sec1",
+    "source_urls": [
+      "https://sbert.net/examples/sentence_transformer/applications/semantic-search/README.html"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "semantic_search",
+      "向量检索机制"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "semantic_search_sec1"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q409",
+    "type": "scenario",
+    "query": "gather 默认与 TaskGroup 遇到普通子任务异常时，对其他任务的处理有什么差异？",
+    "expected_chunks": [
+      "python_asyncio_sec3"
+    ],
+    "reference_answer": "gather 立即传播首个异常但不自动取消其他任务；TaskGroup 取消剩余任务并等待退出。",
+    "answer_points": [
+      "asyncio.gather 默认 return_exceptions=False：第一个异常立即传播给等待 gather 的调用者，其他可等待对象不会因此自动取消，仍可继续执行。return_exceptions=True 则把异常当作结果收集进列表。不能将默认行为理解为等待全部任务结束后才报告首个异常。\n\n来源：https://docs.python.org/3.13/library/asyncio-task.html",
+      "TaskGroup 中一个任务首次抛出非 CancelledError 异常时，组内剩余任务被取消；上下文退出会等待任务结束。通常将非取消异常组合为 ExceptionGroup 或 BaseExceptionGroup；KeyboardInterrupt 和 SystemExit 有特殊重抛规则。\n\n来源：https://docs.python.org/3.13/library/asyncio-task.html"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "asyncio_tasks_sec1",
+        "source": "asyncio_tasks.md",
+        "quote": "asyncio.gather 默认 return_exceptions=False：第一个异常立即传播给等待 gather 的调用者，其他可等待对象不会因此自动取消，仍可继续执行。return_exceptions=True 则把异常当作结果收集进列表。不能将默认行为理解为等待全部任务结束后才报告首个异常。\n\n来源：https://docs.python.org/3.13/library/asyncio-task.html"
+      },
+      {
+        "chunk_id": "asyncio_tasks_sec2",
+        "source": "asyncio_tasks.md",
+        "quote": "TaskGroup 中一个任务首次抛出非 CancelledError 异常时，组内剩余任务被取消；上下文退出会等待任务结束。通常将非取消异常组合为 ExceptionGroup 或 BaseExceptionGroup；KeyboardInterrupt 和 SystemExit 有特殊重抛规则。\n\n来源：https://docs.python.org/3.13/library/asyncio-task.html"
+      },
+      {
+        "chunk_id": "python_asyncio_sec3",
+        "source": "python_asyncio.md",
+        "quote": "[Python asyncio 调度、阻塞与并发原语-3. gather、TaskGroup 与 Semaphore]\nasyncio.gather() 并发运行传入的可等待对象。全部成功时，结果顺序对应输入顺序，而不是完成顺序。\n\n默认 return_exceptions=False：首个异常会立即传播给等待 gather() 的调用者，其他任务不会仅因这个异常被自动取消。设置 return_exceptions=True 时，异常会作为结果项收集。\n\nTaskGroup 从Python 3.11开始提供，Python 3.10不能直接使用。组内任务出现非 CancelledError 异常时，TaskGroup 会取消其余任务，并等待它们结束。\n\nasyncio.Semaphore 控制共享同一个信号量的任务同时进入指定区域的数量。它不是跨进程的全局限流器，也不直接保证每分钟请求数不超过某个值。\n\n来源：\nhttps://docs.python.org/3.10/library/asyncio-task.html#running-tasks-concurrently\nhttps://docs.python.org/3.11/library/asyncio-task.html#task-groups\nhttps://docs.python.org/3.10/library/asyncio-sync.html#semaphore\n核验日期：2026-10-29；版本范围：gather与Semaphore按Python 3.10，TaskGroup按Python 3.11。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "composite_asyncio_tasks_sec1__asyncio_tasks_sec2",
+    "source_urls": [
+      "https://docs.python.org/3.10/library/asyncio-sync.html#semaphore",
+      "https://docs.python.org/3.10/library/asyncio-task.html#running-tasks-concurrently",
+      "https://docs.python.org/3.11/library/asyncio-task.html#task-groups",
+      "https://docs.python.org/3.13/library/asyncio-task.html"
+    ],
+    "difficulty": "hard",
+    "tags": [],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "python_asyncio_sec3"
+      ],
+      [
+        "asyncio_tasks_sec1",
+        "asyncio_tasks_sec2"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev",
+    "legacy_type": "multi_hop"
+  },
+  {
+    "id": "v2_q222",
+    "type": "paraphrase",
+    "query": "想让一组相关任务在成员失败时一起取消，TaskGroup 的规则是什么？",
+    "expected_chunks": [
+      "asyncio_tasks_sec2"
+    ],
+    "reference_answer": "TaskGroup 中一个任务首次抛出非 CancelledError 异常时，组内剩余任务被取消；上下文退出会等待任务结束。通常将非取消异常组合为 ExceptionGroup 或 BaseExceptionGroup；KeyboardInterrupt 和 SystemExit 有特殊重抛规则。",
+    "answer_points": [
+      "TaskGroup 中一个任务首次抛出非 CancelledError 异常时，组内剩余任务被取消；上下文退出会等待任务结束。通常将非取消异常组合为 ExceptionGroup 或 BaseExceptionGroup；KeyboardInterrupt 和 SystemExit 有特殊重抛规则。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "asyncio_tasks_sec2",
+        "source": "asyncio_tasks.md",
+        "quote": "TaskGroup 中一个任务首次抛出非 CancelledError 异常时，组内剩余任务被取消；上下文退出会等待任务结束。通常将非取消异常组合为 ExceptionGroup 或 BaseExceptionGroup；KeyboardInterrupt 和 SystemExit 有特殊重抛规则。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "asyncio_tasks_sec2",
+    "source_urls": [
+      "https://docs.python.org/3.13/library/asyncio-task.html"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "asyncio_tasks",
+      "TaskGroup 异常与取消"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "asyncio_tasks_sec2"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "test"
+  },
+  {
+    "id": "v2_q442",
+    "type": "unanswerable",
+    "query": "FastAPI 的 Kubernetes readinessProbe 和 livenessProbe 应怎样写？",
+    "expected_chunks": [],
+    "reference_answer": "现有知识库不足以回答。语料没有 Kubernetes 健康探针配置。",
+    "answer_points": [],
+    "evidence": [],
+    "answerable": false,
+    "group_id": "negative_02",
+    "source_urls": [],
+    "difficulty": "hard",
+    "tags": [
+      "near_domain"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "unanswerable_reason": "语料没有 Kubernetes 健康探针配置。",
+    "related_chunks": [
+      "fastapi_config_sec1"
+    ],
+    "expected_behavior": "refuse_unsupported_request",
+    "expected_chunk_sets": [],
+    "split": "dev",
+    "legacy_split": "test"
+  },
+  {
+    "id": "v2_q290",
+    "type": "paraphrase",
+    "query": "向量索引想重启后恢复，应使用哪个写入和读入接口？",
+    "expected_chunks": [
+      "faiss_persistence_sec1"
+    ],
+    "reference_answer": "FAISS 使用 write_index 将索引写入文件，read_index 从文件读取索引。这些读写操作产生深拷贝。向量索引保存与项目自己的外部文本元数据保存不是同一个接口保证，应分别管理需要恢复的数据。",
+    "answer_points": [
+      "FAISS 使用 write_index 将索引写入文件，read_index 从文件读取索引。这些读写操作产生深拷贝。向量索引保存与项目自己的外部文本元数据保存不是同一个接口保证，应分别管理需要恢复的数据。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "faiss_persistence_sec1",
+        "source": "faiss_persistence.md",
+        "quote": "FAISS 使用 write_index 将索引写入文件，read_index 从文件读取索引。这些读写操作产生深拷贝。向量索引保存与项目自己的外部文本元数据保存不是同一个接口保证，应分别管理需要恢复的数据。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "faiss_persistence_sec1",
+    "source_urls": [
+      "https://github.com/facebookresearch/faiss/wiki/Index-IO,-cloning-and-hyper-parameter-tuning"
+    ],
+    "difficulty": "medium",
+    "tags": [
+      "faiss_persistence",
+      "索引保存和恢复"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "faiss_persistence_sec1"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "test"
+  },
+  {
+    "id": "v2_q324",
+    "type": "boundary",
+    "query": "增大候选内部的重排分数就能自动检索新的全库文档，对吗？",
+    "expected_chunks": [
+      "reranking_sec3"
+    ],
+    "reference_answer": "在先检索再重排的流程中，重排器只给已经召回的候选打分。若需要的段落不在候选集合中，单纯调整候选内部排序无法把它补回；必须回查初始召回。最终输出再从重排候选中选取较少的高排名段落。",
+    "answer_points": [
+      "在先检索再重排的流程中，重排器只给已经召回的候选打分。若需要的段落不在候选集合中，单纯调整候选内部排序无法把它补回；必须回查初始召回。最终输出再从重排候选中选取较少的高排名段落。"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "reranking_sec3",
+        "source": "reranking.md",
+        "quote": "[检索候选与 Cross-Encoder 重排-3. 候选数量与最终返回数量]\n候选数量决定本次交给重排器评分的文档范围；最终返回数量决定从重排结果中取出多少篇。\n\n工程推论：如果必要证据没有进入候选集合，重排器不能通过重新排序找回它。遇到漏证据，应先检查候选召回，再检查重排顺序。\n\n对更多问题与文档组合进行评分会增加计算工作量，因此候选集合大小需要结合召回效果和耗时选择。\n\n来源：https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html\n核验日期：2026-10-29；范围：候选重排机制；漏召回边界由两阶段流程推得。"
+      },
+      {
+        "chunk_id": "retrieval_rerank_sec3",
+        "source": "retrieval_rerank.md",
+        "quote": "在先检索再重排的流程中，重排器只给已经召回的候选打分。若需要的段落不在候选集合中，单纯调整候选内部排序无法把它补回；必须回查初始召回。最终输出再从重排候选中选取较少的高排名段落。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "retrieval_rerank_sec3",
+    "source_urls": [
+      "https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "retrieval_rerank",
+      "候选边界"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "reranking_sec3"
+      ],
+      [
+        "retrieval_rerank_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q462",
+    "type": "unanswerable",
+    "query": "我们服务器有多少个 CPU 核心？",
+    "expected_chunks": [],
+    "reference_answer": "现有知识库不足以回答。语料没有服务器硬件清单。",
+    "answer_points": [],
+    "evidence": [],
+    "answerable": false,
+    "group_id": "negative_22",
+    "source_urls": [],
+    "difficulty": "hard",
+    "tags": [
+      "missing_fact"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "unanswerable_reason": "语料没有服务器硬件清单。",
+    "related_chunks": [
+      "fastapi_config_sec1"
+    ],
+    "expected_behavior": "refuse_unsupported_request",
+    "expected_chunk_sets": [],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q400",
+    "type": "multi_hop",
+    "query": "检索指标的 k 与 RRF 分支候选窗口分别代表什么范围？",
+    "expected_chunks": [
+      "hybrid_rrf_sec3",
+      "retrieval_evaluators_sec2"
+    ],
+    "reference_answer": "指标 k 是评测排名截断；rank_window_size 是每条分支参与融合的候选数量。",
+    "answer_points": [
+      "InformationRetrievalEvaluator 报告 MRR、Recall@k、NDCG 等检索指标。mrr_at_k、ndcg_at_k 和 precision_recall_at_k 可分别配置这些指标使用的截断 k 列表。同一指标比较应明确使用哪个 k；这些 k 不代表服务器线程数或训练轮数。\n\n来源：https://sbert.net/docs/package_reference/sentence_transformer/evaluation.html",
+      "Elasticsearch RRF 的 rank_window_size 控制每个子检索器参与融合的结果数量。它应至少为最终 size，并且至少为 1；默认等于 size。增大窗口通常改善相关性但增加性能开销，融合后再裁剪到最终返回数量。\n\n来源：https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion"
+    ],
+    "evidence": [
+      {
+        "chunk_id": "hybrid_rrf_sec3",
+        "source": "hybrid_rrf.md",
+        "quote": "Elasticsearch RRF 的 rank_window_size 控制每个子检索器参与融合的结果数量。它应至少为最终 size，并且至少为 1；默认等于 size。增大窗口通常改善相关性但增加性能开销，融合后再裁剪到最终返回数量。\n\n来源：https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion"
+      },
+      {
+        "chunk_id": "retrieval_evaluators_sec2",
+        "source": "retrieval_evaluators.md",
+        "quote": "InformationRetrievalEvaluator 报告 MRR、Recall@k、NDCG 等检索指标。mrr_at_k、ndcg_at_k 和 precision_recall_at_k 可分别配置这些指标使用的截断 k 列表。同一指标比较应明确使用哪个 k；这些 k 不代表服务器线程数或训练轮数。\n\n来源：https://sbert.net/docs/package_reference/sentence_transformer/evaluation.html"
+      },
+      {
+        "chunk_id": "rrf_fusion_sec3",
+        "source": "rrf_fusion.md",
+        "quote": "[RRF 多路检索排名融合-3. 排名常数与候选窗口]\n排名常数c控制不同名次之间的贡献差异。较大的c会减弱头部名次相对于后部名次的优势。\n\n排名常数不是最终返回条数。各路候选窗口决定哪些文档能够参与融合；最终输出条数决定融合排序后保留多少结果。\n\n工程推论：在所有输入列表中都未出现的文档，无法通过RRF凭空进入结果。因此，扩大候选窗口与增大最终返回条数不是同一件事。\n\n来源：https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion\n核验日期：2026-10-29；范围：参数含义依据官方说明，候选边界由公式推得。"
+      }
+    ],
+    "answerable": true,
+    "group_id": "composite_hybrid_rrf_sec3__retrieval_evaluators_sec2",
+    "source_urls": [
+      "https://sbert.net/docs/package_reference/sentence_transformer/evaluation.html",
+      "https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion"
+    ],
+    "difficulty": "hard",
+    "tags": [
+      "all_evidence_required",
+      "cross_document"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "expected_chunk_sets": [
+      [
+        "hybrid_rrf_sec3",
+        "retrieval_evaluators_sec2"
+      ],
+      [
+        "retrieval_evaluators_sec2",
+        "rrf_fusion_sec3"
+      ]
+    ],
+    "split": "dev",
+    "legacy_split": "dev"
+  },
+  {
+    "id": "v2_q478",
+    "type": "unanswerable",
+    "query": "请给出 OAuth2 刷新令牌轮换的实现方案。",
+    "expected_chunks": [],
+    "reference_answer": "现有知识库不足以回答。语料没有认证令牌轮换方案。",
+    "answer_points": [],
+    "evidence": [],
+    "answerable": false,
+    "group_id": "negative_38",
+    "source_urls": [],
+    "difficulty": "easy",
+    "tags": [
+      "out_of_domain"
+    ],
+    "annotation_basis": "local_corpus_review_v1",
+    "unanswerable_reason": "语料没有认证令牌轮换方案。",
+    "related_chunks": [],
+    "expected_behavior": "refuse_unsupported_request",
+    "expected_chunk_sets": [],
+    "split": "dev",
+    "legacy_split": "dev"
+  }
+]

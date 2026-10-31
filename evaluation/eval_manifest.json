@@ -1,0 +1,14 @@
+{
+  "status": "local_corpus_review_v1",
+  "chunks_sha256": "6426799f51a53f43e5c9303b10777b2e7680d0d9498f98180f7c5b802b8f7182",
+  "dataset_sha256": {
+    "eval_dev.json": "f3e11bfbbfbf405c3e4edb8e07e7c720a807956fddd8957ae29fd7207f160080",
+    "eval_test.json": "49f269c55ff35b9adc80dc64cb12bba68d267b1672b6d1e8d655cb241e25219b"
+  },
+  "dev_questions": 54,
+  "test_questions": 36,
+  "answerable_questions": 75,
+  "unanswerable_questions": 15,
+  "multi_evidence_questions": 21,
+  "group_overlap": 0
+}

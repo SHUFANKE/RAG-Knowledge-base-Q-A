@@ -1,32 +1,45 @@
-import asyncio
 import json
 import time
+import argparse#用于接收命令行中的题集路径和Top-K
+import hashlib#用于记录这次实际使用的数据指纹。
+import asyncio
+
 from datetime import datetime
 from pathlib import Path
-
 from dotenv import load_dotenv
-
 from app.embedder import QwenCloudEmbedder
-from evaluation.metrics import calculate_metrics, summarize
-from rag.bm25_retriever import BM25Retriever
-from rag.dense_retriever import FAISSRetriever
-from rag.hybrid_retriever import HybridRetriever
-from rag.pipeline import ProductionRAGRetriever
+from rag.index_loader import prepare_hybrid
+from evaluation.metrics import calculate_metrics,summarize
 from rag.reranker import DashScopeReranker
+from rag.pipeline import filter_reranked_docs
+
 
 
 async def run_evaluation(
-    final_k: int = 3,
-    rerank_threshold: float = 0.45,
-):
+        top_k: int = 3,
+        dataset_path: str = "evaluation/eval_dev.json",
+        threshold: float = 0.45,
+    ):
     load_dotenv()
 
     chunks_path = Path("data/indexed_chunks.json")
-    dataset_path = Path("evaluation/ground_truth.json")
+    dataset_path = Path(dataset_path)
 
     chunks = json.loads(chunks_path.read_text(encoding="utf-8"))
     ground_truth = json.loads(dataset_path.read_text(encoding="utf-8"))
 
+    manifest = json.loads(
+        Path("evaluation/eval_manifest.json").read_text(encoding="utf-8")
+    )
+    chunks_hash = hashlib.sha256(chunks_path.read_bytes()).hexdigest()
+    dataset_hash = hashlib.sha256(dataset_path.read_bytes()).hexdigest()
+
+    if (
+        chunks_hash != manifest["chunks_sha256"]
+        or dataset_hash != manifest["dataset_sha256"].get(dataset_path.name)
+    ):
+        raise ValueError("题集或切片与记录的版本不一致，请先核对数据")
+    
     if not chunks or not ground_truth:
         raise ValueError("切片和评测集不能为空")
 
@@ -34,297 +47,169 @@ async def run_evaluation(
     if len(chunk_ids) != len(chunks):
         raise ValueError("切片 ID 重复，请先检查数据")
 
+    # 检查所有可接受证据组合，而不只检查第一套。
     for item in ground_truth:
-        expected = item.get("expected_chunks") or item.get("expected") or []
-        missing = set(expected) - chunk_ids
+        expected_ids = {
+            cid
+            for group in item["expected_chunk_sets"]
+            for cid in group
+        }
+        missing = expected_ids - chunk_ids#找出“在左边集合里，但不在右边集合里”的元素
+
         if missing:
             raise ValueError(
-                f"题目 {item['id']} 的标注引用了不存在的切片：{missing}"
+                f"题目 {item['id']} 引用了不存在的切片：{missing}"
             )
-
-    candidate_k = 10
-    branch_candidate_k = 20
-    rrf_k = 60
 
     embedder = QwenCloudEmbedder()
+    hybrid = await prepare_hybrid(chunks, embedder)
+    retriever = hybrid
+    candidate_k = 20
+    reranker = DashScopeReranker(model="qwen3-rerank")
 
-    try:
-        dense = FAISSRetriever(embedder=embedder, dimension=1024)
-        bm25 = BM25Retriever()
-        hybrid = HybridRetriever(
-            dense_retriever=dense,
-            bm25_retriever=bm25,
-            rrf_k=rrf_k,
-        )
-        reranker = DashScopeReranker(model="qwen3-rerank")
-        pipeline = ProductionRAGRetriever(
-            hybrid_retriever=hybrid,
-            reranker=reranker,
-        )
+    rows = []
+
+    for item in ground_truth:
+        expected = item["expected_chunks"]
+        expected_sets = item["expected_chunk_sets"]
 
         print(
-            f"正在构建 Hybrid＋重排索引："
-            f"切片数={len(chunks)}，阈值={rerank_threshold}"
+            f"[Rerank] {len(rows) + 1}/{len(ground_truth)} {item['id']}",
+            flush=True,
         )
 
-        start_index = time.perf_counter()
-        await hybrid.add_documents(chunks)
-        index_build_ms = (
-            time.perf_counter() - start_index
-        ) * 1000.0
+        start = time.perf_counter()
 
-        rows = []
+        candidates = await retriever.search(
+            query=item["query"],
+            top_k=candidate_k,
+            canditate_k=candidate_k,
+        )
 
-        for item in ground_truth:
-            expected = (
-                item.get("expected_chunks")
-                or item.get("expected")
-                or []
+        reranked_docs = await reranker.reranker(
+            query=item["query"],
+            documents=candidates,
+            top_k=top_k,
+        )
+
+        retrieved_docs = filter_reranked_docs(
+            reranked_docs,
+            threshold=threshold,
+            final_k=top_k,
+        )
+
+        retrieval_ms = (time.perf_counter() - start) * 1000.0
+
+        retrieved_ids = [doc["chunk_id"] for doc in retrieved_docs]
+        metrics = calculate_metrics(
+            expected_chunk_sets=expected_sets,
+            retrieved_ids=retrieved_ids,
+            top_k=top_k,
+        )
+
+        rows.append({
+            "id": item["id"],
+            "type": item["type"],
+            "query": item["query"],
+            "expected_chunks": expected,
+            "expected_chunk_sets": expected_sets,
+            "candidate_chunks": [
+                doc["chunk_id"] for doc in candidates
+            ],
+            "reranked_before_filter": [
+                {
+                    "chunk_id": doc["chunk_id"],
+                    "rerank_score": doc["rerank_score"],
+                }
+                for doc in reranked_docs
+            ],
+            "retrieved_chunks": retrieved_ids,
+            "scores": [
+                {
+                    "chunk_id": doc["chunk_id"],
+                    "rerank_score": float(doc["rerank_score"]),
+                }
+                for doc in retrieved_docs
+            ],
+            "retrieval_ms": retrieval_ms,
+            "metrics": metrics,
+        })
+
+        # 不仅关注完全漏召回，也记录多证据未找全的题。
+        if expected_sets and not metrics["complete"]:
+            print(
+                f"[证据未找全] {item['id']} "
+                f"可接受组合={expected_sets} 实际={retrieved_ids}"
             )
 
-            start = time.perf_counter()
-            retrieved_docs = await pipeline.retrieve(
-                query=item["query"],
-                candidate_k=candidate_k,
-                final_k=final_k,
-                rerank_threshold=rerank_threshold,
-            )
-            retrieval_ms = (time.perf_counter() - start) * 1000.0
+    await embedder.client.close()
 
-            retrieved_ids = [
-                doc["chunk_id"] for doc in retrieved_docs
-            ]
-            metrics = calculate_metrics(
-                expected, retrieved_ids, final_k
-            )
+    summary = summarize(rows)
+    by_type = {
+        question_type: summarize([
+            row for row in rows if row["type"] == question_type
+        ])
+        for question_type in sorted({row["type"] for row in rows})
+    }
 
-            rows.append({
-                "id": item["id"],
-                "type": item["type"],
-                "query": item["query"],
-                "expected_chunks": expected,
-                "retrieved_chunks": retrieved_ids,
-                "scores": [
-                    {
-                        "chunk_id": doc["chunk_id"],
-                        "rrf_score": float(doc["rrf_score"]),
-                        "rerank_score": float(doc["rerank_score"]),
-                    }
-                    for doc in retrieved_docs
-                ],
-                "retrieval_ms": retrieval_ms,
-                "metrics": metrics,
-            })
+    now = datetime.now().astimezone()
+    report = {
+        "created_at": now.isoformat(),
+        "config": {
+            "method": "Hybrid-RRF+Rerank+Threshold",
+            "reranker_model": reranker.model,
+            "fused_candidate_k": candidate_k,
+            "primary_threshold": threshold,
+            "secondary_threshold": threshold * 0.5,
+            "candidate_k_per_retriever": candidate_k,
+            "rrf_k": hybrid.rrf_k,
+            "embedding_model": embedder.model,
+            "dimension": hybrid.dense.dimension,
+            "dense_index_type": "IndexFlatIP",
+            "dense_l2_normalized": True,
+            "top_k": top_k,
+            "chunk_count": len(chunks),
+            "chunks_path": str(chunks_path),
+            "dataset_path": str(dataset_path),
+            "chunks_sha256": chunks_hash,
+            "dataset_sha256": dataset_hash,
+            "latency_scope": (
+                "查询Embedding、双路检索、RRF、云端重排与过滤，"
+                "不含索引加载与回答生成"
+            ),
+        },
+        "summary": summary,
+        "by_type": by_type,
+        "questions": rows,
+    }
 
-            if expected and not metrics["complete"]:
-                print(
-                    f"[证据未找全] {item['id']} "
-                    f"期望={expected} 实际={retrieved_ids}"
-                )
-
-            if not expected and retrieved_ids:
-                print(
-                    f"[无答案题仍有候选] {item['id']} "
-                    f"实际={retrieved_ids}"
-                )
-
-        summary = summarize(rows)
-
-        answerable_rows = [
-            row for row in rows if row["expected_chunks"]
-        ]
-        summary["answerable_empty_result_rate"] = (
-            sum(
-                not row["retrieved_chunks"]
-                for row in answerable_rows
-            ) / len(answerable_rows)
-            if answerable_rows else None
-        )
-
-        by_type = {
-            question_type: summarize([
-                row for row in rows
-                if row["type"] == question_type
-            ])
-            for question_type in sorted({
-                row["type"] for row in rows
-            })
-        }
-
-        now = datetime.now().astimezone()
-        report = {
-            "created_at": now.isoformat(),
-            "config": {
-                "method": "Hybrid + Rerank + Threshold",
-                "embedding_model": embedder.model,
-                "rerank_model": reranker.model,
-                "dimension": dense.dimension,
-                "rrf_k": rrf_k,
-                "branch_candidate_k": branch_candidate_k,
-                "candidate_k": candidate_k,
-                "top_k": final_k,
-                "rerank_threshold": rerank_threshold,
-                "chunk_count": len(chunks),
-                "chunks_path": str(chunks_path),
-                "dataset_path": str(dataset_path),
-                "index_build_ms": index_build_ms,
-                "latency_scope": (
-                    "查询向量化、混合检索、重排及阈值过滤，"
-                    "不含索引构建与回答生成"
-                ),
-            },
-            "summary": summary,
-            "by_type": by_type,
-            "questions": rows,
-        }
-
-        output_dir = Path("output/evaluation")
-        output_dir.mkdir(parents=True, exist_ok=True)
-        output_file = output_dir / (
-            f"hybrid_rerank_{now.strftime('%Y%m%d_%H%M%S_%f')}.json"
-        )
-        output_file.write_text(
-            json.dumps(report, ensure_ascii=False, indent=2),
-            encoding="utf-8",
-        )
-
-        print(
-            f"\nHybrid＋重排评测结果，"
-            f"Top-K={final_k}，阈值={rerank_threshold}"
-        )
-        print(json.dumps(summary, ensure_ascii=False, indent=2))
-        print(f"\n逐题结果已保存：{output_file.resolve()}")
-
-    finally:
-        await embedder.client.close()
-
-
-if __name__ == "__main__":
-    asyncio.run(
-        run_evaluation(final_k=3, rerank_threshold=0.45)
+    output_dir = Path("output/evaluation")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / (
+        f"pipeline_{now.strftime('%Y%m%d_%H%M%S_%f')}.json"
+    )
+    output_file.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2),
+        encoding="utf-8",
     )
 
-# import sys
-# from pathlib import Path
+    print(
+        f"\nRerank+Threshold 评测结果，"
+        f"Top-K={top_k}，threshold={threshold}"
+    )
+    print(json.dumps(summary, ensure_ascii=False, indent=2))
+    print(f"\n逐题结果已保存：{output_file.resolve()}")
 
-# sys.path.append(str(Path(__file__).resolve().parent.parent))
+#命令中的 --dataset 会传给 dataset_path，--top-k 会传给 top_k，随后进入刚才的评测流程。
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dataset", default="evaluation/eval_dev.json")
+    parser.add_argument("--top-k", type=int, default=3)
+    parser.add_argument("--threshold", type=float, default=0.45)
+    args = parser.parse_args()
 
-# import asyncio
-# import json
-# import time
-# from dotenv import load_dotenv
-
-# from app.embedder import QwenCloudEmbedder
-# from rag.bm25_retriever import BM25Retriever
-# from rag.dense_retriever import FAISSRetriever
-# from rag.hybrid_retriever import HybridRetriever
-# from rag.pipeline import ProductionRAGRetriever
-# from rag.reranker import DashScopeReranker
-
-# load_dotenv()
-
-# async def run_evaluation(final_k: int=3, rerank_threshold: float = 0.2):
-#     chunks_path = Path("data/indexed_chunks.json")
-#     ddataset_path = Path("evaluation/ground_truth.json")
-
-#     with open(chunks_path, "r", encoding="utf-8") as f:
-#         chunks = json.load(f)
-#     with open(ddataset_path, "r",encoding="utf-8") as f:
-#         ground_truth = json.load(f)
-
-#     print (f">>>正在初始化生产级RAG检索管线（切片量：{len(chunks)}...")
-#     embedder = QwenCloudEmbedder()
-#     dense = FAISSRetriever(embedder=embedder , dimension=1024)
-#     bm25 = BM25Retriever()
-#     hybrid = HybridRetriever(dense_retriever=dense,bm25_retriever=bm25)
-#     reranker = DashScopeReranker(model="qwen3-rerank")
-
-#     pipeline = ProductionRAGRetriever(hybrid_retriever=hybrid, reranker=reranker)
-#     await hybrid.add_documents(chunks)
-#     print(">>>索引构建与重排器装载完毕，开始执行全链路基准评测...\n")
-
-#     answerable_count = 0
-#     hit_count = 0
-#     mrr_sum = 0.0
-#     unanswerable_total = 0
-#     correct_refusal_count = 0
-#     total_latency_ms = 0.0
-#     type_stats = {}
-
-#     for item in ground_truth:
-#         q_id = item["id"]
-#         q_type = item["type"]
-#         query = item["query"]
-#         raw_expected = item.get("expected_chunks") or item.get("expected") or []
-#         expected = set(raw_expected)
-
-#         if q_type not in type_stats:
-#             type_stats[q_type] = {"total":0, "hits": 0, "mrr_sum": 0.0}
-#         type_stats[q_type]["total"] += 1
-
-#         start_t = time.perf_counter()
-#         #执行二阶段检索：粗排Top-10 -> Cross-Encoder 精排Top-3 -> 0.2阈值过滤
-#         retrieved_docs = await pipeline.retrieve(
-#             query=query,candidate_k=10, final_k=final_k, rerank_threshold=rerank_threshold
-#         )
-#         cost_ms = (time.perf_counter() - start_t) * 1000.0
-#         total_latency_ms += cost_ms
-
-#         retrieved_ids = [doc["chunk_id"] for doc in retrieved_docs]
-#         scores = [f"{doc['chunk_id']}: {doc.get('rerank_score', 0.0):.4f}" for doc in retrieved_docs]
-#         print(f"       切片及得分: {scores}\n")
-
-#         #超纲拒答题测试（评估防幻觉阈值过滤机制）
-#         if q_type == "unanswerable" or len(expected) ==  0:
-#             unanswerable_total += 1
-#             if len(retrieved_ids) == 0:
-#                 correct_refusal_count += 1
-#             else:
-                
-#                 print(f"[WARN]超纲题未被阈值过滤：{query}(仍召回：{retrieved_ids})")
-                
-#             continue
-
-#         answerable_count += 1
-#         is_hit = bool(expected.intersection(set(retrieved_ids)))
-#         if is_hit:
-#             hit_count += 1
-#             type_stats[q_type]["hits"] += 1
-
-#         reciprocal_rank = 0.0
-#         for rank, rid in enumerate(retrieved_ids, start=1):
-#             if rid in expected:
-#                 reciprocal_rank = 1.0 / rank
-#                 break
-#         mrr_sum += reciprocal_rank
-#         type_stats[q_type]["mrr_sum"] += reciprocal_rank
-
-#         if not is_hit:
-#             print(f"[FAIL] 题号 {q_id} ({q_type}) 召回失败! 期望: {list(expected)}, 实际: {retrieved_ids}")
-
-#     overall_recall = hit_count / answerable_count if answerable_count else 0.0
-#     overall_mrr = mrr_sum / answerable_count if answerable_count else 0.0
-#     refusal_rate = correct_refusal_count / unanswerable_total if unanswerable_total else 0.0
-#     avg_latency = total_latency_ms / len(ground_truth)
-
-#     print("=" * 60)
-#     print("      Production Pipeline (Hybrid + Qwen3-Rerank) 评测报告")
-#     print("=" * 60)
-#     print(f"评测总题数: {len(ground_truth)} (可回答: {answerable_count}, 超纲拒答: {unanswerable_total})")
-#     print(f"精排截断深度 Top-K: {final_k} | 拒答置信度门槛: {rerank_threshold}")
-#     print(f"平均端到端检索耗时: {avg_latency:.2f} ms")
-#     print(f"综合 Recall@{final_k}: {overall_recall:.4f} ({hit_count}/{answerable_count})")
-#     print(f"综合 MRR@{final_k}:    {overall_mrr:.4f}")
-#     print(f"超纲拒答准确率:     {refusal_rate:.4f} ({correct_refusal_count}/{unanswerable_total})")
-#     print("-" * 60)
-#     print("分题型细分表现:")
-#     for t, stat in type_stats.items():
-#         if t == "unanswerable":
-#             continue
-#         t_recall = stat["hits"] / stat["total"] if stat["total"] else 0.0
-#         t_mrr = stat["mrr_sum"] / stat["total"] if stat["total"] else 0.0
-#         print(f"  - [{t:12s}] Recall@{final_k}: {t_recall:.4f} | MRR: {t_mrr:.4f} (共 {stat['total']} 题)")
-#     print("=" * 60)
-
-# if __name__ == "__main__":
-#     asyncio.run(run_evaluation(final_k=3, rerank_threshold=0.45))
+    asyncio.run(run_evaluation(
+        top_k=args.top_k,
+        dataset_path=args.dataset,
+        threshold=args.threshold,
+    ))

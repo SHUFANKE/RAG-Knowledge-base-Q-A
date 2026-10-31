@@ -1,0 +1,4168 @@
+{
+  "created_at": "2026-10-30T16:30:42.647100+08:00",
+  "config": {
+    "method": "Hybrid-RRF+Rerank+Threshold",
+    "reranker_model": "qwen3-rerank",
+    "fused_candidate_k": 20,
+    "primary_threshold": 0.45,
+    "secondary_threshold": 0.225,
+    "candidate_k_per_retriever": 20,
+    "rrf_k": 60,
+    "embedding_model": "text-embedding-v3",
+    "dimension": 1024,
+    "dense_index_type": "IndexFlatIP",
+    "dense_l2_normalized": true,
+    "top_k": 3,
+    "chunk_count": 82,
+    "chunks_path": "data\\indexed_chunks.json",
+    "dataset_path": "evaluation\\eval_dev.json",
+    "chunks_sha256": "6426799f51a53f43e5c9303b10777b2e7680d0d9498f98180f7c5b802b8f7182",
+    "dataset_sha256": "f3e11bfbbfbf405c3e4edb8e07e7c720a807956fddd8957ae29fd7207f160080",
+    "latency_scope": "查询Embedding、双路检索、RRF、云端重排与过滤，不含索引加载与回答生成"
+  },
+  "summary": {
+    "total_questions": 54,
+    "answerable_questions": 45,
+    "unanswerable_questions": 9,
+    "hit_at_k": 1.0,
+    "recall_at_k": 0.9592592592592594,
+    "complete_evidence_rate": 0.9111111111111111,
+    "mrr_at_k": 1.0,
+    "retrieval_refusal_rate": 0.7777777777777778,
+    "answerable_refusal_rate": 0.0,
+    "avg_retrieval_ms": 11940.310129629288
+  },
+  "by_type": {
+    "boundary": {
+      "total_questions": 7,
+      "answerable_questions": 7,
+      "unanswerable_questions": 0,
+      "hit_at_k": 1.0,
+      "recall_at_k": 1.0,
+      "complete_evidence_rate": 1.0,
+      "mrr_at_k": 1.0,
+      "retrieval_refusal_rate": null,
+      "answerable_refusal_rate": 0.0,
+      "avg_retrieval_ms": 590.0606999992825
+    },
+    "keyword": {
+      "total_questions": 7,
+      "answerable_questions": 7,
+      "unanswerable_questions": 0,
+      "hit_at_k": 1.0,
+      "recall_at_k": 1.0,
+      "complete_evidence_rate": 1.0,
+      "mrr_at_k": 1.0,
+      "retrieval_refusal_rate": null,
+      "answerable_refusal_rate": 0.0,
+      "avg_retrieval_ms": 1932.0560857143262
+    },
+    "multi_hop": {
+      "total_questions": 11,
+      "answerable_questions": 11,
+      "unanswerable_questions": 0,
+      "hit_at_k": 1.0,
+      "recall_at_k": 0.8787878787878788,
+      "complete_evidence_rate": 0.7272727272727273,
+      "mrr_at_k": 1.0,
+      "retrieval_refusal_rate": null,
+      "answerable_refusal_rate": 0.0,
+      "avg_retrieval_ms": 55336.46031818222
+    },
+    "paraphrase": {
+      "total_questions": 9,
+      "answerable_questions": 9,
+      "unanswerable_questions": 0,
+      "hit_at_k": 1.0,
+      "recall_at_k": 1.0,
+      "complete_evidence_rate": 1.0,
+      "mrr_at_k": 1.0,
+      "retrieval_refusal_rate": null,
+      "answerable_refusal_rate": 0.0,
+      "avg_retrieval_ms": 516.0954555544272
+    },
+    "scenario": {
+      "total_questions": 11,
+      "answerable_questions": 11,
+      "unanswerable_questions": 0,
+      "hit_at_k": 1.0,
+      "recall_at_k": 0.9545454545454546,
+      "complete_evidence_rate": 0.9090909090909091,
+      "mrr_at_k": 1.0,
+      "retrieval_refusal_rate": null,
+      "answerable_refusal_rate": 0.0,
+      "avg_retrieval_ms": 838.696781817403
+    },
+    "unanswerable": {
+      "total_questions": 9,
+      "answerable_questions": 0,
+      "unanswerable_questions": 9,
+      "hit_at_k": null,
+      "recall_at_k": null,
+      "complete_evidence_rate": null,
+      "mrr_at_k": null,
+      "retrieval_refusal_rate": 0.7777777777777778,
+      "answerable_refusal_rate": null,
+      "avg_retrieval_ms": 505.5935888889912
+    }
+  },
+  "questions": [
+    {
+      "id": "v2_q421",
+      "type": "scenario",
+      "query": "语义向量检索在两阶段搜索中怎样产生候选，后续又怎样处理？",
+      "expected_chunks": [
+        "reranking_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "reranking_sec2"
+        ],
+        [
+          "reranking_sec1",
+          "semantic_search_sec1"
+        ],
+        [
+          "retrieval_rerank_sec1",
+          "semantic_search_sec1"
+        ]
+      ],
+      "candidate_chunks": [
+        "retrieval_rerank_sec1",
+        "reranking_sec1",
+        "semantic_search_sec1",
+        "retrieval_rerank_sec3",
+        "faiss_parameters_sec1",
+        "reranking_sec3",
+        "semantic_search_sec2",
+        "reranking_sec2",
+        "retrieval_rerank_sec2",
+        "rrf_fusion_sec4",
+        "bm25_retrieval_sec4",
+        "faiss_parameters_sec2",
+        "bm25_retrieval_sec1",
+        "rrf_fusion_sec3",
+        "faiss_metrics_sec2",
+        "bm25_retrieval_sec3",
+        "faiss_metrics_sec3",
+        "hybrid_rrf_sec3",
+        "fastapi_lifespan_sec2",
+        "rag_evaluation_sec3"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "retrieval_rerank_sec1",
+          "rerank_score": 0.9013964395368729
+        },
+        {
+          "chunk_id": "reranking_sec1",
+          "rerank_score": 0.7832013629501478
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec3",
+          "rerank_score": 0.6760997636466708
+        }
+      ],
+      "retrieved_chunks": [
+        "retrieval_rerank_sec1",
+        "reranking_sec1",
+        "retrieval_rerank_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "retrieval_rerank_sec1",
+          "rerank_score": 0.9013964395368729
+        },
+        {
+          "chunk_id": "reranking_sec1",
+          "rerank_score": 0.7832013629501478
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec3",
+          "rerank_score": 0.6760997636466708
+        }
+      ],
+      "retrieval_ms": 1804.796799999167,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 0.5,
+        "complete": 0.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q455",
+      "type": "unanswerable",
+      "query": "请实现一个带优先级的 asyncio.PriorityQueue 消费者。",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "candidate_chunks": [
+        "asyncio_queues_sec2",
+        "asyncio_queues_sec1",
+        "asyncio_queues_sec3",
+        "python_asyncio_sec3",
+        "python_asyncio_sec1",
+        "asyncio_tasks_sec3",
+        "python_asyncio_sec2",
+        "asyncio_tasks_sec1",
+        "httpx_clients_sec2",
+        "asyncio_tasks_sec2",
+        "fastapi_config_sec1",
+        "httpx_clients_sec3",
+        "retrieval_rerank_sec3",
+        "bm25_retrieval_sec2",
+        "rag_foundations_sec2",
+        "fastapi_models_sec1",
+        "httpx_timeouts_sec1",
+        "httpx_timeouts_sec4",
+        "faiss_parameters_sec1",
+        "httpx_clients_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "asyncio_queues_sec2",
+          "rerank_score": 0.5273215207116768
+        },
+        {
+          "chunk_id": "asyncio_queues_sec3",
+          "rerank_score": 0.46520488706924173
+        },
+        {
+          "chunk_id": "asyncio_queues_sec1",
+          "rerank_score": 0.4546594801173807
+        }
+      ],
+      "retrieved_chunks": [
+        "asyncio_queues_sec2",
+        "asyncio_queues_sec3",
+        "asyncio_queues_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "asyncio_queues_sec2",
+          "rerank_score": 0.5273215207116768
+        },
+        {
+          "chunk_id": "asyncio_queues_sec3",
+          "rerank_score": 0.46520488706924173
+        },
+        {
+          "chunk_id": "asyncio_queues_sec1",
+          "rerank_score": 0.4546594801173807
+        }
+      ],
+      "retrieval_ms": 458.4207999978389,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q418",
+      "type": "scenario",
+      "query": "RRF 与 Cross-Encoder 分别依靠什么信息给候选排序？",
+      "expected_chunks": [
+        "rrf_fusion_sec4"
+      ],
+      "expected_chunk_sets": [
+        [
+          "rrf_fusion_sec4"
+        ],
+        [
+          "hybrid_rrf_sec1",
+          "reranking_sec2"
+        ],
+        [
+          "hybrid_rrf_sec1",
+          "retrieval_rerank_sec2"
+        ],
+        [
+          "reranking_sec2",
+          "rrf_fusion_sec2"
+        ],
+        [
+          "retrieval_rerank_sec2",
+          "rrf_fusion_sec2"
+        ]
+      ],
+      "candidate_chunks": [
+        "rrf_fusion_sec4",
+        "reranking_sec2",
+        "retrieval_rerank_sec2",
+        "reranking_sec3",
+        "reranking_sec1",
+        "rrf_fusion_sec2",
+        "reranking_sec4",
+        "rrf_fusion_sec3",
+        "rrf_fusion_sec1",
+        "retrieval_rerank_sec3",
+        "hybrid_rrf_sec3",
+        "retrieval_rerank_sec1",
+        "retrieval_evaluators_sec3",
+        "rag_evaluation_sec3",
+        "hybrid_rrf_sec1",
+        "bm25_retrieval_sec1",
+        "hybrid_rrf_sec2",
+        "fastapi_config_sec3",
+        "retrieval_evaluators_sec2",
+        "httpx_exceptions_sec3"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "rrf_fusion_sec4",
+          "rerank_score": 0.8928376614603086
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec2",
+          "rerank_score": 0.8096003958572302
+        },
+        {
+          "chunk_id": "reranking_sec2",
+          "rerank_score": 0.776794497036901
+        }
+      ],
+      "retrieved_chunks": [
+        "rrf_fusion_sec4",
+        "retrieval_rerank_sec2",
+        "reranking_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "rrf_fusion_sec4",
+          "rerank_score": 0.8928376614603086
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec2",
+          "rerank_score": 0.8096003958572302
+        },
+        {
+          "chunk_id": "reranking_sec2",
+          "rerank_score": 0.776794497036901
+        }
+      ],
+      "retrieval_ms": 500.5608999999822,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q401",
+      "type": "multi_hop",
+      "query": "证据在切片边界丢失或初始召回候选中不存在，分别应检查什么？",
+      "expected_chunks": [
+        "reranking_sec3",
+        "text_chunking_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "reranking_sec3",
+          "text_chunking_sec2"
+        ],
+        [
+          "retrieval_rerank_sec3",
+          "text_chunking_sec2"
+        ]
+      ],
+      "candidate_chunks": [
+        "retrieval_rerank_sec3",
+        "reranking_sec3",
+        "retrieval_rerank_sec1",
+        "rag_evaluation_sec2",
+        "rag_evaluation_sec3",
+        "reranking_sec4",
+        "retrieval_evaluators_sec2",
+        "rrf_fusion_sec3",
+        "fastapi_security_sec2",
+        "rrf_fusion_sec4",
+        "rag_foundations_sec2",
+        "fastapi_models_sec3",
+        "bm25_similarity_sec3",
+        "httpx_exceptions_sec3",
+        "rag_foundations_sec3",
+        "rrf_fusion_sec2",
+        "reranking_sec2",
+        "faiss_persistence_sec3",
+        "text_chunking_sec3",
+        "asyncio_tasks_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "retrieval_rerank_sec3",
+          "rerank_score": 0.7865055672397463
+        },
+        {
+          "chunk_id": "reranking_sec3",
+          "rerank_score": 0.7739928235154854
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec1",
+          "rerank_score": 0.45036477696179844
+        }
+      ],
+      "retrieved_chunks": [
+        "retrieval_rerank_sec3",
+        "reranking_sec3",
+        "retrieval_rerank_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "retrieval_rerank_sec3",
+          "rerank_score": 0.7865055672397463
+        },
+        {
+          "chunk_id": "reranking_sec3",
+          "rerank_score": 0.7739928235154854
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec1",
+          "rerank_score": 0.45036477696179844
+        }
+      ],
+      "retrieval_ms": 493.41629999980796,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 0.5,
+        "complete": 0.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q192",
+      "type": "boundary",
+      "query": "async def 路由只能注入 async def 依赖，对吗？",
+      "expected_chunks": [
+        "fastapi_dependencies_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_dependencies_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "fastapi_dependencies_sec3",
+        "fastapi_dependencies_sec1",
+        "python_asyncio_sec1",
+        "fastapi_dependencies_sec2",
+        "python_asyncio_sec2",
+        "httpx_clients_sec2",
+        "httpx_clients_sec3",
+        "python_asyncio_sec3",
+        "fastapi_config_sec2",
+        "semantic_search_sec3",
+        "fastapi_security_sec1",
+        "asyncio_queues_sec1",
+        "text_chunking_sec2",
+        "faiss_persistence_sec2",
+        "faiss_parameters_sec1",
+        "asyncio_queues_sec3",
+        "rrf_fusion_sec4",
+        "fastapi_security_sec2",
+        "retrieval_rerank_sec2",
+        "httpx_timeouts_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "fastapi_dependencies_sec3",
+          "rerank_score": 0.8180689777127259
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec1",
+          "rerank_score": 0.6234139887316232
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec2",
+          "rerank_score": 0.5318072746887543
+        }
+      ],
+      "retrieved_chunks": [
+        "fastapi_dependencies_sec3",
+        "fastapi_dependencies_sec1",
+        "fastapi_dependencies_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_dependencies_sec3",
+          "rerank_score": 0.8180689777127259
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec1",
+          "rerank_score": 0.6234139887316232
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec2",
+          "rerank_score": 0.5318072746887543
+        }
+      ],
+      "retrieval_ms": 433.0207999992126,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q149",
+      "type": "keyword",
+      "query": "SSE 命名事件和默认事件分别如何识别，冒号开头的行是什么？",
+      "expected_chunks": [
+        "sse_streaming_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "sse_streaming_sec2"
+        ]
+      ],
+      "candidate_chunks": [
+        "sse_streaming_sec2",
+        "sse_streaming_sec1",
+        "sse_streaming_sec3",
+        "httpx_timeouts_sec1",
+        "retrieval_evaluators_sec3",
+        "fastapi_security_sec2",
+        "asyncio_tasks_sec1",
+        "retrieval_evaluators_sec2",
+        "retrieval_evaluators_sec1",
+        "fastapi_lifespan_sec3",
+        "python_asyncio_sec1",
+        "python_asyncio_sec3",
+        "rrf_fusion_sec2",
+        "python_asyncio_sec2",
+        "faiss_parameters_sec2",
+        "httpx_timeouts_sec4",
+        "reranking_sec2",
+        "asyncio_queues_sec1",
+        "httpx_exceptions_sec3",
+        "rag_foundations_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "sse_streaming_sec2",
+          "rerank_score": 0.9299145740378794
+        },
+        {
+          "chunk_id": "sse_streaming_sec1",
+          "rerank_score": 0.42260495506503337
+        },
+        {
+          "chunk_id": "sse_streaming_sec3",
+          "rerank_score": 0.34386368638743603
+        }
+      ],
+      "retrieved_chunks": [
+        "sse_streaming_sec2",
+        "sse_streaming_sec1",
+        "sse_streaming_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "sse_streaming_sec2",
+          "rerank_score": 0.9299145740378794
+        },
+        {
+          "chunk_id": "sse_streaming_sec1",
+          "rerank_score": 0.42260495506503337
+        },
+        {
+          "chunk_id": "sse_streaming_sec3",
+          "rerank_score": 0.34386368638743603
+        }
+      ],
+      "retrieval_ms": 529.5868000030168,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q131",
+      "type": "scenario",
+      "query": "中文字符被 token 切分拆成乱码时，文档建议哪类编码器切分方式？",
+      "expected_chunks": [
+        "text_chunking_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "text_chunking_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "text_chunking_sec3",
+        "text_chunking_sec1",
+        "text_chunking_sec2",
+        "bm25_similarity_sec3",
+        "semantic_search_sec3",
+        "rag_foundations_sec2",
+        "reranking_sec4",
+        "bm25_retrieval_sec3",
+        "faiss_persistence_sec3",
+        "retrieval_rerank_sec2",
+        "reranking_sec2",
+        "fastapi_dependencies_sec3",
+        "sse_streaming_sec1",
+        "rag_evaluation_sec2",
+        "retrieval_evaluators_sec2",
+        "rrf_fusion_sec1",
+        "fastapi_dependencies_sec1",
+        "retrieval_rerank_sec3",
+        "asyncio_tasks_sec2",
+        "reranking_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "text_chunking_sec3",
+          "rerank_score": 0.9614670138018817
+        },
+        {
+          "chunk_id": "text_chunking_sec1",
+          "rerank_score": 0.3420807420618238
+        },
+        {
+          "chunk_id": "text_chunking_sec2",
+          "rerank_score": 0.30892987883651046
+        }
+      ],
+      "retrieved_chunks": [
+        "text_chunking_sec3",
+        "text_chunking_sec1",
+        "text_chunking_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "text_chunking_sec3",
+          "rerank_score": 0.9614670138018817
+        },
+        {
+          "chunk_id": "text_chunking_sec1",
+          "rerank_score": 0.3420807420618238
+        },
+        {
+          "chunk_id": "text_chunking_sec2",
+          "rerank_score": 0.30892987883651046
+        }
+      ],
+      "retrieval_ms": 522.3814999990282,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q315",
+      "type": "scenario",
+      "query": "想把高效向量检索和较慢的精细模型组合，应按什么次序执行？",
+      "expected_chunks": [
+        "reranking_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "reranking_sec1"
+        ],
+        [
+          "retrieval_rerank_sec1"
+        ]
+      ],
+      "candidate_chunks": [
+        "reranking_sec1",
+        "reranking_sec2",
+        "faiss_parameters_sec1",
+        "retrieval_rerank_sec1",
+        "retrieval_rerank_sec2",
+        "faiss_parameters_sec2",
+        "semantic_search_sec2",
+        "faiss_metrics_sec2",
+        "hybrid_rrf_sec1",
+        "faiss_parameters_sec3",
+        "fastapi_models_sec2",
+        "bm25_retrieval_sec1",
+        "semantic_search_sec1",
+        "fastapi_models_sec1",
+        "rag_evaluation_sec3",
+        "rrf_fusion_sec4",
+        "hybrid_rrf_sec3",
+        "fastapi_lifespan_sec3",
+        "faiss_metrics_sec3",
+        "rag_foundations_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "reranking_sec1",
+          "rerank_score": 0.756022101702073
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec1",
+          "rerank_score": 0.5378226005402792
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec2",
+          "rerank_score": 0.45091958095260093
+        }
+      ],
+      "retrieved_chunks": [
+        "reranking_sec1",
+        "retrieval_rerank_sec1",
+        "retrieval_rerank_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "reranking_sec1",
+          "rerank_score": 0.756022101702073
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec1",
+          "rerank_score": 0.5378226005402792
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec2",
+          "rerank_score": 0.45091958095260093
+        }
+      ],
+      "retrieval_ms": 524.9426000009407,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q416",
+      "type": "multi_hop",
+      "query": "GPU 索引怎样转换后持久化，恢复使用什么函数？",
+      "expected_chunks": [
+        "faiss_persistence_sec1",
+        "faiss_persistence_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "faiss_persistence_sec1",
+          "faiss_persistence_sec2"
+        ]
+      ],
+      "candidate_chunks": [
+        "faiss_persistence_sec2",
+        "faiss_persistence_sec1",
+        "faiss_parameters_sec1",
+        "faiss_metrics_sec2",
+        "faiss_parameters_sec3",
+        "rag_foundations_sec1",
+        "fastapi_config_sec3",
+        "fastapi_config_sec2",
+        "bm25_retrieval_sec3",
+        "bm25_similarity_sec2",
+        "fastapi_security_sec3",
+        "fastapi_models_sec2",
+        "retrieval_rerank_sec1",
+        "fastapi_dependencies_sec3",
+        "python_asyncio_sec2",
+        "faiss_persistence_sec3",
+        "httpx_clients_sec2",
+        "faiss_parameters_sec2",
+        "semantic_search_sec3",
+        "fastapi_dependencies_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "faiss_persistence_sec2",
+          "rerank_score": 0.8781048566334906
+        },
+        {
+          "chunk_id": "faiss_persistence_sec1",
+          "rerank_score": 0.5544385950321373
+        },
+        {
+          "chunk_id": "faiss_persistence_sec3",
+          "rerank_score": 0.36677158098141804
+        }
+      ],
+      "retrieved_chunks": [
+        "faiss_persistence_sec2",
+        "faiss_persistence_sec1",
+        "faiss_persistence_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_persistence_sec2",
+          "rerank_score": 0.8781048566334906
+        },
+        {
+          "chunk_id": "faiss_persistence_sec1",
+          "rerank_score": 0.5544385950321373
+        },
+        {
+          "chunk_id": "faiss_persistence_sec3",
+          "rerank_score": 0.36677158098141804
+        }
+      ],
+      "retrieval_ms": 449.510200000077,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q471",
+      "type": "unanswerable",
+      "query": "如何用 CSS Grid 编写响应式页面布局？",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "candidate_chunks": [
+        "httpx_clients_sec3",
+        "fastapi_models_sec2",
+        "sse_streaming_sec1",
+        "fastapi_config_sec3",
+        "fastapi_models_sec1",
+        "faiss_parameters_sec1",
+        "python_asyncio_sec2",
+        "hybrid_rrf_sec3",
+        "python_asyncio_sec3",
+        "fastapi_lifespan_sec3",
+        "rag_evaluation_sec3",
+        "fastapi_dependencies_sec1",
+        "text_chunking_sec1",
+        "faiss_metrics_sec2",
+        "httpx_timeouts_sec1",
+        "asyncio_tasks_sec3",
+        "fastapi_config_sec2",
+        "semantic_search_sec2",
+        "retrieval_rerank_sec2",
+        "retrieval_rerank_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "fastapi_models_sec2",
+          "rerank_score": 0.2685051535959942
+        },
+        {
+          "chunk_id": "semantic_search_sec2",
+          "rerank_score": 0.2440280837704279
+        },
+        {
+          "chunk_id": "text_chunking_sec1",
+          "rerank_score": 0.23680907890358516
+        }
+      ],
+      "retrieved_chunks": [],
+      "scores": [],
+      "retrieval_ms": 664.8368999995,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 1.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q340",
+      "type": "boundary",
+      "query": "原始 RAG 只依赖语言模型参数，没有外部非参数记忆，对吗？",
+      "expected_chunks": [
+        "rag_foundations_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "rag_foundations_sec1"
+        ]
+      ],
+      "candidate_chunks": [
+        "rag_foundations_sec1",
+        "rag_foundations_sec3",
+        "rag_foundations_sec2",
+        "faiss_parameters_sec3",
+        "fastapi_config_sec1",
+        "fastapi_dependencies_sec3",
+        "bm25_retrieval_sec2",
+        "faiss_persistence_sec1",
+        "rag_evaluation_sec2",
+        "text_chunking_sec2",
+        "fastapi_dependencies_sec1",
+        "rrf_fusion_sec3",
+        "fastapi_dependencies_sec2",
+        "faiss_persistence_sec2",
+        "faiss_parameters_sec1",
+        "fastapi_models_sec2",
+        "rag_evaluation_sec3",
+        "asyncio_queues_sec3",
+        "hybrid_rrf_sec2",
+        "retrieval_evaluators_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "rag_foundations_sec1",
+          "rerank_score": 0.8768727851198013
+        },
+        {
+          "chunk_id": "rag_foundations_sec3",
+          "rerank_score": 0.6970013357462014
+        },
+        {
+          "chunk_id": "rag_foundations_sec2",
+          "rerank_score": 0.5662589057008045
+        }
+      ],
+      "retrieved_chunks": [
+        "rag_foundations_sec1",
+        "rag_foundations_sec3",
+        "rag_foundations_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "rag_foundations_sec1",
+          "rerank_score": 0.8768727851198013
+        },
+        {
+          "chunk_id": "rag_foundations_sec3",
+          "rerank_score": 0.6970013357462014
+        },
+        {
+          "chunk_id": "rag_foundations_sec2",
+          "rerank_score": 0.5662589057008045
+        }
+      ],
+      "retrieval_ms": 467.479099999764,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q138",
+      "type": "paraphrase",
+      "query": "长文档和短文档的长度对词频评分的影响，用哪个参数控制？",
+      "expected_chunks": [
+        "bm25_retrieval_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "bm25_retrieval_sec2"
+        ],
+        [
+          "bm25_similarity_sec2"
+        ]
+      ],
+      "candidate_chunks": [
+        "bm25_similarity_sec2",
+        "bm25_retrieval_sec2",
+        "bm25_similarity_sec1",
+        "bm25_retrieval_sec1",
+        "bm25_retrieval_sec4",
+        "semantic_search_sec2",
+        "retrieval_evaluators_sec2",
+        "text_chunking_sec1",
+        "hybrid_rrf_sec2",
+        "rrf_fusion_sec3",
+        "text_chunking_sec3",
+        "hybrid_rrf_sec3",
+        "bm25_retrieval_sec3",
+        "fastapi_lifespan_sec3",
+        "retrieval_rerank_sec2",
+        "reranking_sec3",
+        "reranking_sec1",
+        "retrieval_evaluators_sec3",
+        "faiss_parameters_sec1",
+        "bm25_similarity_sec3"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "bm25_retrieval_sec2",
+          "rerank_score": 0.9326894726709312
+        },
+        {
+          "chunk_id": "bm25_similarity_sec2",
+          "rerank_score": 0.8791758427745098
+        },
+        {
+          "chunk_id": "bm25_similarity_sec1",
+          "rerank_score": 0.6974645963121826
+        }
+      ],
+      "retrieved_chunks": [
+        "bm25_retrieval_sec2",
+        "bm25_similarity_sec2",
+        "bm25_similarity_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "bm25_retrieval_sec2",
+          "rerank_score": 0.9326894726709312
+        },
+        {
+          "chunk_id": "bm25_similarity_sec2",
+          "rerank_score": 0.8791758427745098
+        },
+        {
+          "chunk_id": "bm25_similarity_sec1",
+          "rerank_score": 0.6974645963121826
+        }
+      ],
+      "retrieval_ms": 474.16810000140686,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q162",
+      "type": "paraphrase",
+      "query": "想分别统计前三和前十结果的召回，需要关注哪项评测配置？",
+      "expected_chunks": [
+        "retrieval_evaluators_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "retrieval_evaluators_sec2"
+        ]
+      ],
+      "candidate_chunks": [
+        "reranking_sec3",
+        "rag_evaluation_sec2",
+        "retrieval_evaluators_sec2",
+        "retrieval_rerank_sec3",
+        "retrieval_evaluators_sec1",
+        "bm25_retrieval_sec4",
+        "retrieval_evaluators_sec3",
+        "fastapi_config_sec3",
+        "rrf_fusion_sec1",
+        "retrieval_rerank_sec1",
+        "faiss_parameters_sec1",
+        "faiss_metrics_sec2",
+        "rrf_fusion_sec3",
+        "fastapi_config_sec2",
+        "fastapi_lifespan_sec1",
+        "faiss_parameters_sec2",
+        "hybrid_rrf_sec2",
+        "faiss_persistence_sec3",
+        "hybrid_rrf_sec3",
+        "fastapi_config_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "retrieval_evaluators_sec2",
+          "rerank_score": 0.6419704321252677
+        },
+        {
+          "chunk_id": "rag_evaluation_sec2",
+          "rerank_score": 0.39645424422747927
+        },
+        {
+          "chunk_id": "retrieval_evaluators_sec3",
+          "rerank_score": 0.3701747093847982
+        }
+      ],
+      "retrieved_chunks": [
+        "retrieval_evaluators_sec2",
+        "rag_evaluation_sec2",
+        "retrieval_evaluators_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "retrieval_evaluators_sec2",
+          "rerank_score": 0.6419704321252677
+        },
+        {
+          "chunk_id": "rag_evaluation_sec2",
+          "rerank_score": 0.39645424422747927
+        },
+        {
+          "chunk_id": "retrieval_evaluators_sec3",
+          "rerank_score": 0.3701747093847982
+        }
+      ],
+      "retrieval_ms": 589.2277999992075,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q347",
+      "type": "scenario",
+      "query": "引入 RAG 能否依据论文动机直接保证所有回答准确无误？",
+      "expected_chunks": [
+        "rag_foundations_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "rag_foundations_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "rag_foundations_sec3",
+        "rag_foundations_sec2",
+        "rag_evaluation_sec1",
+        "rag_foundations_sec1",
+        "rag_evaluation_sec3",
+        "rag_evaluation_sec2",
+        "reranking_sec4",
+        "rrf_fusion_sec3",
+        "bm25_retrieval_sec2",
+        "bm25_retrieval_sec4",
+        "rrf_fusion_sec1",
+        "hybrid_rrf_sec3",
+        "retrieval_evaluators_sec2",
+        "python_asyncio_sec3",
+        "reranking_sec3",
+        "hybrid_rrf_sec1",
+        "faiss_parameters_sec1",
+        "faiss_persistence_sec1",
+        "hybrid_rrf_sec2",
+        "fastapi_config_sec3"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "rag_foundations_sec3",
+          "rerank_score": 0.922411364439379
+        },
+        {
+          "chunk_id": "rag_foundations_sec2",
+          "rerank_score": 0.6659392772187502
+        },
+        {
+          "chunk_id": "rag_evaluation_sec1",
+          "rerank_score": 0.5569041983931667
+        }
+      ],
+      "retrieved_chunks": [
+        "rag_foundations_sec3",
+        "rag_foundations_sec2",
+        "rag_evaluation_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "rag_foundations_sec3",
+          "rerank_score": 0.922411364439379
+        },
+        {
+          "chunk_id": "rag_foundations_sec2",
+          "rerank_score": 0.6659392772187502
+        },
+        {
+          "chunk_id": "rag_evaluation_sec1",
+          "rerank_score": 0.5569041983931667
+        }
+      ],
+      "retrieval_ms": 675.4808999976376,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q249",
+      "type": "keyword",
+      "query": "HTTPX 异步流式响应怎样增量读取，手动流模式怎样关闭？",
+      "expected_chunks": [
+        "httpx_clients_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "httpx_clients_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "httpx_clients_sec3",
+        "httpx_clients_sec2",
+        "httpx_clients_sec1",
+        "httpx_timeouts_sec1",
+        "httpx_timeouts_sec2",
+        "sse_streaming_sec1",
+        "fastapi_models_sec1",
+        "fastapi_models_sec2",
+        "httpx_timeouts_sec4",
+        "httpx_timeouts_sec3",
+        "fastapi_dependencies_sec3",
+        "httpx_exceptions_sec1",
+        "fastapi_lifespan_sec3",
+        "fastapi_lifespan_sec2",
+        "python_asyncio_sec1",
+        "fastapi_models_sec3",
+        "faiss_persistence_sec3",
+        "fastapi_config_sec3",
+        "fastapi_dependencies_sec1",
+        "asyncio_queues_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "httpx_clients_sec3",
+          "rerank_score": 0.9676745568697078
+        },
+        {
+          "chunk_id": "httpx_clients_sec2",
+          "rerank_score": 0.4973432055074571
+        },
+        {
+          "chunk_id": "httpx_clients_sec1",
+          "rerank_score": 0.47800232701536843
+        }
+      ],
+      "retrieved_chunks": [
+        "httpx_clients_sec3",
+        "httpx_clients_sec2",
+        "httpx_clients_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "httpx_clients_sec3",
+          "rerank_score": 0.9676745568697078
+        },
+        {
+          "chunk_id": "httpx_clients_sec2",
+          "rerank_score": 0.4973432055074571
+        },
+        {
+          "chunk_id": "httpx_clients_sec1",
+          "rerank_score": 0.47800232701536843
+        }
+      ],
+      "retrieval_ms": 556.689600001846,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q225",
+      "type": "keyword",
+      "query": "wait_for 超时会如何处理被等待对象，实际耗时一定小于 timeout 吗？",
+      "expected_chunks": [
+        "asyncio_tasks_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "asyncio_tasks_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "asyncio_tasks_sec3",
+        "httpx_timeouts_sec1",
+        "asyncio_queues_sec3",
+        "httpx_timeouts_sec4",
+        "httpx_timeouts_sec3",
+        "httpx_timeouts_sec2",
+        "asyncio_tasks_sec1",
+        "python_asyncio_sec3",
+        "fastapi_config_sec1",
+        "asyncio_tasks_sec2",
+        "asyncio_queues_sec1",
+        "python_asyncio_sec2",
+        "reranking_sec3",
+        "asyncio_queues_sec2",
+        "fastapi_config_sec3",
+        "python_asyncio_sec1",
+        "httpx_exceptions_sec2",
+        "faiss_parameters_sec2",
+        "text_chunking_sec2",
+        "fastapi_lifespan_sec3"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "asyncio_tasks_sec3",
+          "rerank_score": 0.9436316385356159
+        },
+        {
+          "chunk_id": "httpx_timeouts_sec1",
+          "rerank_score": 0.487468172682893
+        },
+        {
+          "chunk_id": "asyncio_queues_sec3",
+          "rerank_score": 0.4837280300075905
+        }
+      ],
+      "retrieved_chunks": [
+        "asyncio_tasks_sec3",
+        "httpx_timeouts_sec1",
+        "asyncio_queues_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "asyncio_tasks_sec3",
+          "rerank_score": 0.9436316385356159
+        },
+        {
+          "chunk_id": "httpx_timeouts_sec1",
+          "rerank_score": 0.487468172682893
+        },
+        {
+          "chunk_id": "asyncio_queues_sec3",
+          "rerank_score": 0.4837280300075905
+        }
+      ],
+      "retrieval_ms": 523.6942999981693,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q343",
+      "type": "scenario",
+      "query": "论文允许不同 token 依赖不同段落，这是否说明我们项目自动具有逐 token 检索？",
+      "expected_chunks": [
+        "rag_foundations_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "rag_foundations_sec2"
+        ]
+      ],
+      "candidate_chunks": [
+        "rag_foundations_sec2",
+        "bm25_similarity_sec3",
+        "text_chunking_sec3",
+        "semantic_search_sec2",
+        "bm25_retrieval_sec3",
+        "rag_foundations_sec3",
+        "rag_foundations_sec1",
+        "fastapi_dependencies_sec2",
+        "semantic_search_sec1",
+        "bm25_retrieval_sec4",
+        "rrf_fusion_sec1",
+        "retrieval_rerank_sec2",
+        "fastapi_dependencies_sec3",
+        "fastapi_config_sec2",
+        "semantic_search_sec3",
+        "bm25_retrieval_sec1",
+        "faiss_parameters_sec2",
+        "retrieval_evaluators_sec2",
+        "fastapi_dependencies_sec1",
+        "retrieval_rerank_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "rag_foundations_sec2",
+          "rerank_score": 0.9278603673679324
+        },
+        {
+          "chunk_id": "text_chunking_sec3",
+          "rerank_score": 0.4904641980619584
+        },
+        {
+          "chunk_id": "rag_foundations_sec3",
+          "rerank_score": 0.48710741464219015
+        }
+      ],
+      "retrieved_chunks": [
+        "rag_foundations_sec2",
+        "text_chunking_sec3",
+        "rag_foundations_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "rag_foundations_sec2",
+          "rerank_score": 0.9278603673679324
+        },
+        {
+          "chunk_id": "text_chunking_sec3",
+          "rerank_score": 0.4904641980619584
+        },
+        {
+          "chunk_id": "rag_foundations_sec3",
+          "rerank_score": 0.48710741464219015
+        }
+      ],
+      "retrieval_ms": 535.376299998461,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q415",
+      "type": "scenario",
+      "query": "库向量和查询向量怎样处理，才能用 2-2*内积解释平方 L2 距离？",
+      "expected_chunks": [
+        "faiss_metrics_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "faiss_metrics_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "faiss_metrics_sec3",
+        "faiss_parameters_sec1",
+        "faiss_metrics_sec2",
+        "faiss_metrics_sec1",
+        "faiss_parameters_sec3",
+        "semantic_search_sec1",
+        "bm25_similarity_sec2",
+        "faiss_parameters_sec2",
+        "semantic_search_sec2",
+        "retrieval_rerank_sec1",
+        "bm25_retrieval_sec2",
+        "reranking_sec2",
+        "faiss_persistence_sec1",
+        "bm25_retrieval_sec1",
+        "bm25_retrieval_sec3",
+        "bm25_similarity_sec3",
+        "bm25_retrieval_sec4",
+        "rag_evaluation_sec2",
+        "retrieval_rerank_sec2",
+        "text_chunking_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "faiss_metrics_sec3",
+          "rerank_score": 0.9003482917954235
+        },
+        {
+          "chunk_id": "faiss_metrics_sec2",
+          "rerank_score": 0.8672901532765719
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "rerank_score": 0.6690301117288714
+        }
+      ],
+      "retrieved_chunks": [
+        "faiss_metrics_sec3",
+        "faiss_metrics_sec2",
+        "faiss_parameters_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_metrics_sec3",
+          "rerank_score": 0.9003482917954235
+        },
+        {
+          "chunk_id": "faiss_metrics_sec2",
+          "rerank_score": 0.8672901532765719
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "rerank_score": 0.6690301117288714
+        }
+      ],
+      "retrieval_ms": 2421.8408999986423,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q395",
+      "type": "multi_hop",
+      "query": "HTTPX 接收流怎样读取并正确区分 SSE 消息边界？",
+      "expected_chunks": [
+        "httpx_clients_sec3",
+        "sse_streaming_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "httpx_clients_sec3",
+          "sse_streaming_sec1"
+        ]
+      ],
+      "candidate_chunks": [
+        "sse_streaming_sec1",
+        "sse_streaming_sec2",
+        "httpx_clients_sec3",
+        "faiss_persistence_sec3",
+        "httpx_clients_sec1",
+        "httpx_timeouts_sec2",
+        "sse_streaming_sec3",
+        "httpx_timeouts_sec1",
+        "httpx_clients_sec2",
+        "httpx_timeouts_sec3",
+        "httpx_exceptions_sec3",
+        "retrieval_rerank_sec2",
+        "httpx_exceptions_sec1",
+        "fastapi_models_sec1",
+        "httpx_timeouts_sec4",
+        "fastapi_config_sec2",
+        "fastapi_lifespan_sec1",
+        "bm25_retrieval_sec3",
+        "retrieval_rerank_sec3",
+        "rrf_fusion_sec4"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "sse_streaming_sec1",
+          "rerank_score": 0.852222161296766
+        },
+        {
+          "chunk_id": "httpx_clients_sec3",
+          "rerank_score": 0.6553580463104531
+        },
+        {
+          "chunk_id": "httpx_clients_sec1",
+          "rerank_score": 0.49254457518746514
+        }
+      ],
+      "retrieved_chunks": [
+        "sse_streaming_sec1",
+        "httpx_clients_sec3",
+        "httpx_clients_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "sse_streaming_sec1",
+          "rerank_score": 0.852222161296766
+        },
+        {
+          "chunk_id": "httpx_clients_sec3",
+          "rerank_score": 0.6553580463104531
+        },
+        {
+          "chunk_id": "httpx_clients_sec1",
+          "rerank_score": 0.49254457518746514
+        }
+      ],
+      "retrieval_ms": 3140.6423000007635,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q329",
+      "type": "keyword",
+      "query": "LLM Context Recall 以什么文本拆分声明，分子分母分别是什么？",
+      "expected_chunks": [
+        "rag_evaluation_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "rag_evaluation_sec2"
+        ]
+      ],
+      "candidate_chunks": [
+        "rag_evaluation_sec2",
+        "retrieval_evaluators_sec2",
+        "retrieval_evaluators_sec1",
+        "retrieval_evaluators_sec3",
+        "rag_foundations_sec1",
+        "text_chunking_sec2",
+        "rag_evaluation_sec3",
+        "fastapi_models_sec2",
+        "text_chunking_sec1",
+        "retrieval_rerank_sec1",
+        "faiss_persistence_sec1",
+        "rag_evaluation_sec1",
+        "bm25_similarity_sec3",
+        "rrf_fusion_sec2",
+        "retrieval_rerank_sec2",
+        "rag_foundations_sec2",
+        "fastapi_dependencies_sec2",
+        "bm25_retrieval_sec1",
+        "fastapi_dependencies_sec1",
+        "retrieval_rerank_sec3"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "rag_evaluation_sec2",
+          "rerank_score": 0.8580055650882761
+        },
+        {
+          "chunk_id": "text_chunking_sec1",
+          "rerank_score": 0.4088803708790206
+        },
+        {
+          "chunk_id": "rag_evaluation_sec1",
+          "rerank_score": 0.40674642974492914
+        }
+      ],
+      "retrieved_chunks": [
+        "rag_evaluation_sec2",
+        "text_chunking_sec1",
+        "rag_evaluation_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "rag_evaluation_sec2",
+          "rerank_score": 0.8580055650882761
+        },
+        {
+          "chunk_id": "text_chunking_sec1",
+          "rerank_score": 0.4088803708790206
+        },
+        {
+          "chunk_id": "rag_evaluation_sec1",
+          "rerank_score": 0.40674642974492914
+        }
+      ],
+      "retrieval_ms": 427.4762000022747,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q417",
+      "type": "multi_hop",
+      "query": "索引可读取和 JWT 有签名，分别不能据此推断哪些安全属性？",
+      "expected_chunks": [
+        "faiss_persistence_sec3",
+        "fastapi_security_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "faiss_persistence_sec3",
+          "fastapi_security_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "fastapi_security_sec3",
+        "faiss_persistence_sec3",
+        "fastapi_security_sec1",
+        "faiss_persistence_sec1",
+        "faiss_persistence_sec2",
+        "rag_foundations_sec2",
+        "fastapi_security_sec2",
+        "retrieval_evaluators_sec1",
+        "faiss_parameters_sec1",
+        "rag_evaluation_sec2",
+        "asyncio_queues_sec1",
+        "rrf_fusion_sec4",
+        "sse_streaming_sec1",
+        "faiss_parameters_sec3",
+        "sse_streaming_sec2",
+        "httpx_timeouts_sec3",
+        "faiss_parameters_sec2",
+        "rag_foundations_sec1",
+        "httpx_timeouts_sec1",
+        "fastapi_models_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "fastapi_security_sec3",
+          "rerank_score": 0.5813705757653904
+        },
+        {
+          "chunk_id": "faiss_persistence_sec3",
+          "rerank_score": 0.5472402404960072
+        },
+        {
+          "chunk_id": "fastapi_security_sec1",
+          "rerank_score": 0.3589130415643802
+        }
+      ],
+      "retrieved_chunks": [
+        "fastapi_security_sec3",
+        "faiss_persistence_sec3",
+        "fastapi_security_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_security_sec3",
+          "rerank_score": 0.5813705757653904
+        },
+        {
+          "chunk_id": "faiss_persistence_sec3",
+          "rerank_score": 0.5472402404960072
+        },
+        {
+          "chunk_id": "fastapi_security_sec1",
+          "rerank_score": 0.3589130415643802
+        }
+      ],
+      "retrieval_ms": 463.1048000010196,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q273",
+      "type": "keyword",
+      "query": "HTTPX 网络错误和本地、远端协议错误如何分类？",
+      "expected_chunks": [
+        "httpx_exceptions_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "httpx_exceptions_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "httpx_exceptions_sec3",
+        "httpx_exceptions_sec1",
+        "httpx_exceptions_sec2",
+        "httpx_timeouts_sec1",
+        "httpx_timeouts_sec3",
+        "fastapi_config_sec3",
+        "fastapi_models_sec3",
+        "httpx_timeouts_sec2",
+        "httpx_timeouts_sec4",
+        "fastapi_config_sec2",
+        "httpx_clients_sec1",
+        "fastapi_security_sec2",
+        "fastapi_models_sec1",
+        "httpx_clients_sec2",
+        "httpx_clients_sec3",
+        "faiss_persistence_sec3",
+        "rag_foundations_sec3",
+        "sse_streaming_sec1",
+        "sse_streaming_sec2",
+        "sse_streaming_sec3"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "httpx_exceptions_sec3",
+          "rerank_score": 0.9452832496058402
+        },
+        {
+          "chunk_id": "httpx_exceptions_sec2",
+          "rerank_score": 0.7957716301369184
+        },
+        {
+          "chunk_id": "httpx_exceptions_sec1",
+          "rerank_score": 0.7894251272131966
+        }
+      ],
+      "retrieved_chunks": [
+        "httpx_exceptions_sec3",
+        "httpx_exceptions_sec2",
+        "httpx_exceptions_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "httpx_exceptions_sec3",
+          "rerank_score": 0.9452832496058402
+        },
+        {
+          "chunk_id": "httpx_exceptions_sec2",
+          "rerank_score": 0.7957716301369184
+        },
+        {
+          "chunk_id": "httpx_exceptions_sec1",
+          "rerank_score": 0.7894251272131966
+        }
+      ],
+      "retrieval_ms": 10552.759899997909,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q183",
+      "type": "scenario",
+      "query": "我想让路由自动获得公共查询参数处理函数的结果，应该怎样使用 Depends？",
+      "expected_chunks": [
+        "fastapi_dependencies_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_dependencies_sec1"
+        ]
+      ],
+      "candidate_chunks": [
+        "fastapi_dependencies_sec1",
+        "fastapi_dependencies_sec2",
+        "retrieval_evaluators_sec1",
+        "faiss_parameters_sec1",
+        "rrf_fusion_sec3",
+        "semantic_search_sec3",
+        "semantic_search_sec2",
+        "rag_foundations_sec1",
+        "bm25_retrieval_sec3",
+        "fastapi_dependencies_sec3",
+        "python_asyncio_sec2",
+        "bm25_retrieval_sec4",
+        "fastapi_models_sec1",
+        "fastapi_models_sec2",
+        "hybrid_rrf_sec2",
+        "fastapi_config_sec2",
+        "rrf_fusion_sec4",
+        "retrieval_evaluators_sec2",
+        "faiss_metrics_sec2",
+        "bm25_retrieval_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "fastapi_dependencies_sec1",
+          "rerank_score": 0.7440264847524763
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec2",
+          "rerank_score": 0.5395994433988208
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec3",
+          "rerank_score": 0.44464682060387195
+        }
+      ],
+      "retrieved_chunks": [
+        "fastapi_dependencies_sec1",
+        "fastapi_dependencies_sec2",
+        "fastapi_dependencies_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_dependencies_sec1",
+          "rerank_score": 0.7440264847524763
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec2",
+          "rerank_score": 0.5395994433988208
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec3",
+          "rerank_score": 0.44464682060387195
+        }
+      ],
+      "retrieval_ms": 562.1298000005481,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q185",
+      "type": "keyword",
+      "query": "如何用 Annotated 和类型别名复用 FastAPI 依赖声明？",
+      "expected_chunks": [
+        "fastapi_dependencies_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_dependencies_sec2"
+        ]
+      ],
+      "candidate_chunks": [
+        "fastapi_dependencies_sec2",
+        "fastapi_dependencies_sec1",
+        "fastapi_dependencies_sec3",
+        "fastapi_models_sec1",
+        "fastapi_models_sec2",
+        "fastapi_lifespan_sec3",
+        "fastapi_security_sec1",
+        "httpx_clients_sec3",
+        "fastapi_config_sec3",
+        "rag_evaluation_sec2",
+        "fastapi_lifespan_sec1",
+        "httpx_clients_sec1",
+        "fastapi_models_sec3",
+        "fastapi_config_sec2",
+        "httpx_clients_sec2",
+        "fastapi_security_sec2",
+        "fastapi_security_sec3",
+        "rag_evaluation_sec1",
+        "python_asyncio_sec2",
+        "fastapi_config_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "fastapi_dependencies_sec2",
+          "rerank_score": 0.9606744336420413
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec1",
+          "rerank_score": 0.6870294430064429
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec3",
+          "rerank_score": 0.5979385505662559
+        }
+      ],
+      "retrieved_chunks": [
+        "fastapi_dependencies_sec2",
+        "fastapi_dependencies_sec1",
+        "fastapi_dependencies_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_dependencies_sec2",
+          "rerank_score": 0.9606744336420413
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec1",
+          "rerank_score": 0.6870294430064429
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec3",
+          "rerank_score": 0.5979385505662559
+        }
+      ],
+      "retrieval_ms": 457.5392999977339,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q288",
+      "type": "boundary",
+      "query": "对单位向量，内积越大平方 L2 距离也越大，对吗？",
+      "expected_chunks": [
+        "faiss_metrics_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "faiss_metrics_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "faiss_metrics_sec3",
+        "faiss_metrics_sec1",
+        "faiss_metrics_sec2",
+        "faiss_parameters_sec1",
+        "bm25_similarity_sec2",
+        "bm25_retrieval_sec2",
+        "faiss_parameters_sec3",
+        "asyncio_queues_sec1",
+        "rrf_fusion_sec4",
+        "reranking_sec1",
+        "faiss_parameters_sec2",
+        "hybrid_rrf_sec2",
+        "retrieval_rerank_sec2",
+        "text_chunking_sec1",
+        "httpx_clients_sec1",
+        "bm25_similarity_sec3",
+        "text_chunking_sec2",
+        "semantic_search_sec3",
+        "rrf_fusion_sec3",
+        "rag_evaluation_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "faiss_metrics_sec3",
+          "rerank_score": 0.9449361237311664
+        },
+        {
+          "chunk_id": "faiss_metrics_sec1",
+          "rerank_score": 0.6309214386841441
+        },
+        {
+          "chunk_id": "faiss_metrics_sec2",
+          "rerank_score": 0.5977878180768831
+        }
+      ],
+      "retrieved_chunks": [
+        "faiss_metrics_sec3",
+        "faiss_metrics_sec1",
+        "faiss_metrics_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_metrics_sec3",
+          "rerank_score": 0.9449361237311664
+        },
+        {
+          "chunk_id": "faiss_metrics_sec1",
+          "rerank_score": 0.6309214386841441
+        },
+        {
+          "chunk_id": "faiss_metrics_sec2",
+          "rerank_score": 0.5977878180768831
+        }
+      ],
+      "retrieval_ms": 716.7752999994264,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q204",
+      "type": "boundary",
+      "query": "可以靠同时注册 lifespan 和 startup 来让两套初始化都执行吗？",
+      "expected_chunks": [
+        "fastapi_lifespan_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_lifespan_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "fastapi_lifespan_sec3",
+        "fastapi_lifespan_sec1",
+        "fastapi_lifespan_sec2",
+        "python_asyncio_sec1",
+        "fastapi_config_sec1",
+        "fastapi_config_sec2",
+        "python_asyncio_sec2",
+        "fastapi_config_sec3",
+        "fastapi_dependencies_sec2",
+        "httpx_clients_sec2",
+        "faiss_parameters_sec1",
+        "httpx_clients_sec1",
+        "reranking_sec2",
+        "rrf_fusion_sec4",
+        "retrieval_rerank_sec1",
+        "fastapi_dependencies_sec3",
+        "httpx_exceptions_sec1",
+        "python_asyncio_sec3",
+        "bm25_retrieval_sec4",
+        "faiss_parameters_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "fastapi_lifespan_sec3",
+          "rerank_score": 0.9249198971955144
+        },
+        {
+          "chunk_id": "fastapi_lifespan_sec2",
+          "rerank_score": 0.5431868826787142
+        },
+        {
+          "chunk_id": "fastapi_lifespan_sec1",
+          "rerank_score": 0.5187386828729419
+        }
+      ],
+      "retrieved_chunks": [
+        "fastapi_lifespan_sec3",
+        "fastapi_lifespan_sec2",
+        "fastapi_lifespan_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_lifespan_sec3",
+          "rerank_score": 0.9249198971955144
+        },
+        {
+          "chunk_id": "fastapi_lifespan_sec2",
+          "rerank_score": 0.5431868826787142
+        },
+        {
+          "chunk_id": "fastapi_lifespan_sec1",
+          "rerank_score": 0.5187386828729419
+        }
+      ],
+      "retrieval_ms": 922.810699998081,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q405",
+      "type": "multi_hop",
+      "query": "想在启动时建立共享异步 HTTP 客户端，该在哪初始化、怎样使用和关闭？",
+      "expected_chunks": [
+        "fastapi_lifespan_sec1",
+        "httpx_clients_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_lifespan_sec1",
+          "httpx_clients_sec2"
+        ]
+      ],
+      "candidate_chunks": [
+        "httpx_clients_sec2",
+        "fastapi_lifespan_sec1",
+        "httpx_clients_sec1",
+        "httpx_clients_sec3",
+        "fastapi_config_sec2",
+        "fastapi_dependencies_sec2",
+        "fastapi_lifespan_sec3",
+        "httpx_timeouts_sec4",
+        "fastapi_dependencies_sec3",
+        "sse_streaming_sec3",
+        "httpx_timeouts_sec2",
+        "fastapi_config_sec3",
+        "httpx_timeouts_sec1",
+        "fastapi_security_sec2",
+        "fastapi_lifespan_sec2",
+        "httpx_exceptions_sec3",
+        "fastapi_models_sec3",
+        "python_asyncio_sec2",
+        "fastapi_config_sec1",
+        "python_asyncio_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "httpx_clients_sec2",
+          "rerank_score": 0.759645107179066
+        },
+        {
+          "chunk_id": "httpx_clients_sec1",
+          "rerank_score": 0.6418804758915211
+        },
+        {
+          "chunk_id": "fastapi_lifespan_sec1",
+          "rerank_score": 0.6009232637608566
+        }
+      ],
+      "retrieved_chunks": [
+        "httpx_clients_sec2",
+        "httpx_clients_sec1",
+        "fastapi_lifespan_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "httpx_clients_sec2",
+          "rerank_score": 0.759645107179066
+        },
+        {
+          "chunk_id": "httpx_clients_sec1",
+          "rerank_score": 0.6418804758915211
+        },
+        {
+          "chunk_id": "fastapi_lifespan_sec1",
+          "rerank_score": 0.6009232637608566
+        }
+      ],
+      "retrieval_ms": 601036.1133000006,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q209",
+      "type": "keyword",
+      "query": "OAuth2PasswordBearer 默认遇到缺少 Bearer 令牌时返回什么状态码？",
+      "expected_chunks": [
+        "fastapi_security_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_security_sec2"
+        ]
+      ],
+      "candidate_chunks": [
+        "fastapi_security_sec2",
+        "fastapi_security_sec1",
+        "fastapi_security_sec3",
+        "fastapi_config_sec3",
+        "sse_streaming_sec2",
+        "fastapi_models_sec2",
+        "httpx_exceptions_sec1",
+        "sse_streaming_sec1",
+        "fastapi_models_sec3",
+        "sse_streaming_sec3",
+        "httpx_timeouts_sec4",
+        "httpx_exceptions_sec3",
+        "reranking_sec3",
+        "rag_foundations_sec2",
+        "semantic_search_sec3",
+        "hybrid_rrf_sec3",
+        "bm25_similarity_sec3",
+        "httpx_timeouts_sec1",
+        "retrieval_rerank_sec3",
+        "bm25_similarity_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "fastapi_security_sec2",
+          "rerank_score": 0.9533028077659553
+        },
+        {
+          "chunk_id": "fastapi_security_sec1",
+          "rerank_score": 0.48695348362663654
+        },
+        {
+          "chunk_id": "fastapi_models_sec3",
+          "rerank_score": 0.42923901081346216
+        }
+      ],
+      "retrieved_chunks": [
+        "fastapi_security_sec2",
+        "fastapi_security_sec1",
+        "fastapi_models_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_security_sec2",
+          "rerank_score": 0.9533028077659553
+        },
+        {
+          "chunk_id": "fastapi_security_sec1",
+          "rerank_score": 0.48695348362663654
+        },
+        {
+          "chunk_id": "fastapi_models_sec3",
+          "rerank_score": 0.42923901081346216
+        }
+      ],
+      "retrieval_ms": 476.6464999993332,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q451",
+      "type": "unanswerable",
+      "query": "怎么把 FAISS 索引移到 GPU 并启用 float16？",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "candidate_chunks": [
+        "faiss_persistence_sec2",
+        "faiss_persistence_sec1",
+        "faiss_metrics_sec2",
+        "faiss_persistence_sec3",
+        "faiss_parameters_sec3",
+        "faiss_parameters_sec1",
+        "faiss_parameters_sec2",
+        "fastapi_dependencies_sec1",
+        "rag_foundations_sec1",
+        "fastapi_models_sec1",
+        "fastapi_models_sec2",
+        "faiss_metrics_sec1",
+        "fastapi_config_sec2",
+        "retrieval_evaluators_sec1",
+        "faiss_metrics_sec3",
+        "fastapi_config_sec3",
+        "httpx_timeouts_sec1",
+        "fastapi_dependencies_sec2",
+        "bm25_similarity_sec1",
+        "python_asyncio_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "faiss_persistence_sec2",
+          "rerank_score": 0.7861299623655272
+        },
+        {
+          "chunk_id": "faiss_persistence_sec1",
+          "rerank_score": 0.443958976171395
+        },
+        {
+          "chunk_id": "faiss_persistence_sec3",
+          "rerank_score": 0.4124162314878629
+        }
+      ],
+      "retrieved_chunks": [
+        "faiss_persistence_sec2",
+        "faiss_persistence_sec1",
+        "faiss_persistence_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_persistence_sec2",
+          "rerank_score": 0.7861299623655272
+        },
+        {
+          "chunk_id": "faiss_persistence_sec1",
+          "rerank_score": 0.443958976171395
+        },
+        {
+          "chunk_id": "faiss_persistence_sec3",
+          "rerank_score": 0.4124162314878629
+        }
+      ],
+      "retrieval_ms": 479.304400003457,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q214",
+      "type": "paraphrase",
+      "query": "一个签过名的 JSON 令牌，别人还能读取里面的数据吗？",
+      "expected_chunks": [
+        "fastapi_security_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_security_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "fastapi_security_sec3",
+        "fastapi_models_sec1",
+        "fastapi_security_sec1",
+        "fastapi_security_sec2",
+        "faiss_persistence_sec3",
+        "faiss_persistence_sec1",
+        "httpx_timeouts_sec2",
+        "retrieval_rerank_sec2",
+        "bm25_retrieval_sec4",
+        "httpx_timeouts_sec1",
+        "faiss_persistence_sec2",
+        "bm25_retrieval_sec1",
+        "sse_streaming_sec2",
+        "fastapi_models_sec2",
+        "sse_streaming_sec1",
+        "rrf_fusion_sec4",
+        "rag_foundations_sec2",
+        "httpx_clients_sec1",
+        "fastapi_dependencies_sec2",
+        "rag_evaluation_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "fastapi_security_sec3",
+          "rerank_score": 0.7517749712456291
+        },
+        {
+          "chunk_id": "fastapi_security_sec1",
+          "rerank_score": 0.45993953956836564
+        },
+        {
+          "chunk_id": "fastapi_models_sec1",
+          "rerank_score": 0.419762048313724
+        }
+      ],
+      "retrieved_chunks": [
+        "fastapi_security_sec3",
+        "fastapi_security_sec1",
+        "fastapi_models_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_security_sec3",
+          "rerank_score": 0.7517749712456291
+        },
+        {
+          "chunk_id": "fastapi_security_sec1",
+          "rerank_score": 0.45993953956836564
+        },
+        {
+          "chunk_id": "fastapi_models_sec1",
+          "rerank_score": 0.419762048313724
+        }
+      ],
+      "retrieval_ms": 461.174399999436,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q392",
+      "type": "multi_hop",
+      "query": "chunk_overlap 与 discount_overlaps 中的重叠分别指什么？",
+      "expected_chunks": [
+        "bm25_similarity_sec3",
+        "text_chunking_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "bm25_similarity_sec3",
+          "text_chunking_sec2"
+        ]
+      ],
+      "candidate_chunks": [
+        "text_chunking_sec2",
+        "bm25_similarity_sec3",
+        "text_chunking_sec1",
+        "text_chunking_sec3",
+        "reranking_sec2",
+        "rrf_fusion_sec2",
+        "reranking_sec1",
+        "retrieval_rerank_sec3",
+        "retrieval_rerank_sec2",
+        "faiss_persistence_sec1",
+        "rrf_fusion_sec4",
+        "retrieval_evaluators_sec2",
+        "rrf_fusion_sec1",
+        "hybrid_rrf_sec3",
+        "bm25_retrieval_sec4",
+        "retrieval_evaluators_sec1",
+        "reranking_sec4",
+        "httpx_exceptions_sec3",
+        "reranking_sec3",
+        "rrf_fusion_sec3"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "bm25_similarity_sec3",
+          "rerank_score": 0.9337420594835801
+        },
+        {
+          "chunk_id": "text_chunking_sec2",
+          "rerank_score": 0.8049385026681858
+        },
+        {
+          "chunk_id": "text_chunking_sec1",
+          "rerank_score": 0.3785083843991244
+        }
+      ],
+      "retrieved_chunks": [
+        "bm25_similarity_sec3",
+        "text_chunking_sec2",
+        "text_chunking_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "bm25_similarity_sec3",
+          "rerank_score": 0.9337420594835801
+        },
+        {
+          "chunk_id": "text_chunking_sec2",
+          "rerank_score": 0.8049385026681858
+        },
+        {
+          "chunk_id": "text_chunking_sec1",
+          "rerank_score": 0.3785083843991244
+        }
+      ],
+      "retrieval_ms": 429.7398000016983,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q474",
+      "type": "unanswerable",
+      "query": "请介绍 MySQL 主从复制的配置步骤。",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "candidate_chunks": [
+        "fastapi_config_sec2",
+        "fastapi_config_sec1",
+        "httpx_clients_sec1",
+        "fastapi_lifespan_sec1",
+        "retrieval_rerank_sec3",
+        "retrieval_evaluators_sec2",
+        "rag_foundations_sec1",
+        "faiss_persistence_sec1",
+        "fastapi_dependencies_sec2",
+        "httpx_timeouts_sec4",
+        "faiss_persistence_sec3",
+        "fastapi_config_sec3",
+        "bm25_retrieval_sec2",
+        "httpx_timeouts_sec1",
+        "faiss_persistence_sec2",
+        "bm25_retrieval_sec1",
+        "fastapi_security_sec2",
+        "fastapi_dependencies_sec3",
+        "httpx_timeouts_sec3",
+        "retrieval_rerank_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "fastapi_config_sec3",
+          "rerank_score": 0.23457948333524625
+        },
+        {
+          "chunk_id": "fastapi_security_sec2",
+          "rerank_score": 0.2259106849879795
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec3",
+          "rerank_score": 0.21649733204275734
+        }
+      ],
+      "retrieved_chunks": [],
+      "scores": [],
+      "retrieval_ms": 459.40859999973327,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 1.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q155",
+      "type": "scenario",
+      "query": "SSE 想携带最后事件标识进行重连，id 与 Last-Event-ID 怎样配合？",
+      "expected_chunks": [
+        "sse_streaming_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "sse_streaming_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "sse_streaming_sec3",
+        "sse_streaming_sec1",
+        "sse_streaming_sec2",
+        "fastapi_lifespan_sec3",
+        "retrieval_rerank_sec2",
+        "reranking_sec2",
+        "reranking_sec3",
+        "fastapi_dependencies_sec2",
+        "faiss_persistence_sec1",
+        "retrieval_evaluators_sec1",
+        "python_asyncio_sec1",
+        "bm25_similarity_sec3",
+        "reranking_sec4",
+        "faiss_parameters_sec3",
+        "python_asyncio_sec3",
+        "asyncio_queues_sec1",
+        "retrieval_rerank_sec3",
+        "fastapi_config_sec2",
+        "faiss_persistence_sec3",
+        "rrf_fusion_sec4"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "sse_streaming_sec3",
+          "rerank_score": 0.8303904843489214
+        },
+        {
+          "chunk_id": "sse_streaming_sec1",
+          "rerank_score": 0.4512952335030957
+        },
+        {
+          "chunk_id": "sse_streaming_sec2",
+          "rerank_score": 0.4456926302560654
+        }
+      ],
+      "retrieved_chunks": [
+        "sse_streaming_sec3",
+        "sse_streaming_sec1",
+        "sse_streaming_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "sse_streaming_sec3",
+          "rerank_score": 0.8303904843489214
+        },
+        {
+          "chunk_id": "sse_streaming_sec1",
+          "rerank_score": 0.4512952335030957
+        },
+        {
+          "chunk_id": "sse_streaming_sec2",
+          "rerank_score": 0.4456926302560654
+        }
+      ],
+      "retrieval_ms": 569.6204000014404,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q406",
+      "type": "multi_hop",
+      "query": "应用资源清理和手动流式 HTTP 响应清理，分别发生在什么阶段、调用什么方法？",
+      "expected_chunks": [
+        "fastapi_lifespan_sec2",
+        "httpx_clients_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_lifespan_sec2",
+          "httpx_clients_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "httpx_clients_sec3",
+        "fastapi_lifespan_sec2",
+        "fastapi_models_sec3",
+        "httpx_timeouts_sec1",
+        "httpx_clients_sec1",
+        "fastapi_config_sec3",
+        "fastapi_lifespan_sec1",
+        "sse_streaming_sec3",
+        "fastapi_config_sec2",
+        "httpx_clients_sec2",
+        "fastapi_dependencies_sec1",
+        "python_asyncio_sec1",
+        "fastapi_models_sec2",
+        "fastapi_lifespan_sec3",
+        "httpx_exceptions_sec3",
+        "httpx_exceptions_sec2",
+        "retrieval_rerank_sec1",
+        "sse_streaming_sec1",
+        "fastapi_config_sec1",
+        "rag_evaluation_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "httpx_clients_sec3",
+          "rerank_score": 0.6340600726969758
+        },
+        {
+          "chunk_id": "fastapi_lifespan_sec2",
+          "rerank_score": 0.4795594955742155
+        },
+        {
+          "chunk_id": "sse_streaming_sec3",
+          "rerank_score": 0.3268079956655418
+        }
+      ],
+      "retrieved_chunks": [
+        "httpx_clients_sec3",
+        "fastapi_lifespan_sec2",
+        "sse_streaming_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "httpx_clients_sec3",
+          "rerank_score": 0.6340600726969758
+        },
+        {
+          "chunk_id": "fastapi_lifespan_sec2",
+          "rerank_score": 0.4795594955742155
+        },
+        {
+          "chunk_id": "sse_streaming_sec3",
+          "rerank_score": 0.3268079956655418
+        }
+      ],
+      "retrieval_ms": 492.5376999999571,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q425",
+      "type": "multi_hop",
+      "query": "原始RAG引入检索的研究动机是什么？Faithfulness又如何检查回答是否受证据支持？",
+      "expected_chunks": [
+        "rag_evaluation_sec1",
+        "rag_foundations_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "rag_evaluation_sec1",
+          "rag_foundations_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "rag_evaluation_sec1",
+        "rag_foundations_sec3",
+        "rag_evaluation_sec2",
+        "rag_foundations_sec2",
+        "rag_evaluation_sec3",
+        "rag_foundations_sec1",
+        "rrf_fusion_sec1",
+        "faiss_persistence_sec3",
+        "reranking_sec3",
+        "semantic_search_sec2",
+        "reranking_sec4",
+        "retrieval_evaluators_sec1",
+        "faiss_persistence_sec2",
+        "hybrid_rrf_sec3",
+        "hybrid_rrf_sec2",
+        "rrf_fusion_sec4",
+        "httpx_timeouts_sec1",
+        "semantic_search_sec1",
+        "bm25_similarity_sec3",
+        "retrieval_rerank_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "rag_evaluation_sec1",
+          "rerank_score": 0.9254104785803313
+        },
+        {
+          "chunk_id": "rag_foundations_sec3",
+          "rerank_score": 0.798731576336265
+        },
+        {
+          "chunk_id": "rag_evaluation_sec2",
+          "rerank_score": 0.7213433752184352
+        }
+      ],
+      "retrieved_chunks": [
+        "rag_evaluation_sec1",
+        "rag_foundations_sec3",
+        "rag_evaluation_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "rag_evaluation_sec1",
+          "rerank_score": 0.9254104785803313
+        },
+        {
+          "chunk_id": "rag_foundations_sec3",
+          "rerank_score": 0.798731576336265
+        },
+        {
+          "chunk_id": "rag_evaluation_sec2",
+          "rerank_score": 0.7213433752184352
+        }
+      ],
+      "retrieval_ms": 501.90030000158004,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q430",
+      "type": "multi_hop",
+      "query": "请分别说明请求输入验证、外部 HTTP 错误分类与生成回答证据一致性检查的工具。",
+      "expected_chunks": [
+        "fastapi_models_sec1",
+        "httpx_exceptions_sec1",
+        "rag_evaluation_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_models_sec1",
+          "httpx_exceptions_sec1",
+          "rag_evaluation_sec1"
+        ]
+      ],
+      "candidate_chunks": [
+        "rag_evaluation_sec1",
+        "fastapi_models_sec1",
+        "rag_evaluation_sec2",
+        "fastapi_models_sec2",
+        "httpx_exceptions_sec1",
+        "fastapi_models_sec3",
+        "httpx_exceptions_sec3",
+        "fastapi_config_sec3",
+        "fastapi_security_sec2",
+        "reranking_sec4",
+        "retrieval_evaluators_sec1",
+        "rag_evaluation_sec3",
+        "semantic_search_sec3",
+        "retrieval_rerank_sec2",
+        "fastapi_security_sec1",
+        "reranking_sec2",
+        "sse_streaming_sec1",
+        "faiss_persistence_sec1",
+        "fastapi_config_sec2",
+        "httpx_timeouts_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "httpx_exceptions_sec1",
+          "rerank_score": 0.5402696703089551
+        },
+        {
+          "chunk_id": "fastapi_models_sec3",
+          "rerank_score": 0.487454539622368
+        },
+        {
+          "chunk_id": "fastapi_models_sec1",
+          "rerank_score": 0.48447236264869353
+        }
+      ],
+      "retrieved_chunks": [
+        "httpx_exceptions_sec1",
+        "fastapi_models_sec3",
+        "fastapi_models_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "httpx_exceptions_sec1",
+          "rerank_score": 0.5402696703089551
+        },
+        {
+          "chunk_id": "fastapi_models_sec3",
+          "rerank_score": 0.487454539622368
+        },
+        {
+          "chunk_id": "fastapi_models_sec1",
+          "rerank_score": 0.48447236264869353
+        }
+      ],
+      "retrieval_ms": 440.19959999786806,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 0.6666666666666666,
+        "complete": 0.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q218",
+      "type": "paraphrase",
+      "query": "并发聚合里一个任务失败，是马上报告还是等全部完成才报告？",
+      "expected_chunks": [
+        "asyncio_tasks_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "asyncio_tasks_sec1"
+        ],
+        [
+          "python_asyncio_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "asyncio_queues_sec2",
+        "asyncio_tasks_sec1",
+        "python_asyncio_sec3",
+        "python_asyncio_sec1",
+        "asyncio_tasks_sec2",
+        "python_asyncio_sec2",
+        "asyncio_tasks_sec3",
+        "httpx_timeouts_sec1",
+        "retrieval_evaluators_sec2",
+        "httpx_exceptions_sec1",
+        "fastapi_dependencies_sec1",
+        "fastapi_dependencies_sec2",
+        "rrf_fusion_sec1",
+        "rag_foundations_sec1",
+        "hybrid_rrf_sec1",
+        "text_chunking_sec2",
+        "sse_streaming_sec3",
+        "bm25_retrieval_sec1",
+        "retrieval_rerank_sec1",
+        "httpx_timeouts_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "asyncio_tasks_sec1",
+          "rerank_score": 0.7692315123159158
+        },
+        {
+          "chunk_id": "asyncio_queues_sec2",
+          "rerank_score": 0.46198833516077153
+        },
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "rerank_score": 0.4137911541253103
+        }
+      ],
+      "retrieved_chunks": [
+        "asyncio_tasks_sec1",
+        "asyncio_queues_sec2",
+        "python_asyncio_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "asyncio_tasks_sec1",
+          "rerank_score": 0.7692315123159158
+        },
+        {
+          "chunk_id": "asyncio_queues_sec2",
+          "rerank_score": 0.46198833516077153
+        },
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "rerank_score": 0.4137911541253103
+        }
+      ],
+      "retrieval_ms": 487.6936999971804,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q449",
+      "type": "unanswerable",
+      "query": "FAISS HNSW 索引的 M 和 efSearch 最优值是多少？",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "candidate_chunks": [
+        "faiss_parameters_sec2",
+        "faiss_persistence_sec3",
+        "faiss_parameters_sec1",
+        "faiss_persistence_sec1",
+        "faiss_metrics_sec2",
+        "faiss_parameters_sec3",
+        "faiss_persistence_sec2",
+        "faiss_metrics_sec1",
+        "faiss_metrics_sec3",
+        "rrf_fusion_sec2",
+        "bm25_retrieval_sec1",
+        "rag_foundations_sec1",
+        "hybrid_rrf_sec3",
+        "hybrid_rrf_sec2",
+        "reranking_sec3",
+        "rrf_fusion_sec3",
+        "bm25_similarity_sec1",
+        "rag_evaluation_sec3",
+        "httpx_timeouts_sec1",
+        "python_asyncio_sec3"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "faiss_persistence_sec3",
+          "rerank_score": 0.35798543160812646
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "rerank_score": 0.3232702237946056
+        },
+        {
+          "chunk_id": "faiss_persistence_sec1",
+          "rerank_score": 0.316556236811422
+        }
+      ],
+      "retrieved_chunks": [],
+      "scores": [],
+      "retrieval_ms": 515.8728999995219,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 1.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q242",
+      "type": "paraphrase",
+      "query": "反复请求同一个服务，怎样减少每次重新建立网络连接的开销？",
+      "expected_chunks": [
+        "httpx_clients_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "httpx_clients_sec1"
+        ]
+      ],
+      "candidate_chunks": [
+        "httpx_clients_sec1",
+        "fastapi_dependencies_sec2",
+        "fastapi_config_sec2",
+        "httpx_timeouts_sec2",
+        "httpx_timeouts_sec1",
+        "retrieval_rerank_sec1",
+        "python_asyncio_sec3",
+        "fastapi_models_sec1",
+        "python_asyncio_sec1",
+        "httpx_timeouts_sec3",
+        "httpx_clients_sec2",
+        "faiss_parameters_sec2",
+        "bm25_retrieval_sec2",
+        "sse_streaming_sec3",
+        "httpx_clients_sec3",
+        "httpx_timeouts_sec4",
+        "fastapi_lifespan_sec1",
+        "python_asyncio_sec2",
+        "rrf_fusion_sec4",
+        "hybrid_rrf_sec3"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "httpx_clients_sec1",
+          "rerank_score": 0.8724770870063153
+        },
+        {
+          "chunk_id": "httpx_clients_sec2",
+          "rerank_score": 0.42654026514724674
+        },
+        {
+          "chunk_id": "httpx_timeouts_sec2",
+          "rerank_score": 0.37412351115030074
+        }
+      ],
+      "retrieved_chunks": [
+        "httpx_clients_sec1",
+        "httpx_clients_sec2",
+        "httpx_timeouts_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "httpx_clients_sec1",
+          "rerank_score": 0.8724770870063153
+        },
+        {
+          "chunk_id": "httpx_clients_sec2",
+          "rerank_score": 0.42654026514724674
+        },
+        {
+          "chunk_id": "httpx_timeouts_sec2",
+          "rerank_score": 0.37412351115030074
+        }
+      ],
+      "retrieval_ms": 566.7843999981415,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q424",
+      "type": "multi_hop",
+      "query": "原始 RAG 的外部记忆是什么，语义检索一般怎样访问向量空间中的资料？",
+      "expected_chunks": [
+        "rag_foundations_sec1",
+        "semantic_search_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "rag_foundations_sec1",
+          "semantic_search_sec1"
+        ]
+      ],
+      "candidate_chunks": [
+        "rag_foundations_sec1",
+        "rag_foundations_sec3",
+        "rag_foundations_sec2",
+        "semantic_search_sec1",
+        "faiss_parameters_sec3",
+        "faiss_persistence_sec1",
+        "rag_evaluation_sec3",
+        "faiss_parameters_sec1",
+        "semantic_search_sec2",
+        "rag_evaluation_sec2",
+        "rrf_fusion_sec4",
+        "faiss_parameters_sec2",
+        "httpx_timeouts_sec1",
+        "retrieval_evaluators_sec2",
+        "retrieval_evaluators_sec1",
+        "rrf_fusion_sec2",
+        "rrf_fusion_sec1",
+        "retrieval_rerank_sec1",
+        "semantic_search_sec3",
+        "hybrid_rrf_sec3"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "rag_foundations_sec1",
+          "rerank_score": 0.8346621358892504
+        },
+        {
+          "chunk_id": "semantic_search_sec1",
+          "rerank_score": 0.6404532734296702
+        },
+        {
+          "chunk_id": "rag_foundations_sec3",
+          "rerank_score": 0.5264815516425138
+        }
+      ],
+      "retrieved_chunks": [
+        "rag_foundations_sec1",
+        "semantic_search_sec1",
+        "rag_foundations_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "rag_foundations_sec1",
+          "rerank_score": 0.8346621358892504
+        },
+        {
+          "chunk_id": "semantic_search_sec1",
+          "rerank_score": 0.6404532734296702
+        },
+        {
+          "chunk_id": "rag_foundations_sec3",
+          "rerank_score": 0.5264815516425138
+        }
+      ],
+      "retrieval_ms": 651.3746000018727,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q298",
+      "type": "paraphrase",
+      "query": "别人提供的索引文件能够读取，就说明可信且无风险吗？",
+      "expected_chunks": [
+        "faiss_persistence_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "faiss_persistence_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "faiss_persistence_sec3",
+        "faiss_persistence_sec1",
+        "semantic_search_sec1",
+        "faiss_persistence_sec2",
+        "rag_foundations_sec1",
+        "rag_foundations_sec3",
+        "fastapi_config_sec2",
+        "rag_foundations_sec2",
+        "rag_evaluation_sec1",
+        "rrf_fusion_sec3",
+        "faiss_parameters_sec3",
+        "fastapi_security_sec3",
+        "bm25_retrieval_sec3",
+        "retrieval_evaluators_sec1",
+        "reranking_sec4",
+        "rag_evaluation_sec2",
+        "faiss_metrics_sec2",
+        "rrf_fusion_sec4",
+        "semantic_search_sec3",
+        "faiss_parameters_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "faiss_persistence_sec3",
+          "rerank_score": 0.9153241578170299
+        },
+        {
+          "chunk_id": "faiss_persistence_sec1",
+          "rerank_score": 0.4895837413253622
+        },
+        {
+          "chunk_id": "faiss_persistence_sec2",
+          "rerank_score": 0.342884009067546
+        }
+      ],
+      "retrieved_chunks": [
+        "faiss_persistence_sec3",
+        "faiss_persistence_sec1",
+        "faiss_persistence_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_persistence_sec3",
+          "rerank_score": 0.9153241578170299
+        },
+        {
+          "chunk_id": "faiss_persistence_sec1",
+          "rerank_score": 0.4895837413253622
+        },
+        {
+          "chunk_id": "faiss_persistence_sec2",
+          "rerank_score": 0.342884009067546
+        }
+      ],
+      "retrieval_ms": 463.5714999967604,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q278",
+      "type": "paraphrase",
+      "query": "向量索引里的 L2 数值为什么和手算欧氏距离不一样？",
+      "expected_chunks": [
+        "faiss_metrics_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "faiss_metrics_sec1"
+        ]
+      ],
+      "candidate_chunks": [
+        "faiss_metrics_sec1",
+        "faiss_metrics_sec3",
+        "faiss_parameters_sec1",
+        "faiss_metrics_sec2",
+        "faiss_parameters_sec3",
+        "bm25_similarity_sec2",
+        "faiss_persistence_sec1",
+        "faiss_parameters_sec2",
+        "reranking_sec2",
+        "semantic_search_sec1",
+        "rag_foundations_sec1",
+        "faiss_persistence_sec3",
+        "bm25_retrieval_sec2",
+        "reranking_sec1",
+        "bm25_similarity_sec3",
+        "httpx_timeouts_sec1",
+        "semantic_search_sec2",
+        "rrf_fusion_sec1",
+        "bm25_similarity_sec1",
+        "faiss_persistence_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "faiss_metrics_sec1",
+          "rerank_score": 0.7644445307440488
+        },
+        {
+          "chunk_id": "faiss_metrics_sec3",
+          "rerank_score": 0.6394667379940296
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "rerank_score": 0.5789650178491478
+        }
+      ],
+      "retrieved_chunks": [
+        "faiss_metrics_sec1",
+        "faiss_metrics_sec3",
+        "faiss_parameters_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_metrics_sec1",
+          "rerank_score": 0.7644445307440488
+        },
+        {
+          "chunk_id": "faiss_metrics_sec3",
+          "rerank_score": 0.6394667379940296
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "rerank_score": 0.5789650178491478
+        }
+      ],
+      "retrieval_ms": 598.1810000012047,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q034",
+      "type": "boundary",
+      "query": "资料是否把 workers = 2 × CPU核心数 + 1 推荐为所有 FastAPI 应用的通用配置？",
+      "expected_chunks": [
+        "fastapi_config_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_config_sec1"
+        ]
+      ],
+      "candidate_chunks": [
+        "fastapi_config_sec1",
+        "fastapi_config_sec2",
+        "fastapi_lifespan_sec1",
+        "fastapi_config_sec3",
+        "fastapi_lifespan_sec3",
+        "faiss_persistence_sec2",
+        "faiss_parameters_sec3",
+        "fastapi_models_sec1",
+        "fastapi_dependencies_sec1",
+        "httpx_timeouts_sec4",
+        "fastapi_lifespan_sec2",
+        "bm25_retrieval_sec2",
+        "semantic_search_sec3",
+        "fastapi_security_sec2",
+        "rrf_fusion_sec2",
+        "hybrid_rrf_sec1",
+        "fastapi_dependencies_sec3",
+        "fastapi_models_sec2",
+        "fastapi_dependencies_sec2",
+        "fastapi_security_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "rerank_score": 0.8954926125585767
+        },
+        {
+          "chunk_id": "fastapi_models_sec1",
+          "rerank_score": 0.42842074089434734
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec3",
+          "rerank_score": 0.426146746493757
+        }
+      ],
+      "retrieved_chunks": [
+        "fastapi_config_sec1",
+        "fastapi_models_sec1",
+        "fastapi_dependencies_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "rerank_score": 0.8954926125585767
+        },
+        {
+          "chunk_id": "fastapi_models_sec1",
+          "rerank_score": 0.42842074089434734
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec3",
+          "rerank_score": 0.426146746493757
+        }
+      ],
+      "retrieval_ms": 513.8740999973379,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q467",
+      "type": "unanswerable",
+      "query": "我们的 LLM API 并发额度合同上限是多少？",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "candidate_chunks": [
+        "fastapi_config_sec1",
+        "httpx_clients_sec1",
+        "rag_evaluation_sec2",
+        "httpx_timeouts_sec1",
+        "bm25_similarity_sec3",
+        "text_chunking_sec3",
+        "rrf_fusion_sec2",
+        "fastapi_lifespan_sec1",
+        "bm25_similarity_sec1",
+        "rrf_fusion_sec3",
+        "fastapi_config_sec2",
+        "python_asyncio_sec3",
+        "bm25_similarity_sec2",
+        "faiss_parameters_sec2",
+        "asyncio_queues_sec1",
+        "reranking_sec3",
+        "hybrid_rrf_sec3",
+        "rag_foundations_sec1",
+        "python_asyncio_sec1",
+        "rrf_fusion_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "text_chunking_sec3",
+          "rerank_score": 0.3838223720408228
+        },
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "rerank_score": 0.31614193285593306
+        },
+        {
+          "chunk_id": "rag_evaluation_sec2",
+          "rerank_score": 0.31142108647493705
+        }
+      ],
+      "retrieved_chunks": [],
+      "scores": [],
+      "retrieval_ms": 521.854099999473,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 1.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q356",
+      "type": "boundary",
+      "query": "非对称检索里交换查询和长文档的角色通常仍完全等价吗？",
+      "expected_chunks": [
+        "semantic_search_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "semantic_search_sec2"
+        ]
+      ],
+      "candidate_chunks": [
+        "semantic_search_sec2",
+        "semantic_search_sec3",
+        "faiss_parameters_sec2",
+        "retrieval_rerank_sec2",
+        "retrieval_evaluators_sec1",
+        "faiss_parameters_sec1",
+        "semantic_search_sec1",
+        "reranking_sec2",
+        "retrieval_rerank_sec1",
+        "hybrid_rrf_sec3",
+        "bm25_retrieval_sec1",
+        "bm25_retrieval_sec3",
+        "bm25_retrieval_sec4",
+        "reranking_sec1",
+        "bm25_retrieval_sec2",
+        "retrieval_evaluators_sec3",
+        "rag_foundations_sec2",
+        "rag_foundations_sec3",
+        "reranking_sec4",
+        "rrf_fusion_sec3"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "semantic_search_sec2",
+          "rerank_score": 0.9258294427994678
+        },
+        {
+          "chunk_id": "semantic_search_sec3",
+          "rerank_score": 0.6413467828525901
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec2",
+          "rerank_score": 0.4454652947888873
+        }
+      ],
+      "retrieved_chunks": [
+        "semantic_search_sec2",
+        "semantic_search_sec3",
+        "retrieval_rerank_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "semantic_search_sec2",
+          "rerank_score": 0.9258294427994678
+        },
+        {
+          "chunk_id": "semantic_search_sec3",
+          "rerank_score": 0.6413467828525901
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec2",
+          "rerank_score": 0.4454652947888873
+        }
+      ],
+      "retrieval_ms": 496.9539000012446,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q351",
+      "type": "scenario",
+      "query": "用户使用缩写或同义词，没有直接字面重合，语义检索依靠什么机制？",
+      "expected_chunks": [
+        "semantic_search_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "semantic_search_sec1"
+        ]
+      ],
+      "candidate_chunks": [
+        "semantic_search_sec1",
+        "semantic_search_sec3",
+        "bm25_retrieval_sec1",
+        "semantic_search_sec2",
+        "rrf_fusion_sec4",
+        "bm25_similarity_sec1",
+        "reranking_sec4",
+        "fastapi_lifespan_sec3",
+        "retrieval_rerank_sec1",
+        "reranking_sec3",
+        "reranking_sec1",
+        "reranking_sec2",
+        "fastapi_security_sec1",
+        "bm25_retrieval_sec2",
+        "fastapi_config_sec1",
+        "retrieval_rerank_sec2",
+        "retrieval_evaluators_sec1",
+        "rrf_fusion_sec1",
+        "faiss_parameters_sec1",
+        "fastapi_dependencies_sec3"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "semantic_search_sec1",
+          "rerank_score": 0.8574261876955687
+        },
+        {
+          "chunk_id": "bm25_retrieval_sec1",
+          "rerank_score": 0.44355905809364815
+        },
+        {
+          "chunk_id": "semantic_search_sec2",
+          "rerank_score": 0.441337174349457
+        }
+      ],
+      "retrieved_chunks": [
+        "semantic_search_sec1",
+        "bm25_retrieval_sec1",
+        "semantic_search_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "semantic_search_sec1",
+          "rerank_score": 0.8574261876955687
+        },
+        {
+          "chunk_id": "bm25_retrieval_sec1",
+          "rerank_score": 0.44355905809364815
+        },
+        {
+          "chunk_id": "semantic_search_sec2",
+          "rerank_score": 0.441337174349457
+        }
+      ],
+      "retrieval_ms": 583.1947999977274,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q409",
+      "type": "scenario",
+      "query": "gather 默认与 TaskGroup 遇到普通子任务异常时，对其他任务的处理有什么差异？",
+      "expected_chunks": [
+        "python_asyncio_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "python_asyncio_sec3"
+        ],
+        [
+          "asyncio_tasks_sec1",
+          "asyncio_tasks_sec2"
+        ]
+      ],
+      "candidate_chunks": [
+        "python_asyncio_sec3",
+        "asyncio_tasks_sec1",
+        "asyncio_tasks_sec2",
+        "fastapi_config_sec3",
+        "asyncio_queues_sec2",
+        "python_asyncio_sec1",
+        "asyncio_tasks_sec3",
+        "python_asyncio_sec2",
+        "retrieval_rerank_sec2",
+        "fastapi_security_sec2",
+        "rag_foundations_sec3",
+        "httpx_timeouts_sec1",
+        "semantic_search_sec3",
+        "rag_foundations_sec2",
+        "fastapi_dependencies_sec3",
+        "httpx_exceptions_sec2",
+        "hybrid_rrf_sec3",
+        "httpx_timeouts_sec4",
+        "asyncio_queues_sec1",
+        "semantic_search_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "rerank_score": 0.9362190799378323
+        },
+        {
+          "chunk_id": "asyncio_tasks_sec1",
+          "rerank_score": 0.8970544316660081
+        },
+        {
+          "chunk_id": "asyncio_tasks_sec2",
+          "rerank_score": 0.8424051044310308
+        }
+      ],
+      "retrieved_chunks": [
+        "python_asyncio_sec3",
+        "asyncio_tasks_sec1",
+        "asyncio_tasks_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "rerank_score": 0.9362190799378323
+        },
+        {
+          "chunk_id": "asyncio_tasks_sec1",
+          "rerank_score": 0.8970544316660081
+        },
+        {
+          "chunk_id": "asyncio_tasks_sec2",
+          "rerank_score": 0.8424051044310308
+        }
+      ],
+      "retrieval_ms": 525.3396999978577,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q222",
+      "type": "paraphrase",
+      "query": "想让一组相关任务在成员失败时一起取消，TaskGroup 的规则是什么？",
+      "expected_chunks": [
+        "asyncio_tasks_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "asyncio_tasks_sec2"
+        ]
+      ],
+      "candidate_chunks": [
+        "asyncio_tasks_sec2",
+        "python_asyncio_sec3",
+        "asyncio_tasks_sec1",
+        "asyncio_tasks_sec3",
+        "python_asyncio_sec1",
+        "httpx_timeouts_sec1",
+        "python_asyncio_sec2",
+        "fastapi_config_sec1",
+        "asyncio_queues_sec2",
+        "bm25_similarity_sec3",
+        "rrf_fusion_sec4",
+        "httpx_timeouts_sec2",
+        "retrieval_evaluators_sec3",
+        "bm25_retrieval_sec3",
+        "asyncio_queues_sec3",
+        "reranking_sec2",
+        "rag_evaluation_sec3",
+        "fastapi_lifespan_sec3",
+        "reranking_sec1",
+        "fastapi_lifespan_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "asyncio_tasks_sec2",
+          "rerank_score": 0.9220064943410913
+        },
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "rerank_score": 0.7169444441981997
+        },
+        {
+          "chunk_id": "asyncio_tasks_sec1",
+          "rerank_score": 0.3040623190135785
+        }
+      ],
+      "retrieved_chunks": [
+        "asyncio_tasks_sec2",
+        "python_asyncio_sec3",
+        "asyncio_tasks_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "asyncio_tasks_sec2",
+          "rerank_score": 0.9220064943410913
+        },
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "rerank_score": 0.7169444441981997
+        },
+        {
+          "chunk_id": "asyncio_tasks_sec1",
+          "rerank_score": 0.3040623190135785
+        }
+      ],
+      "retrieval_ms": 541.9525999968755,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q442",
+      "type": "unanswerable",
+      "query": "FastAPI 的 Kubernetes readinessProbe 和 livenessProbe 应怎样写？",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "candidate_chunks": [
+        "fastapi_config_sec3",
+        "fastapi_lifespan_sec3",
+        "fastapi_config_sec2",
+        "fastapi_config_sec1",
+        "fastapi_lifespan_sec1",
+        "fastapi_models_sec2",
+        "fastapi_models_sec1",
+        "fastapi_dependencies_sec3",
+        "fastapi_lifespan_sec2",
+        "fastapi_dependencies_sec1",
+        "bm25_similarity_sec1",
+        "fastapi_dependencies_sec2",
+        "fastapi_security_sec1",
+        "fastapi_security_sec2",
+        "fastapi_models_sec3",
+        "bm25_retrieval_sec2",
+        "faiss_persistence_sec1",
+        "semantic_search_sec2",
+        "retrieval_rerank_sec1",
+        "faiss_parameters_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "fastapi_lifespan_sec2",
+          "rerank_score": 0.3605339921157842
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec3",
+          "rerank_score": 0.31029653327590967
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec1",
+          "rerank_score": 0.30427468313827644
+        }
+      ],
+      "retrieved_chunks": [],
+      "scores": [],
+      "retrieval_ms": 474.879500001407,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 1.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q290",
+      "type": "paraphrase",
+      "query": "向量索引想重启后恢复，应使用哪个写入和读入接口？",
+      "expected_chunks": [
+        "faiss_persistence_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "faiss_persistence_sec1"
+        ]
+      ],
+      "candidate_chunks": [
+        "faiss_persistence_sec1",
+        "faiss_persistence_sec2",
+        "faiss_parameters_sec1",
+        "faiss_persistence_sec3",
+        "faiss_metrics_sec2",
+        "faiss_parameters_sec3",
+        "semantic_search_sec3",
+        "fastapi_config_sec2",
+        "reranking_sec2",
+        "faiss_metrics_sec3",
+        "bm25_similarity_sec2",
+        "retrieval_evaluators_sec2",
+        "retrieval_rerank_sec1",
+        "faiss_parameters_sec2",
+        "sse_streaming_sec3",
+        "semantic_search_sec1",
+        "fastapi_lifespan_sec3",
+        "httpx_clients_sec1",
+        "rag_foundations_sec1",
+        "retrieval_rerank_sec3"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "faiss_persistence_sec1",
+          "rerank_score": 0.9423713664925157
+        },
+        {
+          "chunk_id": "faiss_persistence_sec2",
+          "rerank_score": 0.6112538440274866
+        },
+        {
+          "chunk_id": "faiss_persistence_sec3",
+          "rerank_score": 0.5724770295292796
+        }
+      ],
+      "retrieved_chunks": [
+        "faiss_persistence_sec1",
+        "faiss_persistence_sec2",
+        "faiss_persistence_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_persistence_sec1",
+          "rerank_score": 0.9423713664925157
+        },
+        {
+          "chunk_id": "faiss_persistence_sec2",
+          "rerank_score": 0.6112538440274866
+        },
+        {
+          "chunk_id": "faiss_persistence_sec3",
+          "rerank_score": 0.5724770295292796
+        }
+      ],
+      "retrieval_ms": 462.1055999996315,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q324",
+      "type": "boundary",
+      "query": "增大候选内部的重排分数就能自动检索新的全库文档，对吗？",
+      "expected_chunks": [
+        "reranking_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "reranking_sec3"
+        ],
+        [
+          "retrieval_rerank_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "retrieval_rerank_sec3",
+        "reranking_sec3",
+        "reranking_sec2",
+        "reranking_sec1",
+        "reranking_sec4",
+        "retrieval_rerank_sec2",
+        "retrieval_rerank_sec1",
+        "rrf_fusion_sec4",
+        "rrf_fusion_sec3",
+        "hybrid_rrf_sec3",
+        "retrieval_evaluators_sec3",
+        "bm25_retrieval_sec4",
+        "rrf_fusion_sec2",
+        "python_asyncio_sec2",
+        "bm25_retrieval_sec3",
+        "rag_foundations_sec3",
+        "rag_evaluation_sec3",
+        "hybrid_rrf_sec2",
+        "bm25_retrieval_sec1",
+        "rag_evaluation_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "retrieval_rerank_sec3",
+          "rerank_score": 0.8421411402904453
+        },
+        {
+          "chunk_id": "reranking_sec3",
+          "rerank_score": 0.8242912262614877
+        },
+        {
+          "chunk_id": "reranking_sec1",
+          "rerank_score": 0.7938996000021115
+        }
+      ],
+      "retrieved_chunks": [
+        "retrieval_rerank_sec3",
+        "reranking_sec3",
+        "reranking_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "retrieval_rerank_sec3",
+          "rerank_score": 0.8421411402904453
+        },
+        {
+          "chunk_id": "reranking_sec3",
+          "rerank_score": 0.8242912262614877
+        },
+        {
+          "chunk_id": "reranking_sec1",
+          "rerank_score": 0.7938996000021115
+        }
+      ],
+      "retrieval_ms": 579.5109999999113,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q462",
+      "type": "unanswerable",
+      "query": "我们服务器有多少个 CPU 核心？",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "candidate_chunks": [
+        "fastapi_config_sec1",
+        "faiss_persistence_sec2",
+        "retrieval_evaluators_sec2",
+        "asyncio_queues_sec1",
+        "retrieval_rerank_sec2",
+        "bm25_retrieval_sec3",
+        "httpx_clients_sec1",
+        "faiss_parameters_sec3",
+        "fastapi_config_sec2",
+        "rrf_fusion_sec2",
+        "httpx_timeouts_sec4",
+        "reranking_sec3",
+        "fastapi_config_sec3",
+        "rrf_fusion_sec3",
+        "python_asyncio_sec2",
+        "asyncio_tasks_sec2",
+        "fastapi_models_sec1",
+        "text_chunking_sec3",
+        "python_asyncio_sec1",
+        "httpx_clients_sec3"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "rerank_score": 0.3908022368472558
+        },
+        {
+          "chunk_id": "retrieval_evaluators_sec2",
+          "rerank_score": 0.35113538169645225
+        },
+        {
+          "chunk_id": "httpx_clients_sec1",
+          "rerank_score": 0.2875195201033126
+        }
+      ],
+      "retrieved_chunks": [],
+      "scores": [],
+      "retrieval_ms": 524.2007999986527,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 1.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q400",
+      "type": "multi_hop",
+      "query": "检索指标的 k 与 RRF 分支候选窗口分别代表什么范围？",
+      "expected_chunks": [
+        "hybrid_rrf_sec3",
+        "retrieval_evaluators_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "hybrid_rrf_sec3",
+          "retrieval_evaluators_sec2"
+        ],
+        [
+          "retrieval_evaluators_sec2",
+          "rrf_fusion_sec3"
+        ]
+      ],
+      "candidate_chunks": [
+        "hybrid_rrf_sec3",
+        "retrieval_evaluators_sec2",
+        "rrf_fusion_sec3",
+        "rrf_fusion_sec2",
+        "rrf_fusion_sec4",
+        "hybrid_rrf_sec1",
+        "hybrid_rrf_sec2",
+        "reranking_sec1",
+        "faiss_parameters_sec1",
+        "faiss_parameters_sec2",
+        "bm25_retrieval_sec4",
+        "rrf_fusion_sec1",
+        "retrieval_rerank_sec3",
+        "semantic_search_sec2",
+        "reranking_sec3",
+        "bm25_retrieval_sec2",
+        "reranking_sec2",
+        "retrieval_evaluators_sec3",
+        "retrieval_evaluators_sec1",
+        "semantic_search_sec1"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "rrf_fusion_sec3",
+          "rerank_score": 0.6883705328144023
+        },
+        {
+          "chunk_id": "hybrid_rrf_sec2",
+          "rerank_score": 0.580996589654667
+        },
+        {
+          "chunk_id": "rrf_fusion_sec4",
+          "rerank_score": 0.565800643255014
+        }
+      ],
+      "retrieved_chunks": [
+        "rrf_fusion_sec3",
+        "hybrid_rrf_sec2",
+        "rrf_fusion_sec4"
+      ],
+      "scores": [
+        {
+          "chunk_id": "rrf_fusion_sec3",
+          "rerank_score": 0.6883705328144023
+        },
+        {
+          "chunk_id": "hybrid_rrf_sec2",
+          "rerank_score": 0.580996589654667
+        },
+        {
+          "chunk_id": "rrf_fusion_sec4",
+          "rerank_score": 0.565800643255014
+        }
+      ],
+      "retrieval_ms": 602.5245999990148,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 0.5,
+        "complete": 0.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q478",
+      "type": "unanswerable",
+      "query": "请给出 OAuth2 刷新令牌轮换的实现方案。",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "candidate_chunks": [
+        "fastapi_security_sec1",
+        "fastapi_security_sec2",
+        "fastapi_security_sec3",
+        "bm25_similarity_sec3",
+        "retrieval_rerank_sec3",
+        "fastapi_config_sec2",
+        "bm25_retrieval_sec2",
+        "retrieval_rerank_sec1",
+        "fastapi_lifespan_sec3",
+        "rag_foundations_sec2",
+        "faiss_parameters_sec1",
+        "fastapi_dependencies_sec2",
+        "fastapi_config_sec1",
+        "fastapi_models_sec2",
+        "retrieval_rerank_sec2",
+        "hybrid_rrf_sec2",
+        "httpx_timeouts_sec1",
+        "httpx_clients_sec2",
+        "fastapi_lifespan_sec1",
+        "faiss_parameters_sec2"
+      ],
+      "reranked_before_filter": [
+        {
+          "chunk_id": "fastapi_security_sec2",
+          "rerank_score": 0.34604079565311024
+        },
+        {
+          "chunk_id": "fastapi_security_sec3",
+          "rerank_score": 0.32012849275850097
+        },
+        {
+          "chunk_id": "fastapi_security_sec1",
+          "rerank_score": 0.3136856922889335
+        }
+      ],
+      "retrieved_chunks": [],
+      "scores": [],
+      "retrieval_ms": 451.56430000133696,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 1.0,
+        "answerable_refusal": null
+      }
+    }
+  ]
+}

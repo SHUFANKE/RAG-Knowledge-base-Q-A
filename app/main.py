@@ -8,17 +8,15 @@ from dotenv import load_dotenv
 from fastapi import FastAPI,HTTPException
 from fastapi.responses import StreamingResponse
 
+from rag.index_loader import prepare_hybrid
 from app.embedder import QwenCloudEmbedder
 from app.schemas import ChatRequest, ChatResponse, LatencyMetrics, ReferenceDoc
 from app.logger import logger
-from rag.bm25_retriever import BM25Retriever
-from rag.dense_retriever import FAISSRetriever
 from rag.generator import QwenGenerator
-from rag.hybrid_retriever import HybridRetriever
 from rag.pipeline import ProductionRAGRetriever
 from rag.reranker import DashScopeReranker
 from rag.rewriter import QueryRewriter
-
+from rag.citation import validate_citations
 
 load_dotenv()
 
@@ -38,12 +36,9 @@ async def lifespan(app: FastAPI):
     with open(chunks_path, encoding="utf-8") as f:
         chunks = json.load(f)
 
-    #1.初始化各基础组件
+    # 1.加载已经构建的向量索引，并建立本地BM25。
     embedder = QwenCloudEmbedder()
-    dense = FAISSRetriever(embedder=embedder,dimension=1024)
-    bm25 = BM25Retriever()
-    hybrid = HybridRetriever(dense_retriever=dense, bm25_retriever=bm25)
-    await hybrid.add_documents(chunks)
+    hybrid = await prepare_hybrid(chunks, embedder)
 
     #2.组装二阶段重排检索管线
     reranker = DashScopeReranker(model="qwen3-rerank")
@@ -52,10 +47,10 @@ async def lifespan(app: FastAPI):
     )
 
     #3.组装LLM生成器
-    generator = QwenGenerator(model="qwen-turbo")
+    generator = QwenGenerator(model="qwen-plus")
 
     #4.组装查询改写器
-    rewriter = QueryRewriter(model="qwen-turbo")
+    rewriter = QueryRewriter(model="qwen-plus")
 
     #缓存到全局生命周期字典中供接口复用
     rag_components["retriever"] = retriever
@@ -105,7 +100,7 @@ async def chat_endpoint(req: ChatRequest):
     start_retrieval = time.perf_counter()
     docs = await retriever.retrieve(
         query=active_query,#这里用改写后的active——query
-        candidate_k=10,
+        candidate_k=20,
         final_k=req.final_k,
         rerank_threshold=req.rerank_threshold,
     )
@@ -115,7 +110,10 @@ async def chat_endpoint(req: ChatRequest):
     start_gen = time.perf_counter()
     answer = await generator.generate(query=active_query, context_docs=docs)
     gengeration_ms = (time.perf_counter()-start_gen) * 1000.0
-    
+
+    # 新增：检查本次回答引用的编号。
+    citation_check = validate_citations(answer, len(docs))
+
     total_ms = (time.perf_counter() - start_total) * 1000.0
 
     #4.组装结构化元数据
@@ -138,6 +136,7 @@ async def chat_endpoint(req: ChatRequest):
 
     return ChatResponse(
         answer=answer,
+        citation_check=citation_check,
         rewritten_query=(
             active_query if active_query != req.query else None
         ),#若发生改写则回传改写结果
@@ -168,7 +167,7 @@ async def chat_stream_endpoint(req:ChatRequest):
     #前置检索阶段
     docs = await retriever.retrieve(
         query=active_query,
-        candidate_k=10,
+        candidate_k=20,
         final_k=req.final_k,
         rerank_threshold=req.rerank_threshold,
     )
@@ -188,101 +187,27 @@ async def chat_stream_endpoint(req:ChatRequest):
         yield f"data:{json.dumps(meta_info, ensure_ascii=False)}\n\n"
 
         #逐字吐出LLM回复
+        answer_parts = []
         async for token in generator.stream_generate(
             query=active_query,context_docs=docs
         ):
+            answer_parts.append(token)
             token_payload = {"type":"token","content": token}
             yield f"data:{json.dumps(token_payload,ensure_ascii=False)}\n\n"
+
+        # 生成结束后，拼接全文并检查引用编号。
+        check_payload = {
+            "type": "citation_check",
+            "citation_check": validate_citations(
+                "".join(answer_parts),
+                len(docs),
+            ),
+        }
+        yield f"data:{json.dumps(check_payload, ensure_ascii=False)}\n\n"
 
         #发送结束信号
         yield "data:[DONE]\n\n"
 
     return StreamingResponse(sse_event_stream(),media_type="text/event-stream")
 
-
-# #全局单例Pipeline
-# pipeline:LocalRAGPipeline | None = None #定义pipeline要么是前面这个要么是None
-
-
-# @asynccontextmanager
-# async def lifespan(app:FastAPI):
-#     """应用生命周期管理：服务启动时初始化RAG核心组件，服务关闭时释放资源"""
-#     global pipeline
-#     vocab = ["python", "rag", "fastapi", "llm", "vector", "database", "retrieval"]
-#     embedder = QwenCloudEmbedder()
-#     llm_client = OpenAILikeLLMClient()
-
-#     pipeline = LocalRAGPipeline(embedder=embedder,llm_client=llm_client)
-
-#     #预置一条样例知识，方便开箱即测
-#     sample_text = (
-#         "RAG（检索增强生成）是一种将信息检索系统与大语言模型相结合的架构。"
-#         "系统首先将技术文档切片并存入向量空间，根据用户提问精准召回证据，"
-#         "最后由生成模型基于参考资料给出严谨回答，有效消除幻觉。"
-#     )
-#     pipeline.index_document(sample_text,source="rag_architecture.txt",chunk_size=50,overlap=10)
-#     print(">>>[System] RAG Pipeline 初始化完成，服务已就绪")
-
-#     yield
-
-#     print(">>> [System] 服务正在关闭，资源已释放。")
-
-# app = FastAPI(
-#     title="Minimalist RAG API Service",
-#     description="基于 FastAPI + 自研RAG内核的轻量化知识库问答服务",
-#     version="1.0.0",
-#     lifespan=lifespan,
-# )
-
-# @app.get("/health")
-# async def health_check():
-#     """健康检查探针接口"""
-#     return {"status":"ok","service":"rag-pipeline"}
-
-# @app.post("/api/index",response_model=IndexResponse)
-# async def index_knowledge(req:IndexRequest):
-#     """上传文档切片并写入向量知识库"""
-#     if pipeline is None:
-#         raise HTTPException(status_code=500,detail="Pipeline未初始化")
-
-#     count = await pipeline.index_document(
-#         text=req.text,
-#         source=req.source,
-#         chunk_size=req.chunk_size,
-#         overlap=req.overlap,
-#     )
-#     return IndexResponse(
-#         message=f"成功为文档'{req.source}'建立索引",
-#         indexed_chunks=count,
-#     )
-
-# @app.post("/api/query",response_model=QueryResponse)
-# async def query_knowledge(req:QueryRequest):
-#     """基于知识库的大模型问答接口"""
-#     if pipeline is None:
-#         raise HTTPException(status_code=500,detail="Pipeline未初始化")
-
-#     #1.召回相关的切片与相似度得分
-#     raw_results = await pipeline.retrieve(req.question,top_k=req.top_k)
-
-#     #2.转换为规范的响应模型
-#     sources = [
-#         SourceChunkInfo(
-#             chunk_id=chunk.chunk_id,
-#             text=chunk.text,
-#             source=chunk.source,
-#             score=round(score,4)
-
-#         )
-#         for chunk,score in raw_results
-#     ]
-
-#     #3.异步调用完整RAG回答
-#     answer =await pipeline.answer_question(req.question,search_results=raw_results)
-
-#     return QueryResponse(
-#         question=req.question,
-#         answer=answer,
-#         sources=sources,
-#     )
 

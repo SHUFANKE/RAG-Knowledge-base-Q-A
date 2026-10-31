@@ -1,9 +1,11 @@
 from pydantic import BaseModel,Field
+from typing import Literal
 
 class Message(BaseModel):
     """历史对话单轮消息"""
     role: str = Field(...,description="角色：user或assistant")
     content: str = Field(...,min_length=1,description="对话正文")
+
 
 class ChatRequest(BaseModel):
     """用户问答请求体"""
@@ -26,6 +28,7 @@ class ChatRequest(BaseModel):
         default=0.45, ge=0.0, le=1.0, description="防幻觉置信度截断及格线"
     )
 
+
 class ReferenceDoc(BaseModel):
     """引用源切片元数据"""
 
@@ -41,6 +44,14 @@ class LatencyMetrics(BaseModel):
     generation_ms: float
     total_ms: float
 
+class CitationCheck(BaseModel):
+    """只检查引用编号，不判断资料是否支持回答内容。"""
+
+    status: Literal["valid", "invalid", "missing", "not_applicable"]
+    reference_count: int
+    cited_numbers: list[int]
+    invalid_numbers: list[int]
+    
 class ChatResponse(BaseModel):
     """全量问答响应结构"""
 
@@ -48,47 +59,4 @@ class ChatResponse(BaseModel):
     rewritten_query: str | None = None
     references: list[ReferenceDoc]
     metrics: LatencyMetrics
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# class IndexRequest(BaseModel):
-#     """文档入库请求模型"""
-#     text:str = Field(...,min_length=1,description="需要入库的知识库文本内容")
-#     source:str = Field(default="user_upload.txt",description="文档来源标识")
-#     chunk_size: int = Field(default=5,ge=0,description="切片大小")
-#     overlap: int = Field(default=3,ge=0,description="重叠字符数")
-
-# class IndexResponse(BaseModel):
-#     """文档入库响应模型"""
-#     message:str
-#     indexed_chunks: int
-
-# class QueryRequest(BaseModel):
-#     """问答请求模型"""
-#     question:str = Field(...,min_length=1,description="用户提问")
-#     top_k: int = Field(default=2,ge=1,le=10,description="检索召回的切片数量")
-
-# class SourceChunkInfo(BaseModel):
-#     """召回切片的元数据信息"""
-#     chunk_id:int
-#     text:str
-#     source:str
-#     score:float
-
-# class QueryResponse(BaseModel):
-#     """问答响应模型"""
-#     question:str
-#     answer:str
-#     sources:list[SourceChunkInfo]
-
+    citation_check: CitationCheck

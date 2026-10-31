@@ -1,6 +1,16 @@
 from rag.hybrid_retriever import HybridRetriever
 from rag.reranker import DashScopeReranker
 
+def filter_reranked_docs(docs, threshold: float, final_k: int):
+    """首位达到主阈值后，保留达到半阈值的片段。"""
+    if not docs or docs[0].get("rerank_score", 0.0) < threshold:
+        return []
+
+    return [
+        doc for doc in docs
+        if doc.get("rerank_score", 0.0) >= threshold * 0.5
+    ][:final_k]
+
 class ProductionRAGRetriever:
     """生产二阶段检索管线：双路混合召回（Top-10）->交叉编码器精排（Top-3）"""
 
@@ -40,90 +50,9 @@ class ProductionRAGRetriever:
             query=query, documents=candidates,top_k=final_k
         )
 
-        #4.阈值截断（防幻觉机制：分值过低说明大概率是无答案超纲提，直接过滤）
-        filtered_docs = [
-            doc for doc in reranker_docs if doc.get("rerank_score", 0.0) >= rerank_threshold
-        ]
+        return filter_reranked_docs(
+            reranker_docs,
+            threshold=rerank_threshold,
+            final_k=final_k,
+        )
 
-        return filtered_docs[:final_k]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# from app.llm_client import BaseLLMClient
-# from rag.dense_retriever import FAISSRetriever
-
-# class RAGPopeline:
-#     def __init__(self, retriever: FAISSRetriever, llm_clinet: BaseLLMClient):
-#         self.retriever = retriever
-#         self.llm_client = llm_clinet
-
-#     async def query(self,question: str, top_k: int = 3) -> dict:
-#         """检索增强生成主链路，严格执行Citation输出规范"""
-#         #1.稠密向量召回
-#         matched_chunks = await self.retriever.search(query=question, top_k=top_k)
-
-#         if not matched_chunks:
-#             return {
-#                 "question":question,
-#                 "answer": "知识库中暂无可参考的文档，无法回答该问题",
-#                 "sources": [],
-#             }
-
-#         #2.构建带编号的Context上下文
-#         context_parts = []
-#         for i, chunk in enumerate(matched_chunks, start=1):
-#             context_parts.append(
-#                 f"[{i}] 来源：{chunk.get('source', '未知文件')}\n内容：{chunk['text']}"
-#             )
-#         context_str = "\n\n".join(context_parts)
-
-#         #3.约束Prompt: 要求必须标注引用
-#         system_prompt = (
-#             "你是一个专业严谨的技术助理。请严格基于给出的参考资料回答问题。\n"
-#             "规则：\n"
-#             "1. 仅根据参考资料陈述事实，不得随意推理未提及的内容。\n"
-#             "2. 如果参考资料不足以回答，明确说明资料不足。\n"
-#             "3. 在回答正文末尾，必须附上 Sources 引用列表，格式如下：\n"
-#             "Sources:\n"
-#             "[1] 文件名\n"
-#             "[2] 文件名"
-#         )
-
-#         user_prompt = f"【参考资料】\n{context_str}\n\n【用户问题】\n{question}"
-
-#         #4.生成回答
-#         answer = await self.llm_client.chat(
-#             prompt=user_prompt,system_prompt=system_prompt
-#         )
-
-#         return {
-#             "question": question,
-#             "answer": answer,
-#             "sources": matched_chunks,
-#         }
-
-    

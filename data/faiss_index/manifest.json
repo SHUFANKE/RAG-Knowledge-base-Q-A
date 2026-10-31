@@ -1,0 +1,5 @@
+{
+  "chunks_sha256": "def4139ca12e628aac574b1ad3177192a5d89676ec04d55faca1ed8714906477",
+  "embedding_model": "text-embedding-v3",
+  "dimension": 1024
+}

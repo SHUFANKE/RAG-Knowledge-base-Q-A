@@ -6,7 +6,7 @@ async def run_multi_turn_test():
 
     async with httpx.AsyncClient(timeout=30.0,trust_env=False) as client:
         #第一轮提问
-        q1 = "FastAPI 生产部署时，工作进程 workers 的推荐计算公式是什么？"
+        q1 = "SSE 的 event 字段有什么作用？"
         print("=" * 60)
         print(f"【用户第 1 轮提问】: {q1}")
         resp1 = await client.post(url,json={"query": q1,"history":[]})
@@ -22,7 +22,7 @@ async def run_multi_turn_test():
             {"role": "user","content":q1},
             {"role":"assistant","content":data1["answer"]},
         ]
-        q2 = "那如何通过启动命令设置这个参数呢？"  # 极度依赖上文指代
+        q2 = "如果省略它，默认事件类型是什么？"  # 极度依赖上文指代
         print("=" * 60)
         print(f"【用户第 2 轮模糊提问】: {q2}")
         print(f"【发送的历史消息】：{history}")

@@ -7,10 +7,16 @@ load_dotenv()
 async def main():
     reranker = DashScopeReranker()
     test_docs = [
-        {"chunk_id": "c1", "text": "Python 异步编程中，asyncio.gather 用于并发调度任务。"},
-        {"chunk_id": "c2", "text": "FastAPI 生产部署建议将 workers 设为 (2 * CPU核数) + 1。"},
+        {
+            "chunk_id": "c1",
+            "text": "Python异步编程中，asyncio.gather用于并发调度任务。",
+        },
+        {
+            "chunk_id": "c2",
+            "text": "SSE未指定event字段时，默认事件类型为message。",
+        },
     ]
-    query = "FastAPI 应该配置几个工作流程？"
+    query = "SSE没有指定event字段时，默认事件类型是什么？"
     results = await reranker.reranker(query=query,documents=test_docs, top_k=2)
 
     if not results:

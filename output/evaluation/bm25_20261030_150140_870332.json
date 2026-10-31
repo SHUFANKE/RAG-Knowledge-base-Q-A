@@ -1,0 +1,2333 @@
+{
+  "created_at": "2026-10-30T15:01:40.870332+08:00",
+  "config": {
+    "method": "BM25",
+    "top_k": 3,
+    "chunk_count": 82,
+    "chunks_path": "data\\indexed_chunks.json",
+    "dataset_path": "evaluation\\eval_dev.json",
+    "chunks_sha256": "6426799f51a53f43e5c9303b10777b2e7680d0d9498f98180f7c5b802b8f7182",
+    "dataset_sha256": "f3e11bfbbfbf405c3e4edb8e07e7c720a807956fddd8957ae29fd7207f160080",
+    "latency_scope": "仅检索，不含索引构建与回答生成"
+  },
+  "summary": {
+    "total_questions": 54,
+    "answerable_questions": 45,
+    "unanswerable_questions": 9,
+    "hit_at_k": 0.9777777777777777,
+    "recall_at_k": 0.9370370370370371,
+    "complete_evidence_rate": 0.8888888888888888,
+    "mrr_at_k": 0.937037037037037,
+    "retrieval_refusal_rate": 0.0,
+    "answerable_refusal_rate": 0.0,
+    "avg_retrieval_ms": 0.593298148319095
+  },
+  "by_type": {
+    "boundary": {
+      "total_questions": 7,
+      "answerable_questions": 7,
+      "unanswerable_questions": 0,
+      "hit_at_k": 1.0,
+      "recall_at_k": 1.0,
+      "complete_evidence_rate": 1.0,
+      "mrr_at_k": 0.9047619047619048,
+      "retrieval_refusal_rate": null,
+      "answerable_refusal_rate": 0.0,
+      "avg_retrieval_ms": 0.610100000942891
+    },
+    "keyword": {
+      "total_questions": 7,
+      "answerable_questions": 7,
+      "unanswerable_questions": 0,
+      "hit_at_k": 1.0,
+      "recall_at_k": 1.0,
+      "complete_evidence_rate": 1.0,
+      "mrr_at_k": 1.0,
+      "retrieval_refusal_rate": null,
+      "answerable_refusal_rate": 0.0,
+      "avg_retrieval_ms": 0.5601571423799864
+    },
+    "multi_hop": {
+      "total_questions": 11,
+      "answerable_questions": 11,
+      "unanswerable_questions": 0,
+      "hit_at_k": 1.0,
+      "recall_at_k": 0.8333333333333335,
+      "complete_evidence_rate": 0.6363636363636364,
+      "mrr_at_k": 1.0,
+      "retrieval_refusal_rate": null,
+      "answerable_refusal_rate": 0.0,
+      "avg_retrieval_ms": 0.6070454546716064
+    },
+    "paraphrase": {
+      "total_questions": 9,
+      "answerable_questions": 9,
+      "unanswerable_questions": 0,
+      "hit_at_k": 0.8888888888888888,
+      "recall_at_k": 0.8888888888888888,
+      "complete_evidence_rate": 0.8888888888888888,
+      "mrr_at_k": 0.8148148148148148,
+      "retrieval_refusal_rate": null,
+      "answerable_refusal_rate": 0.0,
+      "avg_retrieval_ms": 0.665566667319379
+    },
+    "scenario": {
+      "total_questions": 11,
+      "answerable_questions": 11,
+      "unanswerable_questions": 0,
+      "hit_at_k": 1.0,
+      "recall_at_k": 1.0,
+      "complete_evidence_rate": 1.0,
+      "mrr_at_k": 0.9545454545454546,
+      "retrieval_refusal_rate": null,
+      "answerable_refusal_rate": 0.0,
+      "avg_retrieval_ms": 0.671072726783512
+    },
+    "unanswerable": {
+      "total_questions": 9,
+      "answerable_questions": 0,
+      "unanswerable_questions": 9,
+      "hit_at_k": null,
+      "recall_at_k": null,
+      "complete_evidence_rate": null,
+      "mrr_at_k": null,
+      "retrieval_refusal_rate": 0.0,
+      "answerable_refusal_rate": null,
+      "avg_retrieval_ms": 0.42187777823225286
+    }
+  },
+  "questions": [
+    {
+      "id": "v2_q421",
+      "type": "scenario",
+      "query": "语义向量检索在两阶段搜索中怎样产生候选，后续又怎样处理？",
+      "expected_chunks": [
+        "reranking_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "reranking_sec2"
+        ],
+        [
+          "reranking_sec1",
+          "semantic_search_sec1"
+        ],
+        [
+          "retrieval_rerank_sec1",
+          "semantic_search_sec1"
+        ]
+      ],
+      "retrieved_chunks": [
+        "retrieval_rerank_sec1",
+        "reranking_sec1",
+        "semantic_search_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "retrieval_rerank_sec1",
+          "score": 21.88182802026315
+        },
+        {
+          "chunk_id": "reranking_sec1",
+          "score": 13.017052275640886
+        },
+        {
+          "chunk_id": "semantic_search_sec1",
+          "score": 12.084956335629428
+        }
+      ],
+      "retrieval_ms": 0.7194999998318963,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q455",
+      "type": "unanswerable",
+      "query": "请实现一个带优先级的 asyncio.PriorityQueue 消费者。",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "retrieved_chunks": [
+        "asyncio_queues_sec2",
+        "python_asyncio_sec1",
+        "asyncio_tasks_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "asyncio_queues_sec2",
+          "score": 12.515239775854864
+        },
+        {
+          "chunk_id": "python_asyncio_sec1",
+          "score": 11.38907356361358
+        },
+        {
+          "chunk_id": "asyncio_tasks_sec3",
+          "score": 11.131788528441204
+        }
+      ],
+      "retrieval_ms": 0.5187999995541759,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q418",
+      "type": "scenario",
+      "query": "RRF 与 Cross-Encoder 分别依靠什么信息给候选排序？",
+      "expected_chunks": [
+        "rrf_fusion_sec4"
+      ],
+      "expected_chunk_sets": [
+        [
+          "rrf_fusion_sec4"
+        ],
+        [
+          "hybrid_rrf_sec1",
+          "reranking_sec2"
+        ],
+        [
+          "hybrid_rrf_sec1",
+          "retrieval_rerank_sec2"
+        ],
+        [
+          "reranking_sec2",
+          "rrf_fusion_sec2"
+        ],
+        [
+          "retrieval_rerank_sec2",
+          "rrf_fusion_sec2"
+        ]
+      ],
+      "retrieved_chunks": [
+        "reranking_sec2",
+        "rrf_fusion_sec4",
+        "reranking_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "reranking_sec2",
+          "score": 17.091778416765223
+        },
+        {
+          "chunk_id": "rrf_fusion_sec4",
+          "score": 12.994026875027771
+        },
+        {
+          "chunk_id": "reranking_sec3",
+          "score": 12.217123639523068
+        }
+      ],
+      "retrieval_ms": 0.6138999997347128,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q401",
+      "type": "multi_hop",
+      "query": "证据在切片边界丢失或初始召回候选中不存在，分别应检查什么？",
+      "expected_chunks": [
+        "reranking_sec3",
+        "text_chunking_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "reranking_sec3",
+          "text_chunking_sec2"
+        ],
+        [
+          "retrieval_rerank_sec3",
+          "text_chunking_sec2"
+        ]
+      ],
+      "retrieved_chunks": [
+        "reranking_sec3",
+        "retrieval_rerank_sec3",
+        "retrieval_rerank_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "reranking_sec3",
+          "score": 16.56264208786103
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec3",
+          "score": 15.176843317029196
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec1",
+          "score": 13.226589943567928
+        }
+      ],
+      "retrieval_ms": 0.7175000027928036,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 0.5,
+        "complete": 0.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q192",
+      "type": "boundary",
+      "query": "async def 路由只能注入 async def 依赖，对吗？",
+      "expected_chunks": [
+        "fastapi_dependencies_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_dependencies_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "fastapi_dependencies_sec3",
+        "fastapi_dependencies_sec1",
+        "python_asyncio_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_dependencies_sec3",
+          "score": 25.15649083936807
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec1",
+          "score": 11.686864525765339
+        },
+        {
+          "chunk_id": "python_asyncio_sec1",
+          "score": 11.497841796958312
+        }
+      ],
+      "retrieval_ms": 0.5051000007370021,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q149",
+      "type": "keyword",
+      "query": "SSE 命名事件和默认事件分别如何识别，冒号开头的行是什么？",
+      "expected_chunks": [
+        "sse_streaming_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "sse_streaming_sec2"
+        ]
+      ],
+      "retrieved_chunks": [
+        "sse_streaming_sec2",
+        "sse_streaming_sec1",
+        "sse_streaming_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "sse_streaming_sec2",
+          "score": 34.341125402714034
+        },
+        {
+          "chunk_id": "sse_streaming_sec1",
+          "score": 21.19511157133346
+        },
+        {
+          "chunk_id": "sse_streaming_sec3",
+          "score": 13.131170466547687
+        }
+      ],
+      "retrieval_ms": 0.634599997283658,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q131",
+      "type": "scenario",
+      "query": "中文字符被 token 切分拆成乱码时，文档建议哪类编码器切分方式？",
+      "expected_chunks": [
+        "text_chunking_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "text_chunking_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "text_chunking_sec3",
+        "text_chunking_sec1",
+        "bm25_similarity_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "text_chunking_sec3",
+          "score": 24.740846428729125
+        },
+        {
+          "chunk_id": "text_chunking_sec1",
+          "score": 10.087222779757454
+        },
+        {
+          "chunk_id": "bm25_similarity_sec3",
+          "score": 9.621429492142639
+        }
+      ],
+      "retrieval_ms": 0.7655000008526258,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q315",
+      "type": "scenario",
+      "query": "想把高效向量检索和较慢的精细模型组合，应按什么次序执行？",
+      "expected_chunks": [
+        "reranking_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "reranking_sec1"
+        ],
+        [
+          "retrieval_rerank_sec1"
+        ]
+      ],
+      "retrieved_chunks": [
+        "reranking_sec1",
+        "reranking_sec2",
+        "faiss_parameters_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "reranking_sec1",
+          "score": 11.255425514586259
+        },
+        {
+          "chunk_id": "reranking_sec2",
+          "score": 10.432851779375271
+        },
+        {
+          "chunk_id": "faiss_parameters_sec3",
+          "score": 10.144108026764096
+        }
+      ],
+      "retrieval_ms": 0.6610999989788979,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q416",
+      "type": "multi_hop",
+      "query": "GPU 索引怎样转换后持久化，恢复使用什么函数？",
+      "expected_chunks": [
+        "faiss_persistence_sec1",
+        "faiss_persistence_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "faiss_persistence_sec1",
+          "faiss_persistence_sec2"
+        ]
+      ],
+      "retrieved_chunks": [
+        "faiss_persistence_sec2",
+        "faiss_persistence_sec1",
+        "faiss_parameters_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_persistence_sec2",
+          "score": 17.248504659182675
+        },
+        {
+          "chunk_id": "faiss_persistence_sec1",
+          "score": 11.257363497315207
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "score": 7.3388229353002385
+        }
+      ],
+      "retrieval_ms": 0.35289999868837185,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q471",
+      "type": "unanswerable",
+      "query": "如何用 CSS Grid 编写响应式页面布局？",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "retrieved_chunks": [
+        "httpx_clients_sec3",
+        "python_asyncio_sec2",
+        "fastapi_models_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "httpx_clients_sec3",
+          "score": 6.341499558850926
+        },
+        {
+          "chunk_id": "python_asyncio_sec2",
+          "score": 5.122862512900994
+        },
+        {
+          "chunk_id": "fastapi_models_sec2",
+          "score": 4.158723894529625
+        }
+      ],
+      "retrieval_ms": 0.2906000008806586,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q340",
+      "type": "boundary",
+      "query": "原始 RAG 只依赖语言模型参数，没有外部非参数记忆，对吗？",
+      "expected_chunks": [
+        "rag_foundations_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "rag_foundations_sec1"
+        ]
+      ],
+      "retrieved_chunks": [
+        "rag_foundations_sec1",
+        "rag_foundations_sec3",
+        "rag_foundations_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "rag_foundations_sec1",
+          "score": 31.273356917601088
+        },
+        {
+          "chunk_id": "rag_foundations_sec3",
+          "score": 18.36948073687516
+        },
+        {
+          "chunk_id": "rag_foundations_sec2",
+          "score": 14.475199162412538
+        }
+      ],
+      "retrieval_ms": 0.45479999971576035,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q138",
+      "type": "paraphrase",
+      "query": "长文档和短文档的长度对词频评分的影响，用哪个参数控制？",
+      "expected_chunks": [
+        "bm25_retrieval_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "bm25_retrieval_sec2"
+        ],
+        [
+          "bm25_similarity_sec2"
+        ]
+      ],
+      "retrieved_chunks": [
+        "bm25_retrieval_sec2",
+        "bm25_similarity_sec2",
+        "bm25_similarity_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "bm25_retrieval_sec2",
+          "score": 27.231510226300855
+        },
+        {
+          "chunk_id": "bm25_similarity_sec2",
+          "score": 24.634684819459274
+        },
+        {
+          "chunk_id": "bm25_similarity_sec1",
+          "score": 15.423826170316882
+        }
+      ],
+      "retrieval_ms": 0.4594000020006206,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q162",
+      "type": "paraphrase",
+      "query": "想分别统计前三和前十结果的召回，需要关注哪项评测配置？",
+      "expected_chunks": [
+        "retrieval_evaluators_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "retrieval_evaluators_sec2"
+        ]
+      ],
+      "retrieved_chunks": [
+        "retrieval_evaluators_sec1",
+        "rag_evaluation_sec2",
+        "faiss_parameters_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "retrieval_evaluators_sec1",
+          "score": 17.031614407410988
+        },
+        {
+          "chunk_id": "rag_evaluation_sec2",
+          "score": 11.433358465934829
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "score": 10.587279902644603
+        }
+      ],
+      "retrieval_ms": 0.48519999836571515,
+      "metrics": {
+        "hit": 0.0,
+        "recall": 0.0,
+        "complete": 0.0,
+        "reciprocal_rank": 0.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q347",
+      "type": "scenario",
+      "query": "引入 RAG 能否依据论文动机直接保证所有回答准确无误？",
+      "expected_chunks": [
+        "rag_foundations_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "rag_foundations_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "rag_foundations_sec3",
+        "rag_evaluation_sec1",
+        "rag_foundations_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "rag_foundations_sec3",
+          "score": 15.347825017709852
+        },
+        {
+          "chunk_id": "rag_evaluation_sec1",
+          "score": 11.235660725424278
+        },
+        {
+          "chunk_id": "rag_foundations_sec2",
+          "score": 9.289493640234843
+        }
+      ],
+      "retrieval_ms": 0.5481999978655949,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q249",
+      "type": "keyword",
+      "query": "HTTPX 异步流式响应怎样增量读取，手动流模式怎样关闭？",
+      "expected_chunks": [
+        "httpx_clients_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "httpx_clients_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "httpx_clients_sec3",
+        "httpx_clients_sec2",
+        "httpx_timeouts_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "httpx_clients_sec3",
+          "score": 29.27233128855693
+        },
+        {
+          "chunk_id": "httpx_clients_sec2",
+          "score": 10.032573055247681
+        },
+        {
+          "chunk_id": "httpx_timeouts_sec1",
+          "score": 9.94598803770593
+        }
+      ],
+      "retrieval_ms": 0.5306999992171768,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q225",
+      "type": "keyword",
+      "query": "wait_for 超时会如何处理被等待对象，实际耗时一定小于 timeout 吗？",
+      "expected_chunks": [
+        "asyncio_tasks_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "asyncio_tasks_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "asyncio_tasks_sec3",
+        "asyncio_queues_sec3",
+        "httpx_timeouts_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "asyncio_tasks_sec3",
+          "score": 30.710239682237408
+        },
+        {
+          "chunk_id": "asyncio_queues_sec3",
+          "score": 13.62371327282099
+        },
+        {
+          "chunk_id": "httpx_timeouts_sec3",
+          "score": 13.035514188226143
+        }
+      ],
+      "retrieval_ms": 0.7322999990719836,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q343",
+      "type": "scenario",
+      "query": "论文允许不同 token 依赖不同段落，这是否说明我们项目自动具有逐 token 检索？",
+      "expected_chunks": [
+        "rag_foundations_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "rag_foundations_sec2"
+        ]
+      ],
+      "retrieved_chunks": [
+        "rag_foundations_sec2",
+        "text_chunking_sec3",
+        "bm25_similarity_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "rag_foundations_sec2",
+          "score": 31.966235118591012
+        },
+        {
+          "chunk_id": "text_chunking_sec3",
+          "score": 16.448715611691853
+        },
+        {
+          "chunk_id": "bm25_similarity_sec3",
+          "score": 15.474154514425292
+        }
+      ],
+      "retrieval_ms": 0.7225999979709741,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q415",
+      "type": "scenario",
+      "query": "库向量和查询向量怎样处理，才能用 2-2*内积解释平方 L2 距离？",
+      "expected_chunks": [
+        "faiss_metrics_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "faiss_metrics_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "faiss_metrics_sec3",
+        "faiss_parameters_sec1",
+        "faiss_metrics_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_metrics_sec3",
+          "score": 31.41129837066186
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "score": 24.223144919554294
+        },
+        {
+          "chunk_id": "faiss_metrics_sec2",
+          "score": 23.232776805279606
+        }
+      ],
+      "retrieval_ms": 0.6991999980527908,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q395",
+      "type": "multi_hop",
+      "query": "HTTPX 接收流怎样读取并正确区分 SSE 消息边界？",
+      "expected_chunks": [
+        "httpx_clients_sec3",
+        "sse_streaming_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "httpx_clients_sec3",
+          "sse_streaming_sec1"
+        ]
+      ],
+      "retrieved_chunks": [
+        "sse_streaming_sec1",
+        "sse_streaming_sec2",
+        "httpx_clients_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "sse_streaming_sec1",
+          "score": 14.568392237423685
+        },
+        {
+          "chunk_id": "sse_streaming_sec2",
+          "score": 9.122068469166544
+        },
+        {
+          "chunk_id": "httpx_clients_sec3",
+          "score": 8.307667127029752
+        }
+      ],
+      "retrieval_ms": 0.45080000199959613,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q329",
+      "type": "keyword",
+      "query": "LLM Context Recall 以什么文本拆分声明，分子分母分别是什么？",
+      "expected_chunks": [
+        "rag_evaluation_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "rag_evaluation_sec2"
+        ]
+      ],
+      "retrieved_chunks": [
+        "rag_evaluation_sec2",
+        "retrieval_evaluators_sec2",
+        "retrieval_evaluators_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "rag_evaluation_sec2",
+          "score": 17.87217400916178
+        },
+        {
+          "chunk_id": "retrieval_evaluators_sec2",
+          "score": 7.526862889004613
+        },
+        {
+          "chunk_id": "retrieval_evaluators_sec1",
+          "score": 7.429587204314578
+        }
+      ],
+      "retrieval_ms": 0.5735000013373792,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q417",
+      "type": "multi_hop",
+      "query": "索引可读取和 JWT 有签名，分别不能据此推断哪些安全属性？",
+      "expected_chunks": [
+        "faiss_persistence_sec3",
+        "fastapi_security_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "faiss_persistence_sec3",
+          "fastapi_security_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "fastapi_security_sec3",
+        "faiss_persistence_sec3",
+        "fastapi_security_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_security_sec3",
+          "score": 14.596599732714843
+        },
+        {
+          "chunk_id": "faiss_persistence_sec3",
+          "score": 13.435570495213423
+        },
+        {
+          "chunk_id": "fastapi_security_sec1",
+          "score": 13.182219412451822
+        }
+      ],
+      "retrieval_ms": 0.5754999983764719,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q273",
+      "type": "keyword",
+      "query": "HTTPX 网络错误和本地、远端协议错误如何分类？",
+      "expected_chunks": [
+        "httpx_exceptions_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "httpx_exceptions_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "httpx_exceptions_sec3",
+        "httpx_exceptions_sec2",
+        "httpx_exceptions_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "httpx_exceptions_sec3",
+          "score": 23.576987602903483
+        },
+        {
+          "chunk_id": "httpx_exceptions_sec2",
+          "score": 9.893184943133345
+        },
+        {
+          "chunk_id": "httpx_exceptions_sec1",
+          "score": 9.734481334624771
+        }
+      ],
+      "retrieval_ms": 0.4461999997147359,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q183",
+      "type": "scenario",
+      "query": "我想让路由自动获得公共查询参数处理函数的结果，应该怎样使用 Depends？",
+      "expected_chunks": [
+        "fastapi_dependencies_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_dependencies_sec1"
+        ]
+      ],
+      "retrieved_chunks": [
+        "bm25_retrieval_sec3",
+        "fastapi_dependencies_sec1",
+        "python_asyncio_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "bm25_retrieval_sec3",
+          "score": 12.476447585343053
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec1",
+          "score": 9.21212096064465
+        },
+        {
+          "chunk_id": "python_asyncio_sec2",
+          "score": 8.913128526359364
+        }
+      ],
+      "retrieval_ms": 0.6866000003356021,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 0.5,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q185",
+      "type": "keyword",
+      "query": "如何用 Annotated 和类型别名复用 FastAPI 依赖声明？",
+      "expected_chunks": [
+        "fastapi_dependencies_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_dependencies_sec2"
+        ]
+      ],
+      "retrieved_chunks": [
+        "fastapi_dependencies_sec2",
+        "fastapi_dependencies_sec1",
+        "fastapi_dependencies_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_dependencies_sec2",
+          "score": 28.153162565289797
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec1",
+          "score": 14.28621617424368
+        },
+        {
+          "chunk_id": "fastapi_dependencies_sec3",
+          "score": 11.558259088869114
+        }
+      ],
+      "retrieval_ms": 0.4542999995464925,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q288",
+      "type": "boundary",
+      "query": "对单位向量，内积越大平方 L2 距离也越大，对吗？",
+      "expected_chunks": [
+        "faiss_metrics_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "faiss_metrics_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "faiss_metrics_sec3",
+        "faiss_metrics_sec1",
+        "faiss_parameters_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_metrics_sec3",
+          "score": 27.22608538824977
+        },
+        {
+          "chunk_id": "faiss_metrics_sec1",
+          "score": 19.490750617538893
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "score": 17.75178316217351
+        }
+      ],
+      "retrieval_ms": 0.6492000029538758,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q204",
+      "type": "boundary",
+      "query": "可以靠同时注册 lifespan 和 startup 来让两套初始化都执行吗？",
+      "expected_chunks": [
+        "fastapi_lifespan_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_lifespan_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "fastapi_lifespan_sec3",
+        "python_asyncio_sec1",
+        "fastapi_lifespan_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_lifespan_sec3",
+          "score": 20.669085202305986
+        },
+        {
+          "chunk_id": "python_asyncio_sec1",
+          "score": 9.933142833855872
+        },
+        {
+          "chunk_id": "fastapi_lifespan_sec2",
+          "score": 7.310328862993945
+        }
+      ],
+      "retrieval_ms": 0.5994999992253724,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q405",
+      "type": "multi_hop",
+      "query": "想在启动时建立共享异步 HTTP 客户端，该在哪初始化、怎样使用和关闭？",
+      "expected_chunks": [
+        "fastapi_lifespan_sec1",
+        "httpx_clients_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_lifespan_sec1",
+          "httpx_clients_sec2"
+        ]
+      ],
+      "retrieved_chunks": [
+        "fastapi_lifespan_sec1",
+        "fastapi_lifespan_sec2",
+        "httpx_clients_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_lifespan_sec1",
+          "score": 20.788432554812868
+        },
+        {
+          "chunk_id": "fastapi_lifespan_sec2",
+          "score": 17.663187156223014
+        },
+        {
+          "chunk_id": "httpx_clients_sec1",
+          "score": 14.389841924818608
+        }
+      ],
+      "retrieval_ms": 0.7594000016979408,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 0.5,
+        "complete": 0.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q209",
+      "type": "keyword",
+      "query": "OAuth2PasswordBearer 默认遇到缺少 Bearer 令牌时返回什么状态码？",
+      "expected_chunks": [
+        "fastapi_security_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_security_sec2"
+        ]
+      ],
+      "retrieved_chunks": [
+        "fastapi_security_sec2",
+        "fastapi_security_sec1",
+        "fastapi_config_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_security_sec2",
+          "score": 24.84308670705834
+        },
+        {
+          "chunk_id": "fastapi_security_sec1",
+          "score": 15.64353811962482
+        },
+        {
+          "chunk_id": "fastapi_config_sec3",
+          "score": 9.069328905826664
+        }
+      ],
+      "retrieval_ms": 0.5495000004884787,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q451",
+      "type": "unanswerable",
+      "query": "怎么把 FAISS 索引移到 GPU 并启用 float16？",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "retrieved_chunks": [
+        "faiss_persistence_sec2",
+        "faiss_metrics_sec2",
+        "faiss_persistence_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_persistence_sec2",
+          "score": 15.567597191798896
+        },
+        {
+          "chunk_id": "faiss_metrics_sec2",
+          "score": 7.817812917085974
+        },
+        {
+          "chunk_id": "faiss_persistence_sec1",
+          "score": 7.1705558810962895
+        }
+      ],
+      "retrieval_ms": 0.5290000008244533,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q214",
+      "type": "paraphrase",
+      "query": "一个签过名的 JSON 令牌，别人还能读取里面的数据吗？",
+      "expected_chunks": [
+        "fastapi_security_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_security_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "fastapi_models_sec1",
+        "bm25_retrieval_sec4",
+        "fastapi_security_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_models_sec1",
+          "score": 15.270649938096836
+        },
+        {
+          "chunk_id": "bm25_retrieval_sec4",
+          "score": 12.555460179909119
+        },
+        {
+          "chunk_id": "fastapi_security_sec3",
+          "score": 12.321842424042131
+        }
+      ],
+      "retrieval_ms": 0.8973000003607012,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 0.3333333333333333,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q392",
+      "type": "multi_hop",
+      "query": "chunk_overlap 与 discount_overlaps 中的重叠分别指什么？",
+      "expected_chunks": [
+        "bm25_similarity_sec3",
+        "text_chunking_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "bm25_similarity_sec3",
+          "text_chunking_sec2"
+        ]
+      ],
+      "retrieved_chunks": [
+        "bm25_similarity_sec3",
+        "text_chunking_sec2",
+        "text_chunking_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "bm25_similarity_sec3",
+          "score": 24.035197055538514
+        },
+        {
+          "chunk_id": "text_chunking_sec2",
+          "score": 17.436936160227543
+        },
+        {
+          "chunk_id": "text_chunking_sec1",
+          "score": 11.501254053957473
+        }
+      ],
+      "retrieval_ms": 0.6012000012560748,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q474",
+      "type": "unanswerable",
+      "query": "请介绍 MySQL 主从复制的配置步骤。",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "retrieved_chunks": [
+        "fastapi_config_sec2",
+        "httpx_timeouts_sec4",
+        "fastapi_config_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_config_sec2",
+          "score": 6.046218409143646
+        },
+        {
+          "chunk_id": "httpx_timeouts_sec4",
+          "score": 5.7441872455476615
+        },
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 5.336474188125018
+        }
+      ],
+      "retrieval_ms": 0.26669999715522863,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q155",
+      "type": "scenario",
+      "query": "SSE 想携带最后事件标识进行重连，id 与 Last-Event-ID 怎样配合？",
+      "expected_chunks": [
+        "sse_streaming_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "sse_streaming_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "sse_streaming_sec3",
+        "sse_streaming_sec1",
+        "sse_streaming_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "sse_streaming_sec3",
+          "score": 39.7500078757766
+        },
+        {
+          "chunk_id": "sse_streaming_sec1",
+          "score": 16.030251575904863
+        },
+        {
+          "chunk_id": "sse_streaming_sec2",
+          "score": 14.947151464249075
+        }
+      ],
+      "retrieval_ms": 0.5635000015900005,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q406",
+      "type": "multi_hop",
+      "query": "应用资源清理和手动流式 HTTP 响应清理，分别发生在什么阶段、调用什么方法？",
+      "expected_chunks": [
+        "fastapi_lifespan_sec2",
+        "httpx_clients_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_lifespan_sec2",
+          "httpx_clients_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "httpx_clients_sec3",
+        "fastapi_lifespan_sec2",
+        "fastapi_models_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "httpx_clients_sec3",
+          "score": 24.17675668057501
+        },
+        {
+          "chunk_id": "fastapi_lifespan_sec2",
+          "score": 18.35500691969308
+        },
+        {
+          "chunk_id": "fastapi_models_sec3",
+          "score": 8.941593771658246
+        }
+      ],
+      "retrieval_ms": 0.727099999494385,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q425",
+      "type": "multi_hop",
+      "query": "原始RAG引入检索的研究动机是什么？Faithfulness又如何检查回答是否受证据支持？",
+      "expected_chunks": [
+        "rag_evaluation_sec1",
+        "rag_foundations_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "rag_evaluation_sec1",
+          "rag_foundations_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "rag_evaluation_sec1",
+        "rag_evaluation_sec2",
+        "rag_foundations_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "rag_evaluation_sec1",
+          "score": 23.168017629977978
+        },
+        {
+          "chunk_id": "rag_evaluation_sec2",
+          "score": 22.068259746995267
+        },
+        {
+          "chunk_id": "rag_foundations_sec3",
+          "score": 20.28973304946367
+        }
+      ],
+      "retrieval_ms": 0.5936999987170566,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q430",
+      "type": "multi_hop",
+      "query": "请分别说明请求输入验证、外部 HTTP 错误分类与生成回答证据一致性检查的工具。",
+      "expected_chunks": [
+        "fastapi_models_sec1",
+        "httpx_exceptions_sec1",
+        "rag_evaluation_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_models_sec1",
+          "httpx_exceptions_sec1",
+          "rag_evaluation_sec1"
+        ]
+      ],
+      "retrieved_chunks": [
+        "rag_evaluation_sec1",
+        "reranking_sec4",
+        "httpx_exceptions_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "rag_evaluation_sec1",
+          "score": 19.606083944374348
+        },
+        {
+          "chunk_id": "reranking_sec4",
+          "score": 17.064304296565187
+        },
+        {
+          "chunk_id": "httpx_exceptions_sec1",
+          "score": 14.640932001593455
+        }
+      ],
+      "retrieval_ms": 0.5404999974416569,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 0.6666666666666666,
+        "complete": 0.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q218",
+      "type": "paraphrase",
+      "query": "并发聚合里一个任务失败，是马上报告还是等全部完成才报告？",
+      "expected_chunks": [
+        "asyncio_tasks_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "asyncio_tasks_sec1"
+        ],
+        [
+          "python_asyncio_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "asyncio_tasks_sec1",
+        "asyncio_queues_sec2",
+        "python_asyncio_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "asyncio_tasks_sec1",
+          "score": 16.79199806799777
+        },
+        {
+          "chunk_id": "asyncio_queues_sec2",
+          "score": 16.636384726914745
+        },
+        {
+          "chunk_id": "python_asyncio_sec1",
+          "score": 12.034120605002984
+        }
+      ],
+      "retrieval_ms": 1.1425000011513475,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q449",
+      "type": "unanswerable",
+      "query": "FAISS HNSW 索引的 M 和 efSearch 最优值是多少？",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "retrieved_chunks": [
+        "faiss_parameters_sec2",
+        "faiss_persistence_sec1",
+        "faiss_persistence_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_parameters_sec2",
+          "score": 9.34199268110927
+        },
+        {
+          "chunk_id": "faiss_persistence_sec1",
+          "score": 9.302304924642023
+        },
+        {
+          "chunk_id": "faiss_persistence_sec2",
+          "score": 7.691968363651811
+        }
+      ],
+      "retrieval_ms": 0.5751999997301027,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q242",
+      "type": "paraphrase",
+      "query": "反复请求同一个服务，怎样减少每次重新建立网络连接的开销？",
+      "expected_chunks": [
+        "httpx_clients_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "httpx_clients_sec1"
+        ]
+      ],
+      "retrieved_chunks": [
+        "httpx_clients_sec1",
+        "faiss_parameters_sec2",
+        "bm25_retrieval_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "httpx_clients_sec1",
+          "score": 14.550917410081546
+        },
+        {
+          "chunk_id": "faiss_parameters_sec2",
+          "score": 10.234573906433866
+        },
+        {
+          "chunk_id": "bm25_retrieval_sec2",
+          "score": 9.778758616522854
+        }
+      ],
+      "retrieval_ms": 0.6127000015112571,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q424",
+      "type": "multi_hop",
+      "query": "原始 RAG 的外部记忆是什么，语义检索一般怎样访问向量空间中的资料？",
+      "expected_chunks": [
+        "rag_foundations_sec1",
+        "semantic_search_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "rag_foundations_sec1",
+          "semantic_search_sec1"
+        ]
+      ],
+      "retrieved_chunks": [
+        "rag_foundations_sec1",
+        "rag_foundations_sec3",
+        "rag_foundations_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "rag_foundations_sec1",
+          "score": 26.794613387427454
+        },
+        {
+          "chunk_id": "rag_foundations_sec3",
+          "score": 22.187255797639065
+        },
+        {
+          "chunk_id": "rag_foundations_sec2",
+          "score": 17.845993291345987
+        }
+      ],
+      "retrieval_ms": 0.8392000017920509,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 0.5,
+        "complete": 0.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q298",
+      "type": "paraphrase",
+      "query": "别人提供的索引文件能够读取，就说明可信且无风险吗？",
+      "expected_chunks": [
+        "faiss_persistence_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "faiss_persistence_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "faiss_persistence_sec3",
+        "faiss_persistence_sec1",
+        "faiss_persistence_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_persistence_sec3",
+          "score": 19.184638782287994
+        },
+        {
+          "chunk_id": "faiss_persistence_sec1",
+          "score": 12.625455250365809
+        },
+        {
+          "chunk_id": "faiss_persistence_sec2",
+          "score": 9.364707916148063
+        }
+      ],
+      "retrieval_ms": 0.6128000022727065,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q278",
+      "type": "paraphrase",
+      "query": "向量索引里的 L2 数值为什么和手算欧氏距离不一样？",
+      "expected_chunks": [
+        "faiss_metrics_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "faiss_metrics_sec1"
+        ]
+      ],
+      "retrieved_chunks": [
+        "faiss_metrics_sec1",
+        "faiss_parameters_sec1",
+        "faiss_metrics_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_metrics_sec1",
+          "score": 20.851199300468696
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "score": 14.408702600444908
+        },
+        {
+          "chunk_id": "faiss_metrics_sec3",
+          "score": 12.605610618095646
+        }
+      ],
+      "retrieval_ms": 0.5934000000706874,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q034",
+      "type": "boundary",
+      "query": "资料是否把 workers = 2 × CPU核心数 + 1 推荐为所有 FastAPI 应用的通用配置？",
+      "expected_chunks": [
+        "fastapi_config_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "fastapi_config_sec1"
+        ]
+      ],
+      "retrieved_chunks": [
+        "fastapi_config_sec1",
+        "fastapi_config_sec2",
+        "faiss_parameters_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 34.491037510043
+        },
+        {
+          "chunk_id": "fastapi_config_sec2",
+          "score": 11.987373741126794
+        },
+        {
+          "chunk_id": "faiss_parameters_sec3",
+          "score": 11.608433843630912
+        }
+      ],
+      "retrieval_ms": 0.7893000001786277,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q467",
+      "type": "unanswerable",
+      "query": "我们的 LLM API 并发额度合同上限是多少？",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "retrieved_chunks": [
+        "fastapi_config_sec1",
+        "httpx_timeouts_sec1",
+        "rag_evaluation_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 6.538782093937739
+        },
+        {
+          "chunk_id": "httpx_timeouts_sec1",
+          "score": 6.5368902904769906
+        },
+        {
+          "chunk_id": "rag_evaluation_sec2",
+          "score": 5.508298744375377
+        }
+      ],
+      "retrieval_ms": 0.4270000026735943,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q356",
+      "type": "boundary",
+      "query": "非对称检索里交换查询和长文档的角色通常仍完全等价吗？",
+      "expected_chunks": [
+        "semantic_search_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "semantic_search_sec2"
+        ]
+      ],
+      "retrieved_chunks": [
+        "semantic_search_sec2",
+        "semantic_search_sec3",
+        "retrieval_rerank_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "semantic_search_sec2",
+          "score": 18.74493720027841
+        },
+        {
+          "chunk_id": "semantic_search_sec3",
+          "score": 10.038621120974282
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec2",
+          "score": 8.600714683658783
+        }
+      ],
+      "retrieval_ms": 0.5866000028618146,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q351",
+      "type": "scenario",
+      "query": "用户使用缩写或同义词，没有直接字面重合，语义检索依靠什么机制？",
+      "expected_chunks": [
+        "semantic_search_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "semantic_search_sec1"
+        ]
+      ],
+      "retrieved_chunks": [
+        "semantic_search_sec1",
+        "semantic_search_sec3",
+        "reranking_sec4"
+      ],
+      "scores": [
+        {
+          "chunk_id": "semantic_search_sec1",
+          "score": 14.347413719752279
+        },
+        {
+          "chunk_id": "semantic_search_sec3",
+          "score": 9.245440848413358
+        },
+        {
+          "chunk_id": "reranking_sec4",
+          "score": 8.477529367163033
+        }
+      ],
+      "retrieval_ms": 0.6040999978722539,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q409",
+      "type": "scenario",
+      "query": "gather 默认与 TaskGroup 遇到普通子任务异常时，对其他任务的处理有什么差异？",
+      "expected_chunks": [
+        "python_asyncio_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "python_asyncio_sec3"
+        ],
+        [
+          "asyncio_tasks_sec1",
+          "asyncio_tasks_sec2"
+        ]
+      ],
+      "retrieved_chunks": [
+        "python_asyncio_sec3",
+        "asyncio_tasks_sec2",
+        "asyncio_tasks_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "score": 26.526621992212302
+        },
+        {
+          "chunk_id": "asyncio_tasks_sec2",
+          "score": 23.717373598860153
+        },
+        {
+          "chunk_id": "asyncio_tasks_sec1",
+          "score": 22.516233287999704
+        }
+      ],
+      "retrieval_ms": 0.7976000015332829,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q222",
+      "type": "paraphrase",
+      "query": "想让一组相关任务在成员失败时一起取消，TaskGroup 的规则是什么？",
+      "expected_chunks": [
+        "asyncio_tasks_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "asyncio_tasks_sec2"
+        ]
+      ],
+      "retrieved_chunks": [
+        "asyncio_tasks_sec2",
+        "python_asyncio_sec3",
+        "python_asyncio_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "asyncio_tasks_sec2",
+          "score": 19.733543854291522
+        },
+        {
+          "chunk_id": "python_asyncio_sec3",
+          "score": 14.945575321238884
+        },
+        {
+          "chunk_id": "python_asyncio_sec1",
+          "score": 9.476739578546704
+        }
+      ],
+      "retrieval_ms": 0.668799999402836,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q442",
+      "type": "unanswerable",
+      "query": "FastAPI 的 Kubernetes readinessProbe 和 livenessProbe 应怎样写？",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "retrieved_chunks": [
+        "fastapi_config_sec3",
+        "fastapi_config_sec2",
+        "fastapi_lifespan_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_config_sec3",
+          "score": 6.000800950004015
+        },
+        {
+          "chunk_id": "fastapi_config_sec2",
+          "score": 5.72071145844615
+        },
+        {
+          "chunk_id": "fastapi_lifespan_sec3",
+          "score": 5.676534658163112
+        }
+      ],
+      "retrieval_ms": 0.4743000026792288,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q290",
+      "type": "paraphrase",
+      "query": "向量索引想重启后恢复，应使用哪个写入和读入接口？",
+      "expected_chunks": [
+        "faiss_persistence_sec1"
+      ],
+      "expected_chunk_sets": [
+        [
+          "faiss_persistence_sec1"
+        ]
+      ],
+      "retrieved_chunks": [
+        "faiss_persistence_sec1",
+        "faiss_persistence_sec2",
+        "faiss_parameters_sec1"
+      ],
+      "scores": [
+        {
+          "chunk_id": "faiss_persistence_sec1",
+          "score": 21.112575321393038
+        },
+        {
+          "chunk_id": "faiss_persistence_sec2",
+          "score": 11.043991435672528
+        },
+        {
+          "chunk_id": "faiss_parameters_sec1",
+          "score": 10.775162758232897
+        }
+      ],
+      "retrieval_ms": 0.5180000007385388,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q324",
+      "type": "boundary",
+      "query": "增大候选内部的重排分数就能自动检索新的全库文档，对吗？",
+      "expected_chunks": [
+        "reranking_sec3"
+      ],
+      "expected_chunk_sets": [
+        [
+          "reranking_sec3"
+        ],
+        [
+          "retrieval_rerank_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "reranking_sec4",
+        "reranking_sec2",
+        "retrieval_rerank_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "reranking_sec4",
+          "score": 16.855497723591583
+        },
+        {
+          "chunk_id": "reranking_sec2",
+          "score": 15.898640710226973
+        },
+        {
+          "chunk_id": "retrieval_rerank_sec3",
+          "score": 14.695355305908038
+        }
+      ],
+      "retrieval_ms": 0.6862000009277835,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 0.3333333333333333,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q462",
+      "type": "unanswerable",
+      "query": "我们服务器有多少个 CPU 核心？",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "retrieved_chunks": [
+        "fastapi_config_sec1",
+        "faiss_persistence_sec2",
+        "retrieval_evaluators_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_config_sec1",
+          "score": 7.769121215969066
+        },
+        {
+          "chunk_id": "faiss_persistence_sec2",
+          "score": 5.79724013773191
+        },
+        {
+          "chunk_id": "retrieval_evaluators_sec2",
+          "score": 3.982311610274685
+        }
+      ],
+      "retrieval_ms": 0.3235000003769528,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0,
+        "answerable_refusal": null
+      }
+    },
+    {
+      "id": "v2_q400",
+      "type": "multi_hop",
+      "query": "检索指标的 k 与 RRF 分支候选窗口分别代表什么范围？",
+      "expected_chunks": [
+        "hybrid_rrf_sec3",
+        "retrieval_evaluators_sec2"
+      ],
+      "expected_chunk_sets": [
+        [
+          "hybrid_rrf_sec3",
+          "retrieval_evaluators_sec2"
+        ],
+        [
+          "retrieval_evaluators_sec2",
+          "rrf_fusion_sec3"
+        ]
+      ],
+      "retrieved_chunks": [
+        "retrieval_evaluators_sec2",
+        "rrf_fusion_sec3",
+        "hybrid_rrf_sec3"
+      ],
+      "scores": [
+        {
+          "chunk_id": "retrieval_evaluators_sec2",
+          "score": 17.815639083063708
+        },
+        {
+          "chunk_id": "rrf_fusion_sec3",
+          "score": 15.120698250326974
+        },
+        {
+          "chunk_id": "hybrid_rrf_sec3",
+          "score": 11.666798080664602
+        }
+      ],
+      "retrieval_ms": 0.5196999991312623,
+      "metrics": {
+        "hit": 1.0,
+        "recall": 1.0,
+        "complete": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieval_refusal": null,
+        "answerable_refusal": 0.0
+      }
+    },
+    {
+      "id": "v2_q478",
+      "type": "unanswerable",
+      "query": "请给出 OAuth2 刷新令牌轮换的实现方案。",
+      "expected_chunks": [],
+      "expected_chunk_sets": [],
+      "retrieved_chunks": [
+        "fastapi_security_sec1",
+        "bm25_retrieval_sec2",
+        "fastapi_security_sec2"
+      ],
+      "scores": [
+        {
+          "chunk_id": "fastapi_security_sec1",
+          "score": 13.10208882143108
+        },
+        {
+          "chunk_id": "bm25_retrieval_sec2",
+          "score": 10.314248611433506
+        },
+        {
+          "chunk_id": "fastapi_security_sec2",
+          "score": 8.246973010929034
+        }
+      ],
+      "retrieval_ms": 0.3918000002158806,
+      "metrics": {
+        "hit": null,
+        "recall": null,
+        "complete": null,
+        "reciprocal_rank": null,
+        "retrieval_refusal": 0.0,
+        "answerable_refusal": null
+      }
+    }
+  ]
+}
